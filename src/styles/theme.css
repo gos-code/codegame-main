@@ -5,8 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #111827;
-  --card: #ffffff;
-  --card-foreground: #111827;
+  --card: #f9fafb;
   --border: #e5e7eb;
   --primary: #03040b;
   --primary-foreground: #ffffff;
@@ -17,78 +16,56 @@
   --background: #03040b;
   --foreground: #f9fafb;
   --card: #0c0e1a;
-  --card-foreground: #f9fafb;
   --border: #1e293b;
   --primary: #00f5c4;
   --primary-foreground: #03040b;
 }
 
 @layer base {
-  html {
-    background-color: var(--background) !important;
-  }
-  
-  body {
+  html, body {
     background-color: var(--background) !important;
     color: var(--foreground) !important;
     font-family: 'Sora', sans-serif;
-    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* -----------------------------------------------------------
-     💡 핵심: 라이트 모드일 때 하드코딩된 밝은 글자색들을 강제 교정
-     ----------------------------------------------------------- */
-  :root:not(.dark) .text-white,
-  :root:not(.dark) .text-white\/70,
-  :root:not(.dark) .text-white\/50,
-  :root:not(.dark) .text-slate-100,
-  :root:not(.dark) .text-slate-200,
-  :root:not(.dark) .text-slate-300,
-  :root:not(.dark) .text-slate-400,
-  :root:not(.dark) .text-slate-500,
-  :root:not(.dark) .text-gray-400,
-  :root:not(.dark) [style*="color: white"],
-  :root:not(.dark) [style*="color: rgb(255, 255, 255)"] {
-    color: var(--foreground) !important;
-    opacity: 1 !important;
+  /* 💡 라이트 모드 강제 교정 (흰 배경에서 안 보이는 글자 해결) */
+  :root.light {
+    .text-white, 
+    .text-white\/70, 
+    .text-white\/50, 
+    .text-slate-100, 
+    .text-slate-200, 
+    .text-slate-300, 
+    .text-slate-400, 
+    .text-gray-400 {
+      color: #111827 !important;
+    }
+
+    .bg-slate-900, 
+    .bg-black, 
+    .bg-white\/5,
+    .bg-slate-900\/50 {
+      background-color: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+      color: #111827 !important;
+    }
   }
 
-  /* 라이트 모드일 때 어두운 배경색을 가진 카드들을 흰색으로 전환 */
-  :root:not(.dark) .bg-white\/5,
-  :root:not(.dark) .bg-slate-900\/50,
-  :root:not(.dark) .bg-slate-800,
-  :root:not(.dark) [class*="bg-opacity"] {
-    background-color: var(--card) !important;
-    border: 1px solid var(--border) !important;
-  }
+  /* 💡 다크 모드 강제 교정 (검은 배경에서 안 보이는 글자 해결) */
+  :root.dark {
+    .text-black, 
+    .text-slate-900, 
+    .text-gray-900 {
+      color: #f9fafb !important;
+    }
 
-  /* -----------------------------------------------------------
-     💡 다크 모드일 때 어두운 글자색들을 밝게 전환
-     ----------------------------------------------------------- */
-  .dark .text-black,
-  .dark .text-slate-900,
-  .dark .text-gray-900 {
-    color: var(--foreground) !important;
-  }
-
-  /* 공통 경계선 설정 */
-  * {
-    border-color: var(--border);
+    .bg-white {
+      background-color: var(--card) !important;
+      color: var(--foreground) !important;
+    }
   }
 }
 
-/* 폼 요소 테마 적용 */
-select option {
-  background: var(--background);
-  color: var(--foreground);
-}
-
-input[type="range"] {
-  -webkit-appearance: none;
-  background: var(--border);
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  background: var(--cg-accent);
-}
+/* UI 요소 공통 스타일 */
+* { border-color: var(--border); }
