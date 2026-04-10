@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/codegame-mvp/',
+  base: '/codegame-main/',
   build: {
     outDir: 'dist',
     rollupOptions: {
