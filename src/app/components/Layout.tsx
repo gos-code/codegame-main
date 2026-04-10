@@ -12,7 +12,7 @@ export default function Layout() {
         className="w-full min-h-screen bg-background text-foreground"
         style={{ paddingTop: hideHeader ? 0 : '80px' }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-transparent">
           <Outlet />
         </div>
       </main>

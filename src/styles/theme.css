@@ -1,46 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* 1. 기본 변수 설정 */
+/* 1. 테마별 핵심 색상 정의 */
 :root {
   --background: #ffffff !important;
   --foreground: #111827 !important;
-  --card: #ffffff !important;
+  --card: #f9fafb !important;
   --border: #e5e7eb !important;
-  --cg-accent: #00f5c4;
+  --cg-accent: #00f5c4 !important;
 }
 
-:root.dark {
+.dark {
   --background: #03040b !important;
   --foreground: #f9fafb !important;
   --card: #0c0e1a !important;
   --border: #1e293b !important;
 }
 
-/* 2. 전역 강제 적용 */
+/* 2. 전역 스타일 강제 적용 (!important로 모든 개별 설정 무시) */
 @layer base {
   html, body {
     background-color: var(--background) !important;
     color: var(--foreground) !important;
-    transition: none !important; /* 전환 시 딜레이 삭제 */
+    font-family: 'Sora', sans-serif;
+    transition: none !important; /* 색상 전환 지연 삭제 */
   }
 
-  /* 💡 라이트 모드일 때 모든 흰색 계열 글자를 검정으로 강제 압수 */
-  :root:not(.dark) * {
-    /* 하얀색 글자 클래스들 전부 검정으로 */
+  /* 💡 라이트 모드 강제 교정 (안 보이는 글자 해결) */
+  :root.light * {
+    /* 하얀색 계열 글자들을 전부 검정으로 강제 압수 */
     &.text-white, &.text-slate-100, &.text-slate-200, &.text-slate-300, 
     &.text-slate-400, &.text-gray-400, &[class*="text-white/"] {
       color: #111827 !important;
     }
     
-    /* 어두운 배경 클래스들 전부 흰색으로 */
-    &.bg-slate-900, &.bg-black, &.bg-slate-800, &[class*="bg-white/"] {
+    /* 어두운 배경 카드들을 전부 흰색 배경으로 전환 */
+    &.bg-slate-900, &.bg-black, &.bg-slate-800, &[class*="bg-white/"], [class*="bg-slate-900/"] {
       background-color: #ffffff !important;
       border: 1px solid #e5e7eb !important;
+      color: #111827 !important;
     }
   }
 
-  /* 💡 다크 모드일 때 검정 글자를 흰색으로 강제 압수 */
+  /* 💡 다크 모드 강제 교정 */
   :root.dark * {
+    /* 검정 글자들을 전부 밝은색으로 강제 전환 */
     &.text-black, &.text-slate-900, &.text-gray-900 {
       color: #f9fafb !important;
     }
@@ -48,7 +51,4 @@
 }
 
 /* UI 요소 보정 */
-button, input, select, textarea {
-  background-color: transparent;
-  color: inherit;
-}
+* { border-color: var(--border) !important; }

@@ -19,12 +19,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('cg_theme', theme);
     const root = window.document.documentElement;
     
-    // <html> 태그에 dark/light 클래스 직접 주입
+    // 클래스 완전 초기화 후 현재 테마만 정확히 주입
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
     
     // 브라우저 렌더링 엔진에 현재 테마 알림
-    root.style.colorScheme = theme;
+    root.style.setProperty('color-scheme', theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
