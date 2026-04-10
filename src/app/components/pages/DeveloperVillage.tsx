@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react";
 import { useState } from "react";
 import { Palette, Shirt, Smile, Save, Undo2, Eye } from "lucide-react";

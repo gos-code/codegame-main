@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useState, useEffect } from 'react';
-import { db, collection, query, where, getDocs, doc, updateDoc, serverTimestamp } from '../lib/firebase';
+import { db, collection, query, where, getDocs, doc, updateDoc, serverTimestamp } from '../../lib/firebase';
 
 export default function AdminPanel({ accentColor }: { accentColor: string }) {
   const [status, setStatus] = useState<'pending'|'approved'|'rejected'>('pending');

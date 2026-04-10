@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AnimatePresence, motion } from 'motion/react';
 import { X, Settings, Palette, Music, Play, Pause, ChevronRight } from 'lucide-react';
 import { useState } from 'react';

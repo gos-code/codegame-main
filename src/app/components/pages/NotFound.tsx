@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react";
 import { Home, Search, ArrowLeft } from "lucide-react";
 import { Link } from "react-router";

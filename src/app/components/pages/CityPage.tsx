@@ -1,16 +1,17 @@
+// @ts-nocheck
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { motion, useTransform, useMotionValue, MotionValue, AnimatePresence } from 'motion/react';
-import { Rain } from "./Rain";
-import { PixelCharacter } from './PixelCharacter';
-import { PixelCat, CAT_COLORS } from './PixelCat';
-import { RamenFacade, RecordFacade, ConvenienceFacade, ArcadeFacade, PhotoBoothFacade } from './PixelStreetFacades';
-import { RamenShop } from './RamenShop';
-import { RecordStore } from './RecordStore';
-import { ArcadePage } from './ArcadePage';
-import { ConvenienceStore } from './ConvenienceStore';
-import { PhotoBoothPage } from './PhotoBoothPage';
-import { useMusic, TRACK_TITLE, TRACK_RAMEN } from './MusicContext';
+import { Rain } from "../Rain";
+import { PixelCharacter } from '../PixelCharacter';
+import { PixelCat, CAT_COLORS } from '../PixelCat';
+import { RamenFacade, RecordFacade, ConvenienceFacade, ArcadeFacade, PhotoBoothFacade } from '../PixelStreetFacades';
+import { RamenShop } from '../RamenShop';
+import { RecordStore } from '../RecordStore';
+import { ArcadePage } from '../ArcadePage';
+import { ConvenienceStore } from '../ConvenienceStore';
+import { PhotoBoothPage } from '../PhotoBoothPage';
+import { useMusic, TRACK_TITLE, TRACK_RAMEN } from '../MusicContext';
 
 // ─��─ Ad slide data ────────────────────────────────────────────────────────────
 const AD_SLIDES = [

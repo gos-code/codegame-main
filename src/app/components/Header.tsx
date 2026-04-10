@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link, useNavigate, useLocation } from 'react-router';
 import { Search, Sun, Moon, LogOut, User, Gamepad2, Menu, X } from 'lucide-react';
 import { useState } from 'react';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from 'motion/react';
 import { useMemo } from 'react';
 

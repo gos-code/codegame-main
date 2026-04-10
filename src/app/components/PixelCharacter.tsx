@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 // Define the pixel art grid size

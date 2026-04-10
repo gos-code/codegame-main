@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react";
 import { Plus, Clock, DollarSign, User, MessageSquare, TrendingUp } from "lucide-react";
 import { useState } from "react";

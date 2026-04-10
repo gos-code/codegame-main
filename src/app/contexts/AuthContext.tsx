@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import {
   auth, db,

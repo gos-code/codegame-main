@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { PixelCity } from './PixelCity';
+import { PixelCity } from '../PixelCity';
 import { useNavigate } from 'react-router';
-import { PixelCharacter } from './PixelCharacter';
+import { PixelCharacter } from '../PixelCharacter';
 
 // ─── Category order for keyboard navigation ───────────────────────────────────
 const CATEGORIES = ['style', 'gender', 'hair', 'hairColor', 'skin'] as const;

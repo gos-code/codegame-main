@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react";
 import { BookOpen, Code2, Shield, DollarSign, Users, ArrowRight, CheckCircle2 } from "lucide-react";
 

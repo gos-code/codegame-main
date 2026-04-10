@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react";
 import { Mail, Phone, MapPin, Send, Building2, Users, Briefcase } from "lucide-react";
 

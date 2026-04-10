@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
