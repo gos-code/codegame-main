@@ -6,7 +6,8 @@ export default function Layout() {
   const hideHeader = loc.pathname === '/login';
 
   return (
-    <div className="min-h-screen" style={{ fontFamily: 'Sora, sans-serif' }}>
+    // style={{ fontFamily: 'Sora, sans-serif' }} 대신 CSS 변수 사용
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {!hideHeader && <Header />}
       <main style={{ paddingTop: hideHeader ? 0 : '80px' }}>
         <Outlet />
