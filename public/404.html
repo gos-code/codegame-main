@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    var path = window.location.pathname;
+    var query = window.location.search;
+    var hash = window.location.hash;
+    var base = '/codegame-mvp';
+    if (path.startsWith(base)) {
+      path = path.slice(base.length) || '/';
+    }
+    sessionStorage.setItem('spa_redirect', JSON.stringify({ path, query, hash }));
+    window.location.replace(base + '/');
+  </script>
+</head>
+</html>
