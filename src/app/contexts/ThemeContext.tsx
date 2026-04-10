@@ -19,12 +19,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('cg_theme', theme);
     const root = window.document.documentElement;
     
-    // 클래스 완전 초기화 후 현재 테마만 정확히 주입
+    // 클래스 교체
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
     
-    // 브라우저 렌더링 엔진에 현재 테마 알림
-    root.style.setProperty('color-scheme', theme);
+    // 브라우저 메타 테마 설정
+    root.style.colorScheme = theme;
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
@@ -37,7 +37,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) throw new Error('useTheme must be used within ThemeProvider');
-  return context;
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
+  return ctx;
 }

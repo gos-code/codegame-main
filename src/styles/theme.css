@@ -1,54 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* 1. 테마별 핵심 색상 정의 */
+/* 1. 기본 테마 변수 (이 변수들이 Tailwind의 bg-background 등에 연결됩니다) */
 :root {
-  --background: #ffffff !important;
-  --foreground: #111827 !important;
-  --card: #f9fafb !important;
-  --border: #e5e7eb !important;
-  --cg-accent: #00f5c4 !important;
+  --background: 0 0% 100%;       /* #ffffff */
+  --foreground: 222 47% 11%;    /* #111827 */
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --border: 214 32% 91%;        /* #e5e7eb */
+  --primary: 222 47% 11%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 168 100% 48%;       /* #00f5c4 */
 }
 
 .dark {
-  --background: #03040b !important;
-  --foreground: #f9fafb !important;
-  --card: #0c0e1a !important;
-  --border: #1e293b !important;
+  --background: 235 57% 3%;     /* #03040b */
+  --foreground: 210 40% 98%;    /* #f9fafb */
+  --card: 233 37% 7%;           /* #0c0e1a */
+  --card-foreground: 210 40% 98%;
+  --border: 217 33% 17%;        /* #1e293b */
+  --primary: 168 100% 48%;      /* #00f5c4 */
+  --primary-foreground: 235 57% 3%;
 }
 
-/* 2. 전역 스타일 강제 적용 (!important로 모든 개별 설정 무시) */
 @layer base {
-  html, body {
-    background-color: var(--background) !important;
-    color: var(--foreground) !important;
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-family: 'Sora', sans-serif;
-    transition: none !important; /* 색상 전환 지연 삭제 */
-  }
-
-  /* 💡 라이트 모드 강제 교정 (안 보이는 글자 해결) */
-  :root.light * {
-    /* 하얀색 계열 글자들을 전부 검정으로 강제 압수 */
-    &.text-white, &.text-slate-100, &.text-slate-200, &.text-slate-300, 
-    &.text-slate-400, &.text-gray-400, &[class*="text-white/"] {
-      color: #111827 !important;
-    }
-    
-    /* 어두운 배경 카드들을 전부 흰색 배경으로 전환 */
-    &.bg-slate-900, &.bg-black, &.bg-slate-800, &[class*="bg-white/"], [class*="bg-slate-900/"] {
-      background-color: #ffffff !important;
-      border: 1px solid #e5e7eb !important;
-      color: #111827 !important;
-    }
-  }
-
-  /* 💡 다크 모드 강제 교정 */
-  :root.dark * {
-    /* 검정 글자들을 전부 밝은색으로 강제 전환 */
-    &.text-black, &.text-slate-900, &.text-gray-900 {
-      color: #f9fafb !important;
-    }
   }
 }
 
-/* UI 요소 보정 */
-* { border-color: var(--border) !important; }
+/* 💡 라이트 모드일 때 투명도가 섞인 흰색 글자(text-white/70 등)를 검은색으로 보정 */
+:root.light .text-white, 
+:root.light .text-white\/70, 
+:root.light .text-white\/50,
+:root.light .text-slate-400 {
+  color: hsl(var(--foreground)) !important;
+  opacity: 0.8;
+}
+
+/* 💡 다크 모드일 때 카드가 하얗게 타는 현상 방지 */
+.dark .bg-white {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--foreground)) !important;
+}
