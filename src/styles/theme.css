@@ -1,103 +1,37 @@
-/* 1. 폰트 임포트 */
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
-/* 2. 전역 변수 설정 (라이트 모드 기본값) */
 :root {
-  /* 폰트 패밀리 변수 */
-  --font-main: 'Sora', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-title: 'Orbitron', sans-serif;
-
-  /* 색상 변수 (라이트 모드) */
   --background: #ffffff;
-  --foreground: #111827; /* 글자색: 진한 검정으로 확실히 보이게 설정 */
+  --foreground: #111827; /* 라이트 모드 글자: 진한 검정 */
   --card: #ffffff;
-  --card-foreground: #111827;
-  --primary: #03040b;
-  --primary-foreground: #ffffff;
-  --cg-accent: #00f5c4; /* 보내주신 포인트 컬러 */
   --border: #e5e7eb;
-  --radius: 0.625rem;
+  --primary: #03040b;
+  --cg-accent: #00f5c4;
 }
 
-/* 3. 다크 모드 설정 */
 .dark {
-  --background: #03040b; /* 보내주신 --cg-bg 값 적용 */
-  --foreground: #f9fafb; /* 글자색: 밝은 회색으로 전환 */
-  --card: #0c0e1a;       /* 카드는 배경보다 아주 살짝 밝게 */
-  --card-foreground: #f9fafb;
-  --primary: #00f5c4;
-  --primary-foreground: #03040b;
+  --background: #03040b;
+  --foreground: #f9fafb; /* 다크 모드 글자: 밝은 회색 */
+  --card: #0c0e1a;
   --border: #1e293b;
+  --primary: #00f5c4;
 }
 
-/* 4. Tailwind 테마 연결 */
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--cg-accent);
-  --color-border: var(--border);
-}
-
-/* 5. 베이스 스타일 (폰트 및 기본 배경/글자색 적용) */
 @layer base {
-  * { 
-    box-sizing: border-box; 
-    @apply border-border;
-  }
-
   html {
-    /* 바깥쪽 흰 화면 방지 */
-    background-color: var(--background) !important;
+    background-color: var(--background);
   }
-
   body {
-    font-family: var(--font-main);
-    -webkit-font-smoothing: antialiased;
+    /* !important를 붙여서 기존의 잘못된 색상을 덮어씁니다 */
     background-color: var(--background) !important;
-    color: var(--foreground) !important; /* 모든 글자색을 테마 변수에 고정 */
-    min-height: 100vh;
-    margin: 0;
-  }
-
-  h1, h2, h3, .title-font {
-    font-family: var(--font-title); /* 제목은 Orbitron 폰트 적용 */
-  }
-
-  /* 다크모드 시 강제로 배경이 흰색인 요소들을 어둡게 수정 */
-  .dark .bg-white, 
-  .dark [class*="bg-slate-50"],
-  .dark [class*="bg-gray-50"] {
-    background-color: var(--card) !important;
     color: var(--foreground) !important;
+    font-family: 'Sora', sans-serif;
   }
-}
-
-/* 6. 기타 폼 요소 스타일 */
-select option {
-  background: var(--background);
-  color: var(--foreground);
-}
-
-input[type="range"] {
-  -webkit-appearance: none;
-  height: 4px;
-  border-radius: 99px;
-  background: var(--border);
-  outline: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--cg-accent);
-  cursor: pointer;
+  
+  /* 모든 텍스트가 변수를 따르도록 강제 */
+  p, span, h1, h2, h3, h4, div {
+    border-color: var(--border);
+  }
 }

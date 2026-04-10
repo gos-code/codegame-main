@@ -6,12 +6,10 @@ export default function Layout() {
   const hideHeader = loc.pathname === '/login';
 
   return (
-    /* 기존의 style={{ fontFamily: 'Sora, sans-serif' }}를 지우고 
-       CSS 변수(theme.css)를 사용하도록 클래스를 적용했습니다.
-    */
+    /* 여기서 bg-background와 text-foreground를 넣어줘야 하위 모든 페이지에 적용됩니다 */
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {!hideHeader && <Header />}
-      <main style={{ paddingTop: hideHeader ? 0 : '80px' }}>
+      <main style={{ paddingTop: hideHeader ? 0 : '80px' }} className="bg-background text-foreground">
         <Outlet />
       </main>
     </div>

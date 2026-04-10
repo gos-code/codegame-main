@@ -25,21 +25,35 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.getItem('cg_bg') || '#03040b'
   );
 
+  // 1. 테마(다크/라이트) 클래스 제어
   useEffect(() => {
     localStorage.setItem('cg_theme', theme);
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.classList.toggle('light', theme === 'light');
+    const root = document.documentElement;
+    
+    // 기존 클래스 제거 후 현재 테마 추가
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+    
+    // 라이트 모드일 때 인라인으로 박힌 배경색 스타일이 있으면 제거 (CSS 변수가 우선되도록)
+    if (theme === 'light') {
+      root.style.removeProperty('--background');
+    }
   }, [theme]);
 
+  // 2. 포인트 컬러 제어
   useEffect(() => {
     localStorage.setItem('cg_accent', accentColor);
     document.documentElement.style.setProperty('--cg-accent', accentColor);
   }, [accentColor]);
 
+  // 3. 배경색 제어 (다크모드일 때만 커스텀 배경 적용)
   useEffect(() => {
     localStorage.setItem('cg_bg', bgColor);
-    document.documentElement.style.setProperty('--cg-bg', bgColor);
-  }, [bgColor]);
+    if (theme === 'dark') {
+      document.documentElement.style.setProperty('--background', bgColor);
+      document.documentElement.style.setProperty('--cg-bg', bgColor);
+    }
+  }, [bgColor, theme]);
 
   const toggleTheme = () => setTheme(p => p === 'dark' ? 'light' : 'dark');
   const setAccentColor = (c: string) => setAccentColorState(c);
