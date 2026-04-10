@@ -1,49 +1,62 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* 1. 기본 테마 변수 (이 변수들이 Tailwind의 bg-background 등에 연결됩니다) */
-:root {
-  --background: 0 0% 100%;       /* #ffffff */
-  --foreground: 222 47% 11%;    /* #111827 */
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --border: 214 32% 91%;        /* #e5e7eb */
-  --primary: 222 47% 11%;
-  --primary-foreground: 0 0% 100%;
-  --accent: 168 100% 48%;       /* #00f5c4 */
-}
-
-.dark {
-  --background: 235 57% 3%;     /* #03040b */
-  --foreground: 210 40% 98%;    /* #f9fafb */
-  --card: 233 37% 7%;           /* #0c0e1a */
-  --card-foreground: 210 40% 98%;
-  --border: 217 33% 17%;        /* #1e293b */
-  --primary: 168 100% 48%;      /* #00f5c4 */
-  --primary-foreground: 235 57% 3%;
-}
-
+/* 1. 기본 테마 변수 (Base Layer) */
 @layer base {
-  * {
-    border-color: hsl(var(--border));
+  :root {
+    --background: #ffffff;
+    --foreground: #111827;
+    --card: #f9fafb;
+    --border: #e5e7eb;
+    --cg-accent: #00f5c4;
   }
-  body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+
+  .dark {
+    --background: #03040b;
+    --foreground: #f9fafb;
+    --card: #0c0e1a;
+    --border: #1e293b;
+  }
+
+  html, body {
+    background-color: var(--background) !important;
+    color: var(--foreground) !important;
     font-family: 'Sora', sans-serif;
   }
 }
 
-/* 💡 라이트 모드일 때 투명도가 섞인 흰색 글자(text-white/70 등)를 검은색으로 보정 */
-:root.light .text-white, 
-:root.light .text-white\/70, 
-:root.light .text-white\/50,
-:root.light .text-slate-400 {
-  color: hsl(var(--foreground)) !important;
-  opacity: 0.8;
-}
+/* ------------------------------------------------------------------
+   💡 핵심 해결 구간 (Utilities Layer)
+   여기서 컴포넌트의 text-white, text-slate-400 등을 강제로 무력화합니다.
+------------------------------------------------------------------- */
+@layer utilities {
+  /* 라이트 모드일 때: 하얀색 계열 글자를 전부 진한 검정색으로 강제 전환 */
+  html:not(.dark) .text-white,
+  html:not(.dark) .text-slate-100,
+  html:not(.dark) .text-slate-200,
+  html:not(.dark) .text-slate-300,
+  html:not(.dark) .text-slate-400,
+  html:not(.dark) .text-gray-400,
+  html:not(.dark) [class*="text-white/"] {
+    color: #111827 !important;
+  }
 
-/* 💡 다크 모드일 때 카드가 하얗게 타는 현상 방지 */
-.dark .bg-white {
-  background-color: hsl(var(--card)) !important;
-  color: hsl(var(--foreground)) !important;
+  /* 라이트 모드일 때: 어두운색 계열 배경을 전부 흰색으로 강제 전환 */
+  html:not(.dark) .bg-slate-900,
+  html:not(.dark) .bg-slate-800,
+  html:not(.dark) .bg-black,
+  html:not(.dark) [class*="bg-white/"],
+  html:not(.dark) [class*="bg-slate-900/"] {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  /* 다크 모드일 때: 하얗게 타버리는 배경 방지 및 검은 글씨 보정 */
+  .dark .bg-white {
+    background-color: var(--card) !important;
+  }
+  
+  .dark .text-black,
+  .dark .text-slate-900 {
+    color: #f9fafb !important;
+  }
 }
