@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Upload, X, Check, ChevronRight, ChevronLeft, Calculator } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { db, storage, auth, addDoc, collection, doc, updateDoc, increment,
-  serverTimestamp, ref, uploadBytesResumable, getDownloadURL } from '../../lib/firebase';
+  serverTimestamp, ref, uploadBytesResumable, getDownloadURL } from '../../../lib/firebase';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 

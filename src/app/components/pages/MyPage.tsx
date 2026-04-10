@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { Download, Copy, Check, Trash2, LogOut, ShoppingBag, DollarSign, Key, Settings, Shield } from 'lucide-react';
 import { db, auth, collection, query, where, getDocs, doc, getDoc, updateDoc, deleteDoc,
-  serverTimestamp, increment } from '../../lib/firebase';
+  serverTimestamp, increment } from '../../../lib/firebase';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import AdminPanel from '../AdminPanel';

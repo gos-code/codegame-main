@@ -10,7 +10,7 @@ import {
   doc, getDoc, updateDoc, setDoc,
   serverTimestamp,
   type User
-} from '../lib/firebase';
+} from '../../lib/firebase';
 
 interface UserProfile {
   uid: string;

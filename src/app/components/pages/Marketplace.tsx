@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, Filter, Star, ShoppingCart } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router';
-import { db, collection, query, where, getDocs } from '../../lib/firebase';
+import { db, collection, query, where, getDocs } from '../../../lib/firebase';
 import { useTheme } from '../../contexts/ThemeContext';
 
 interface Product {

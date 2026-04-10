@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Shield, Zap, Code2, Gamepad2, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router';
-import { db, collection, query, where, getDocs } from '../../lib/firebase';
+import { db, collection, query, where, getDocs } from '../../../lib/firebase';
 import { useTheme } from '../../contexts/ThemeContext';
 
 export default function Home() {

@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { ArrowLeft, Download, Star, Copy, Check, User } from 'lucide-react';
 import { db, storage, auth, doc, getDoc, addDoc, collection, query, where, getDocs,
-  updateDoc, increment, serverTimestamp, ref, getDownloadURL } from '../../lib/firebase';
+  updateDoc, increment, serverTimestamp, ref, getDownloadURL } from '../../../lib/firebase';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 
