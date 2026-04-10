@@ -1,73 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* 변수 정의 */
+/* 1. 기본 변수 설정 */
 :root {
-  --background: #ffffff;
-  --foreground: #111827;
-  --card: #ffffff;
-  --border: #e5e7eb;
+  --background: #ffffff !important;
+  --foreground: #111827 !important;
+  --card: #ffffff !important;
+  --border: #e5e7eb !important;
   --cg-accent: #00f5c4;
 }
 
-.dark {
-  --background: #03040b;
-  --foreground: #f9fafb;
-  --card: #0c0e1a;
-  --border: #1e293b;
+:root.dark {
+  --background: #03040b !important;
+  --foreground: #f9fafb !important;
+  --card: #0c0e1a !important;
+  --border: #1e293b !important;
 }
 
-/* 베이스 스타일 강제 적용 */
+/* 2. 전역 강제 적용 */
 @layer base {
   html, body {
     background-color: var(--background) !important;
     color: var(--foreground) !important;
-    font-family: 'Sora', sans-serif;
-    margin: 0;
-    padding: 0;
+    transition: none !important; /* 전환 시 딜레이 삭제 */
   }
 
-  /* 라이트 모드일 때 모든 요소를 흰색 배경 / 검은 글자로 강제 고정 */
-  :root.light body {
-    background-color: #ffffff !important;
-    color: #111827 !important;
+  /* 💡 라이트 모드일 때 모든 흰색 계열 글자를 검정으로 강제 압수 */
+  :root:not(.dark) * {
+    /* 하얀색 글자 클래스들 전부 검정으로 */
+    &.text-white, &.text-slate-100, &.text-slate-200, &.text-slate-300, 
+    &.text-slate-400, &.text-gray-400, &[class*="text-white/"] {
+      color: #111827 !important;
+    }
+    
+    /* 어두운 배경 클래스들 전부 흰색으로 */
+    &.bg-slate-900, &.bg-black, &.bg-slate-800, &[class*="bg-white/"] {
+      background-color: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+    }
   }
 
-  :root.light .text-white, 
-  :root.light .text-slate-100, 
-  :root.light .text-slate-200, 
-  :root.light .text-slate-300, 
-  :root.light .text-slate-400,
-  :root.light .text-gray-400,
-  :root.light .text-white\/70,
-  :root.light .text-white\/50 {
-    color: #111827 !important;
-  }
-
-  :root.light .bg-slate-900, 
-  :root.light .bg-black, 
-  :root.light .bg-slate-800,
-  :root.light .bg-white\/5 {
-    background-color: #ffffff !important;
-    border: 1px solid #e5e7eb !important;
-    color: #111827 !important;
-  }
-
-  /* 다크 모드일 때 모든 요소를 검은 배경 / 흰색 글자로 강제 고정 */
-  :root.dark body {
-    background-color: #03040b !important;
-    color: #f9fafb !important;
-  }
-
-  :root.dark .text-black,
-  :root.dark .text-slate-900 {
-    color: #f9fafb !important;
-  }
-
-  :root.dark .bg-white {
-    background-color: var(--card) !important;
-    color: var(--foreground) !important;
+  /* 💡 다크 모드일 때 검정 글자를 흰색으로 강제 압수 */
+  :root.dark * {
+    &.text-black, &.text-slate-900, &.text-gray-900 {
+      color: #f9fafb !important;
+    }
   }
 }
 
-/* 기타 UI 요소 */
-* { border-color: var(--border); }
+/* UI 요소 보정 */
+button, input, select, textarea {
+  background-color: transparent;
+  color: inherit;
+}

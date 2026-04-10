@@ -6,14 +6,15 @@ export default function Layout() {
   const hideHeader = loc.pathname === '/login';
 
   return (
-    /* 최상위 컨테이너에 테마 색상 강제 적용 */
-    <div className="min-h-screen bg-background text-foreground transition-none">
+    <div className="min-h-screen w-full bg-background text-foreground transition-none">
       {!hideHeader && <Header />}
       <main 
-        className="min-h-screen bg-background text-foreground"
+        className="w-full min-h-screen bg-background text-foreground"
         style={{ paddingTop: hideHeader ? 0 : '80px' }}
       >
-        <Outlet />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
