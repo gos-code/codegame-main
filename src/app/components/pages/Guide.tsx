@@ -74,7 +74,7 @@ export default function Guide() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-12">
+    <div className="min-h-screen" style={{background:"var(--background)", color:"var(--foreground)"}} style={{background:"var(--background)", color:"var(--foreground)"}} py-12">
       <div className="max-w-7xl mx-auto px-6">
         {/* 헤더 */}
         <motion.div
@@ -128,7 +128,7 @@ export default function Guide() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-8 border border-neutral-200 hover:shadow-lg transition-shadow"
+              style={{background:"var(--card)"}} className=" rounded-2xl p-8 border  hover:shadow-lg transition-shadow"
             >
               <div className="w-14 h-14 bg-neutral-900 rounded-xl flex items-center justify-center mb-6">
                 <guide.icon className="w-7 h-7 text-white" />
@@ -156,7 +156,7 @@ export default function Guide() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-white rounded-2xl p-8 border border-neutral-200"
+          style={{background:"var(--card)"}} className=" rounded-2xl p-8 border "
         >
           <h2 className="text-3xl font-bold mb-8">자주 묻는 질문</h2>
           <div className="space-y-6">
@@ -178,7 +178,7 @@ export default function Guide() {
                 a: "모든 코드는 전문가 리뷰를 거치며, 보안 취약점 스캔을 통과해야 등록됩니다."
               }
             ].map((faq, index) => (
-              <div key={index} className="pb-6 border-b border-neutral-200 last:border-0">
+              <div key={index} className="pb-6 border-b  last:border-0">
                 <h3 className="font-bold mb-2 text-lg">{faq.q}</h3>
                 <p className="text-neutral-600">{faq.a}</p>
               </div>
@@ -207,7 +207,7 @@ export default function Guide() {
             </a>
             <a
               href="/contact"
-              className="px-8 py-3 bg-white border border-neutral-300 rounded-xl hover:border-neutral-900 transition-colors"
+              className="px-8 py-3 border border-neutral-300 rounded-xl hover:border-neutral-900 transition-colors"
             >
               문의하기
             </a>

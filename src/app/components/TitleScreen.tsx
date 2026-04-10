@@ -10,7 +10,7 @@ export function TitleScreen() {
   return (
     <div
       className="relative w-full h-screen bg-black overflow-hidden select-none font-sans cursor-pointer"
-      onClick={() => navigate('/customization')}
+      onClick={() => navigate('/dev-garden/customization')}
     >
       <PixelCity />
       <Rain />

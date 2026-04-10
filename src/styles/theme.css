@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
+/* ── CSS 변수 ── */
 :root {
   --cg-accent: #00f5c4;
   --cg-bg: #03040b;
@@ -20,83 +21,77 @@
   --primary-foreground: #ffffff;
   --secondary: #e2e8f0;
   --secondary-foreground: #0f172a;
-  --accent-bg: rgba(0,245,196,0.1);
-  --accent-text: #008a6e;
-  --btn-text: #ffffff;
-  --nav-text: #374151;
-  --nav-active: #0f172a;
-  --tag-bg: rgba(0,0,0,0.07);
-  --tag-text: #374151;
-  --tag-active-bg: #0f172a;
-  --tag-active-text: #ffffff;
 }
 
 /* ── 다크 모드 ── */
 .dark {
   --background: #03040b;
   --foreground: rgba(255,255,255,0.92);
-  --card: rgba(255,255,255,0.04);
+  --card: rgba(255,255,255,0.05);
   --card-foreground: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.5);
-  --muted-foreground: rgba(255,255,255,0.4);
-  --border: rgba(255,255,255,0.08);
-  --input: rgba(255,255,255,0.05);
+  --muted: rgba(255,255,255,0.45);
+  --muted-foreground: rgba(255,255,255,0.35);
+  --border: rgba(255,255,255,0.09);
+  --input: rgba(255,255,255,0.06);
   --input-foreground: rgba(255,255,255,0.92);
   --primary: #00f5c4;
   --primary-foreground: #000000;
-  --secondary: rgba(255,255,255,0.06);
+  --secondary: rgba(255,255,255,0.07);
   --secondary-foreground: rgba(255,255,255,0.7);
-  --accent-bg: rgba(0,245,196,0.1);
-  --accent-text: #00f5c4;
-  --btn-text: #000000;
-  --nav-text: rgba(255,255,255,0.5);
-  --nav-active: #00f5c4;
-  --tag-bg: rgba(255,255,255,0.06);
-  --tag-text: rgba(255,255,255,0.6);
-  --tag-active-bg: #00f5c4;
-  --tag-active-text: #000000;
 }
 
+/* ── 기본 스타일 ── */
+*, *::before, *::after { box-sizing: border-box; }
+
 html, body, #root {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   min-height: 100%;
   margin: 0;
   font-family: 'Sora', sans-serif;
-  transition: background 0.3s, color 0.3s;
+  transition: background-color 0.25s, color 0.25s;
 }
 
-* { box-sizing: border-box; }
+/* 헤더 높이만큼 padding */
+main { padding-top: 64px; }
 
+/* ── 입력 요소 ── */
 input, textarea, select {
-  background: var(--input) !important;
+  background-color: var(--input) !important;
   color: var(--input-foreground) !important;
   border-color: var(--border) !important;
+  font-family: 'Sora', sans-serif;
 }
-
 input::placeholder, textarea::placeholder {
   color: var(--muted) !important;
+  opacity: 1;
 }
-
 select option {
   background: var(--card);
   color: var(--foreground);
 }
 
+/* ── 스크롤바 ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+/* ── 범위 슬라이더 ── */
 input[type="range"] {
   -webkit-appearance: none;
+  width: 100%;
   height: 4px;
   border-radius: 99px;
   outline: none;
   cursor: pointer;
-  background: var(--border);
+  background: var(--border) !important;
+  border: none !important;
 }
-
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--cg-accent, #00f5c4);
+  background: var(--cg-accent);
   cursor: pointer;
 }

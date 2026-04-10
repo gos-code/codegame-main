@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Send, Building2, Users, Briefcase } from "lucide-r
 
 export default function Contact() {
   return (
-    <div className="min-h-screen bg-neutral-50 py-12">
+    <div className="min-h-screen" style={{background:"var(--background)", color:"var(--foreground)"}} style={{background:"var(--background)", color:"var(--foreground)"}} py-12">
       <div className="max-w-7xl mx-auto px-6">
         {/* 헤더 */}
         <motion.div
@@ -25,7 +25,7 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="bg-white rounded-2xl p-8 border border-neutral-200">
+            <div style={{background:"var(--card)"}} className=" rounded-2xl p-8 border ">
               <h2 className="text-2xl font-bold mb-6">문의하기</h2>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -137,7 +137,7 @@ export default function Contact() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl p-8 border border-neutral-200"
+              style={{background:"var(--card)"}} className=" rounded-2xl p-8 border "
             >
               <h2 className="text-2xl font-bold mb-6">연락처</h2>
               <div className="space-y-4">
@@ -219,7 +219,7 @@ export default function Contact() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-white rounded-2xl p-8 border border-neutral-200"
+              style={{background:"var(--card)"}} className=" rounded-2xl p-8 border "
             >
               <h3 className="font-bold mb-4">함께하는 기업</h3>
               <div className="grid grid-cols-3 gap-4">
@@ -251,7 +251,7 @@ export default function Contact() {
           ].map((stat, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-6 border border-neutral-200 text-center"
+              style={{background:"var(--card)"}} className=" rounded-xl p-6 border  text-center"
             >
               <p className="text-4xl font-bold mb-2">{stat.value}</p>
               <p className="text-neutral-600">{stat.label}</p>

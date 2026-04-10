@@ -99,7 +99,7 @@ export default function Community() {
   });
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-12">
+    <div className="min-h-screen" style={{background:"var(--background)", color:"var(--foreground)"}} style={{background:"var(--background)", color:"var(--foreground)"}} py-12">
       <div className="max-w-7xl mx-auto px-6">
         {/* 헤더 */}
         <motion.div
@@ -124,7 +124,7 @@ export default function Community() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white dark:bg-neutral-800 rounded-2xl p-4 border border-neutral-200 dark:border-neutral-700"
+              style={{background:"var(--card)"}} className="  rounded-2xl p-4 border "
             >
               <div className="relative">
                 <input
@@ -132,7 +132,7 @@ export default function Community() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="게시글, 태그, 내용 검색..."
-                  className="w-full pl-12 pr-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-xl focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-400 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-500"
+                  className="w-full pl-12 pr-4 py-3 border  rounded-xl focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-400   "
                 />
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
               </div>
@@ -143,7 +143,7 @@ export default function Community() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="bg-white dark:bg-neutral-800 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700"
+              style={{background:"var(--card)"}} className="  rounded-2xl p-6 border "
             >
               <div className="flex flex-wrap gap-2">
                 {categories.map((category, index) => (
@@ -153,7 +153,7 @@ export default function Community() {
                     className={`px-4 py-2 rounded-lg transition-colors ${
                       selectedCategory === category.name
                         ? "bg-neutral-900 dark:bg-blue-600 text-white"
-                        : "bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600"
+                        : "bg-neutral-100  text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600"
                     }`}
                   >
                     {category.name}
@@ -166,7 +166,7 @@ export default function Community() {
             {/* 게시글 목록 */}
             <div className="space-y-4">
               {filteredPosts.length === 0 ? (
-                <div className="bg-white dark:bg-neutral-800 rounded-2xl p-12 border border-neutral-200 dark:border-neutral-700 text-center">
+                <div style={{background:"var(--card)"}} className="  rounded-2xl p-12 border  text-center">
                   <MessageSquare className="w-16 h-16 text-neutral-300 dark:text-neutral-600 mx-auto mb-4" />
                   <h3 className="text-xl font-bold text-neutral-600 dark:text-neutral-400 mb-2">
                     검색 결과가 없습니다
@@ -182,7 +182,7 @@ export default function Community() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + index * 0.05 }}
-                  className="bg-white dark:bg-neutral-800 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700 hover:shadow-lg transition-shadow cursor-pointer group"
+                  style={{background:"var(--card)"}} className="  rounded-2xl p-6 border  hover:shadow-lg transition-shadow cursor-pointer group"
                 >
                   <div className="flex items-start gap-4">
                     {/* 좋아요 영역 */}
@@ -202,7 +202,7 @@ export default function Community() {
                         <span className="text-sm text-neutral-500 dark:text-neutral-400">{post.postedAt}</span>
                       </div>
 
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors dark:text-white">
+                      <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors ">
                         {post.title}
                       </h3>
 
@@ -213,7 +213,7 @@ export default function Community() {
                         {post.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="px-2 py-1 bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 rounded text-sm hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors"
+                            className="px-2 py-1 bg-neutral-100  text-neutral-600 dark:text-neutral-300 rounded text-sm hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors"
                           >
                             #{tag}
                           </span>
@@ -241,7 +241,7 @@ export default function Community() {
             {/* 더보기 버튼 */}
             {filteredPosts.length > 0 && (
               <div className="text-center">
-                <button className="px-8 py-3 bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-xl hover:border-neutral-900 dark:hover:border-neutral-500 transition-colors dark:text-white">
+                <button className="px-8 py-3  border border-neutral-300 dark:border-neutral-700 rounded-xl hover:border-neutral-900 dark:hover:border-neutral-500 transition-colors ">
                   더보기
                 </button>
               </div>
@@ -255,11 +255,11 @@ export default function Community() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white dark:bg-neutral-800 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700 sticky top-24"
+              style={{background:"var(--card)"}} className="  rounded-2xl p-6 border  sticky top-24"
             >
               <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-5 h-5 text-neutral-900 dark:text-white" />
-                <h3 className="font-bold dark:text-white">인기 태그</h3>
+                <TrendingUp className="w-5 h-5 " />
+                <h3 className="font-bold ">인기 태그</h3>
               </div>
               <div className="space-y-2">
                 {trendingTags.map((tag, index) => (
@@ -269,7 +269,7 @@ export default function Community() {
                   >
                     <div className="flex items-center gap-2">
                       <Hash className="w-4 h-4 text-neutral-400 group-hover:text-blue-600" />
-                      <span className="font-medium dark:text-white">{tag.name}</span>
+                      <span className="font-medium ">{tag.name}</span>
                     </div>
                     <span className="text-sm text-neutral-500 dark:text-neutral-400">{tag.count}</span>
                   </button>
@@ -306,11 +306,11 @@ export default function Community() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-white dark:bg-neutral-800 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700"
+              style={{background:"var(--card)"}} className="  rounded-2xl p-6 border "
             >
               <div className="flex items-center gap-2 mb-4">
-                <Clock className="w-5 h-5 text-neutral-900 dark:text-white" />
-                <h3 className="font-bold dark:text-white">최근 활동</h3>
+                <Clock className="w-5 h-5 " />
+                <h3 className="font-bold ">최근 활동</h3>
               </div>
               <div className="space-y-3 text-sm">
                 {[
@@ -319,7 +319,7 @@ export default function Community() {
                   { user: "BackendPro", action: "글을 수정했습니다", time: "10분 전" }
                 ].map((activity, index) => (
                   <div key={index} className="pb-3 border-b border-neutral-100 dark:border-neutral-700 last:border-0">
-                    <p className="text-neutral-900 dark:text-white mb-1">
+                    <p className=" mb-1">
                       <span className="font-medium">{activity.user}</span>님이 {activity.action}
                     </p>
                     <p className="text-neutral-500 dark:text-neutral-400 text-xs">{activity.time}</p>

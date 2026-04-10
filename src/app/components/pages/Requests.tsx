@@ -58,7 +58,7 @@ export default function Requests() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-12">
+    <div className="min-h-screen" style={{background:"var(--background)", color:"var(--foreground)"}} style={{background:"var(--background)", color:"var(--foreground)"}} py-12">
       <div className="max-w-7xl mx-auto px-6">
         {/* 헤더 */}
         <motion.div
@@ -84,7 +84,7 @@ export default function Requests() {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl p-8 border border-neutral-200 mb-8"
+            style={{background:"var(--card)"}} className=" rounded-2xl p-8 border  mb-8"
           >
             <h2 className="text-2xl font-bold mb-6">새 개발 요청</h2>
             <div className="space-y-4">
@@ -154,7 +154,7 @@ export default function Requests() {
           transition={{ delay: 0.1 }}
           className="grid md:grid-cols-3 gap-6 mb-8"
         >
-          <div className="bg-white rounded-xl p-6 border border-neutral-200">
+          <div style={{background:"var(--card)"}} className=" rounded-xl p-6 border ">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-blue-600" />
@@ -165,7 +165,7 @@ export default function Requests() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-6 border border-neutral-200">
+          <div style={{background:"var(--card)"}} className=" rounded-xl p-6 border ">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                 <MessageSquare className="w-6 h-6 text-green-600" />
@@ -178,7 +178,7 @@ export default function Requests() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-6 border border-neutral-200">
+          <div style={{background:"var(--card)"}} className=" rounded-xl p-6 border ">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
                 <DollarSign className="w-6 h-6 text-purple-600" />
@@ -204,7 +204,7 @@ export default function Requests() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + index * 0.05 }}
-              className="bg-white rounded-2xl p-6 border border-neutral-200 hover:shadow-lg transition-shadow"
+              style={{background:"var(--card)"}} className=" rounded-2xl p-6 border  hover:shadow-lg transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
@@ -237,7 +237,7 @@ export default function Requests() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-neutral-200">
+              <div className="flex items-center justify-between pt-4 border-t ">
                 <div className="flex items-center gap-2">
                   <span className="px-3 py-1 bg-neutral-100 text-neutral-700 rounded-full text-sm">
                     {request.category}
