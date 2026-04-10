@@ -4,15 +4,23 @@ import { db, collection, query, where, getDocs, doc, updateDoc, serverTimestamp 
 
 export default function AdminPanel({ accentColor }: { accentColor: string }) {
   const [status, setStatus] = useState<'pending'|'approved'|'rejected'>('pending');
+  const [tab, setTab] = useState<'uploads'|'inquiries'>('uploads');
+  const [inquiries, setInquiries] = useState<any[]>([]);
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { load(); }, [status]);
+  useEffect(() => { load(); }, [status, tab]);
+
+  const loadInquiries = async () => {
+    const snap = await getDocs(collection(db,'enterprise_inquiries'));
+    setInquiries(snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt?.seconds-a.createdAt?.seconds));
+  };
 
   const load = async () => {
     setLoading(true);
     try {
-      const snap = await getDocs(query(collection(db,'uploads'), where('status','==',status)));
+      if (tab === 'inquiries') { await loadInquiries(); setLoading(false); return; }
+    const snap = await getDocs(query(collection(db,'uploads'), where('status','==',status)));
       setItems(snap.docs.map(d => ({ id:d.id,...d.data() })));
     } catch(e) { console.error(e); }
     setLoading(false);
@@ -25,6 +33,40 @@ export default function AdminPanel({ accentColor }: { accentColor: string }) {
 
   return (
     <div>
+      <div style={{display:'flex',gap:8,marginBottom:16}}>
+        <button onClick={()=>setTab('uploads')}
+          style={{padding:'6px 16px',borderRadius:8,fontSize:12,border:'none',cursor:'pointer',
+            background:tab==='uploads'?accentColor:'rgba(255,255,255,0.06)',
+            color:tab==='uploads'?'#000':'rgba(255,255,255,0.5)',fontFamily:'Sora,sans-serif'}}>
+          파일 검수
+        </button>
+        <button onClick={()=>setTab('inquiries')}
+          style={{padding:'6px 16px',borderRadius:8,fontSize:12,border:'none',cursor:'pointer',
+            background:tab==='inquiries'?accentColor:'rgba(255,255,255,0.06)',
+            color:tab==='inquiries'?'#000':'rgba(255,255,255,0.5)',fontFamily:'Sora,sans-serif'}}>
+          기업 문의 {inquiries.length>0?`(${inquiries.length})`:''}
+        </button>
+      </div>
+      {tab==='inquiries' && (
+        <div style={{display:'flex',flexDirection:'column',gap:10}}>
+          {inquiries.length===0 ? (
+            <div style={{textAlign:'center',padding:'40px 0',color:'rgba(255,255,255,0.3)',fontSize:12}}>
+              문의 없음
+            </div>
+          ) : inquiries.map(inq=>(
+            <div key={inq.id} style={{padding:14,borderRadius:12,background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)'}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
+                <span style={{fontSize:13,fontWeight:600,color:'rgba(255,255,255,0.9)',fontFamily:'Sora,sans-serif'}}>{inq.company} - {inq.name}</span>
+                <span style={{fontSize:10,padding:'2px 8px',borderRadius:99,background:'rgba(245,158,11,0.1)',color:'#f59e0b',border:'1px solid rgba(245,158,11,0.2)',fontFamily:'JetBrains Mono,monospace'}}>{inq.type||'문의'}</span>
+              </div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,0.4)',marginBottom:4,fontFamily:'Sora,sans-serif'}}>{inq.email} · {inq.phone}</div>
+              <div style={{fontSize:12,color:'rgba(255,255,255,0.6)',fontFamily:'Sora,sans-serif',lineHeight:1.6}}>{inq.message}</div>
+              {inq.budget && <div style={{fontSize:11,color:'rgba(255,255,255,0.3)',marginTop:4}}>예산: {inq.budget}</div>}
+            </div>
+          ))}
+        </div>
+      )}
+      {tab==='uploads' && <>
       <div className="flex gap-2 mb-5">
         {(['pending','approved','rejected'] as const).map(s => (
           <button key={s} onClick={()=>setStatus(s)}

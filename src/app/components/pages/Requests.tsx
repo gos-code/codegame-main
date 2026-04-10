@@ -1,257 +1,322 @@
 // @ts-nocheck
-import { motion } from "motion/react";
-import { Plus, Clock, DollarSign, User, MessageSquare, TrendingUp } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Plus, Clock, DollarSign, User, MessageSquare, X, Send } from 'lucide-react';
+import { db, collection, addDoc, getDocs, query, orderBy,
+  onSnapshot, serverTimestamp } from '../../../lib/firebase';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../contexts/AuthContext';
+
+const REQUEST_CATS = ['모바일','웹','AI/ML','백엔드','프론트엔드','자동화','기타'];
 
 export default function Requests() {
-  const [showNewRequest, setShowNewRequest] = useState(false);
+  const { accentColor, theme } = useTheme();
+  const { user, profile } = useAuth();
+  const isDark = theme === 'dark';
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showNew, setShowNew] = useState(false);
+  const [proposing, setProposing] = useState(null);
+  const [proposalMsg, setProposalMsg] = useState('');
+  const [form, setForm] = useState({ title:'', desc:'', budgetMin:'', budgetMax:'', period:'', category:'웹' });
+  const [submitting, setSubmitting] = useState(false);
 
-  const requests = [
-    {
-      id: 1,
-      title: "React Native 쇼핑몰 앱 개발",
-      budget: "500,000 - 800,000원",
-      deadline: "2주",
-      requester: "UserA",
-      category: "모바일",
-      description: "iOS/Android 크로스 플랫폼 쇼핑몰 앱 제작 요청합니다.",
-      proposals: 12,
-      postedAt: "2일 전",
-      status: "진행중"
-    },
-    {
-      id: 2,
-      title: "AI 챗봇 통합 개발",
-      budget: "1,000,000 - 1,500,000원",
-      deadline: "3주",
-      requester: "CompanyB",
-      category: "AI/ML",
-      description: "OpenAI API를 활용한 고객 상담 챗봇 시스템",
-      proposals: 8,
-      postedAt: "5일 전",
-      status: "진행중"
-    },
-    {
-      id: 3,
-      title: "관리자 대시보드 UI 개선",
-      budget: "300,000 - 500,000원",
-      deadline: "1주",
-      requester: "StartupC",
-      category: "프론트엔드",
-      description: "기존 대시보드 UI/UX 개선 및 반응형 작업",
-      proposals: 15,
-      postedAt: "1일 전",
-      status: "진행중"
-    },
-    {
-      id: 4,
-      title: "결제 시스템 모듈 개발",
-      budget: "800,000 - 1,200,000원",
-      deadline: "2주",
-      requester: "UserD",
-      category: "백엔드",
-      description: "PG사 연동 및 결제 처리 모듈",
-      proposals: 6,
-      postedAt: "3일 전",
-      status: "진행중"
-    }
-  ];
+  useEffect(() => {
+    const q = query(collection(db,'dev_requests'), orderBy('createdAt','desc'));
+    const unsub = onSnapshot(q, snap => {
+      setRequests(snap.docs.map(d => ({ id:d.id, ...d.data() })));
+      setLoading(false);
+    }, () => setLoading(false));
+    return unsub;
+  }, []);
+
+  const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
+
+  const submitRequest = async () => {
+    if (!user) { alert('로그인이 필요해요'); return; }
+    if (!form.title || !form.desc) { alert('제목과 내용을 입력해주세요'); return; }
+    setSubmitting(true);
+    try {
+      await addDoc(collection(db,'dev_requests'), {
+        ...form,
+        budgetMin: parseInt(form.budgetMin)||0,
+        budgetMax: parseInt(form.budgetMax)||0,
+        uid: user.uid,
+        author: profile?.nickname || user.email,
+        status: 'open',
+        proposalCount: 0,
+        createdAt: serverTimestamp()
+      });
+      setShowNew(false);
+      setForm({ title:'', desc:'', budgetMin:'', budgetMax:'', period:'', category:'웹' });
+    } catch(e) { alert('등록 실패: '+e.message); }
+    setSubmitting(false);
+  };
+
+  const sendProposal = async () => {
+    if (!user) { alert('로그인이 필요해요'); return; }
+    if (!proposalMsg.trim()) return;
+    try {
+      await addDoc(collection(db,'dev_requests',proposing.id,'proposals'), {
+        message: proposalMsg, uid: user.uid,
+        author: profile?.nickname || user.email,
+        codetalkHandle: profile?.codetalkHandle || null,
+        createdAt: serverTimestamp()
+      });
+      alert('제안이 전송됐어요! 요청자가 CodeTalk으로 연락할 수 있어요.');
+      setProposing(null);
+      setProposalMsg('');
+    } catch(e) { alert('전송 실패: '+e.message); }
+  };
+
+  const inputStyle = {
+    width:'100%', padding:'10px 14px', borderRadius:10, fontSize:13,
+    fontFamily:'Sora,sans-serif', outline:'none',
+    background:'var(--input)', border:'1px solid var(--border)', color:'var(--foreground)'
+  };
+
+  const cardStyle = {
+    background:'var(--card)', border:'1px solid var(--border)',
+    borderRadius:16, padding:'20px', transition:'all 0.2s'
+  };
 
   return (
-    <div className="min-h-screen py-12" style={{background:"var(--background)", color:"var(--foreground)"}}>
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen py-10" style={{ background:'var(--background)', color:'var(--foreground)' }}>
+      <div className="max-w-4xl mx-auto px-6">
         {/* 헤더 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-5xl font-bold">개발 요청</h1>
-            <button
-              onClick={() => setShowNewRequest(!showNewRequest)}
-              className="flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 transition-colors"
-            >
-              <Plus className="w-5 h-5" />
-              <span>새 요청 등록</span>
-            </button>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="text-xs uppercase tracking-widest mb-2"
+              style={{ color:accentColor, fontFamily:'JetBrains Mono,monospace' }}>DEV REQUESTS</div>
+            <h1 className="text-2xl font-bold"
+              style={{ color:'var(--foreground)', fontFamily:'Sora,sans-serif' }}>개발 요청</h1>
+            <p className="text-sm mt-1" style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
+              필요한 개발을 요청하고 전문가를 찾아보세요
+            </p>
           </div>
-          <p className="text-xl ">필요한 개발을 요청하고 전문가를 찾아보세요</p>
-        </motion.div>
-
-        {/* 새 요청 작성 폼 */}
-        {showNewRequest && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{background:"var(--card)"}} className=" rounded-2xl p-8 border  mb-8"
-          >
-            <h2 className="text-2xl font-bold mb-6">새 개발 요청</h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">프로젝트 제목</label>
-                <input
-                  type="text"
-                  placeholder="예: React 쇼핑몰 사이트 개발"
-                  className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">카테고리</label>
-                <select className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900">
-                  <option>프론트엔드</option>
-                  <option>백엔드</option>
-                  <option>풀스택</option>
-                  <option>모바일</option>
-                  <option>AI/ML</option>
-                </select>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">예산 범위</label>
-                  <input
-                    type="text"
-                    placeholder="예: 500,000 - 800,000원"
-                    className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">희망 기한</label>
-                  <input
-                    type="text"
-                    placeholder="예: 2주"
-                    className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">상세 설명</label>
-                <textarea
-                  rows={6}
-                  placeholder="프로젝트에 대한 자세한 설명을 작성해주세요..."
-                  className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
-                />
-              </div>
-              <div className="flex gap-3">
-                <button className="flex-1 px-6 py-3 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 transition-colors">
-                  등록하기
-                </button>
-                <button
-                  onClick={() => setShowNewRequest(false)}
-                  className="px-6 py-3 bg-neutral-200  rounded-xl hover:bg-neutral-300 transition-colors"
-                >
-                  취소
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
+          <button onClick={() => user ? setShowNew(true) : alert('로그인이 필요해요')}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold"
+            style={{ background:`linear-gradient(135deg,${accentColor},#00d4ff)`, color:'#000',
+              border:'none', cursor:'pointer', fontFamily:'Sora,sans-serif' }}>
+            <Plus className="w-4 h-4" /> 새 요청 등록
+          </button>
+        </div>
 
         {/* 통계 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="grid md:grid-cols-3 gap-6 mb-8"
-        >
-          <div style={{background:"var(--card)"}} className=" rounded-xl p-6 border ">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm ">활성 요청</p>
-                <p className="text-2xl font-bold">{requests.length}건</p>
-              </div>
-            </div>
-          </div>
-          <div style={{background:"var(--card)"}} className=" rounded-xl p-6 border ">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                <MessageSquare className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm ">총 제안</p>
-                <p className="text-2xl font-bold">
-                  {requests.reduce((sum, r) => sum + r.proposals, 0)}건
-                </p>
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          {[
+            { icon: Plus, label:'활성 요청', value: requests.filter(r=>r.status==='open').length+'건' },
+            { icon: MessageSquare, label:'총 제안', value: requests.reduce((a,r)=>a+(r.proposalCount||0),0)+'건' },
+            { icon: DollarSign, label:'평균 예산', value: requests.length
+              ? '₩'+Math.round(requests.reduce((a,r)=>a+((r.budgetMin+r.budgetMax)/2||0),0)/requests.length/10000)+'만'
+              : '—' },
+          ].map((s,i) => (
+            <div key={i} style={cardStyle}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background:`${accentColor}12`, border:`1px solid ${accentColor}20` }}>
+                  <s.icon className="w-5 h-5" style={{ color:accentColor }} />
+                </div>
+                <div>
+                  <div className="text-xs" style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
+                    {s.label}
+                  </div>
+                  <div className="text-lg font-bold"
+                    style={{ color:'var(--foreground)', fontFamily:'Orbitron,monospace' }}>
+                    {s.value}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div style={{background:"var(--card)"}} className=" rounded-xl p-6 border ">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                <DollarSign className="w-6 h-6 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-sm ">평균 예산</p>
-                <p className="text-2xl font-bold">₩750K</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+          ))}
+        </div>
 
         {/* 요청 목록 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-4"
-        >
-          {requests.map((request, index) => (
-            <motion.div
-              key={request.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + index * 0.05 }}
-              style={{background:"var(--card)"}} className=" rounded-2xl p-6 border  hover:shadow-lg transition-shadow"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold">{request.title}</h3>
-                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                      {request.status}
-                    </span>
+        {loading ? (
+          <div className="space-y-4">
+            {[...Array(3)].map((_,i) => (
+              <div key={i} className="h-32 rounded-2xl animate-pulse" style={{ background:'var(--card)' }} />
+            ))}
+          </div>
+        ) : requests.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="text-4xl mb-3">📋</div>
+            <p className="text-sm" style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
+              아직 등록된 요청이 없어요. 첫 번째 요청을 올려보세요!
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {requests.map((r, i) => (
+              <motion.div key={r.id} initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
+                transition={{ delay:i*0.05 }}
+                style={cardStyle}
+                onMouseOver={e => e.currentTarget.style.borderColor = `${accentColor}35`}
+                onMouseOut={e => e.currentTarget.style.borderColor = 'var(--border)'}>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-medium"
+                        style={{ background:`${accentColor}12`, color:accentColor,
+                          border:`1px solid ${accentColor}20`, fontFamily:'JetBrains Mono,monospace' }}>
+                        진행중
+                      </span>
+                      <span className="text-xs px-2 py-0.5 rounded-full"
+                        style={{ background:'var(--secondary)', color:'var(--muted)',
+                          fontFamily:'JetBrains Mono,monospace' }}>
+                        {r.category}
+                      </span>
+                    </div>
+                    <h3 className="text-sm font-bold mb-1.5"
+                      style={{ color:'var(--foreground)', fontFamily:'Sora,sans-serif' }}>
+                      {r.title}
+                    </h3>
+                    <p className="text-xs line-clamp-2 mb-3"
+                      style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
+                      {r.desc}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-4 text-xs"
+                      style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
+                      {r.budgetMin > 0 && (
+                        <span className="flex items-center gap-1">
+                          <DollarSign className="w-3 h-3" />
+                          {r.budgetMin?.toLocaleString()} - {r.budgetMax?.toLocaleString()}원
+                        </span>
+                      )}
+                      {r.period && (
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />{r.period}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1">
+                        <User className="w-3 h-3" />{r.author}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MessageSquare className="w-3 h-3" />{r.proposalCount||0}개 제안
+                      </span>
+                    </div>
                   </div>
-                  <p className=" mb-4">{request.description}</p>
-
-                  <div className="flex flex-wrap gap-4 text-sm ">
-                    <div className="flex items-center gap-1">
-                      <DollarSign className="w-4 h-4" />
-                      <span>{request.budget}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{request.deadline}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <User className="w-4 h-4" />
-                      <span>{request.requester}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MessageSquare className="w-4 h-4" />
-                      <span>{request.proposals}개 제안</span>
-                    </div>
-                  </div>
+                  <button onClick={() => setProposing(r)}
+                    className="flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold"
+                    style={{ background:`linear-gradient(135deg,${accentColor},#00d4ff)`, color:'#000',
+                      border:'none', cursor:'pointer', fontFamily:'Sora,sans-serif' }}>
+                    제안하기
+                  </button>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 새 요청 모달 */}
+      <AnimatePresence>
+        {showNew && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background:'rgba(0,0,0,0.7)', backdropFilter:'blur(8px)' }}>
+            <motion.div initial={{ scale:0.95, opacity:0 }} animate={{ scale:1, opacity:1 }}
+              exit={{ scale:0.95, opacity:0 }}
+              className="w-full max-w-lg rounded-2xl p-7"
+              style={{ background: isDark ? '#070b16' : '#fff', border:'1px solid var(--border)',
+                maxHeight:'90vh', overflowY:'auto' }}>
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="text-base font-bold"
+                  style={{ color:'var(--foreground)', fontFamily:'Sora,sans-serif' }}>새 요청 등록</h3>
+                <button onClick={() => setShowNew(false)}
+                  style={{ background:'none', border:'none', cursor:'pointer', color:'var(--muted)' }}>
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-
-              <div className="flex items-center justify-between pt-4 border-t ">
-                <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 bg-neutral-100  rounded-full text-sm">
-                    {request.category}
-                  </span>
-                  <span className="text-sm ">{request.postedAt}</span>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs mb-1.5 uppercase tracking-wide"
+                    style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>카테고리</label>
+                  <select value={form.category} onChange={set('category')} style={inputStyle}>
+                    {REQUEST_CATS.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
                 </div>
-                <button className="px-6 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors">
-                  제안하기
+                <div>
+                  <label className="block text-xs mb-1.5 uppercase tracking-wide"
+                    style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>제목 *</label>
+                  <input value={form.title} onChange={set('title')}
+                    placeholder="요청 제목을 입력하세요" style={inputStyle} />
+                </div>
+                <div>
+                  <label className="block text-xs mb-1.5 uppercase tracking-wide"
+                    style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>내용 *</label>
+                  <textarea value={form.desc} onChange={set('desc')} rows={4}
+                    placeholder="필요한 개발 내용을 상세히 적어주세요"
+                    style={{ ...inputStyle, resize:'none' }} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs mb-1.5 uppercase tracking-wide"
+                      style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>최소 예산 (원)</label>
+                    <input type="number" value={form.budgetMin} onChange={set('budgetMin')}
+                      placeholder="500000" style={inputStyle} />
+                  </div>
+                  <div>
+                    <label className="block text-xs mb-1.5 uppercase tracking-wide"
+                      style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>최대 예산 (원)</label>
+                    <input type="number" value={form.budgetMax} onChange={set('budgetMax')}
+                      placeholder="1000000" style={inputStyle} />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs mb-1.5 uppercase tracking-wide"
+                    style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>기간</label>
+                  <input value={form.period} onChange={set('period')}
+                    placeholder="예: 2주, 1개월" style={inputStyle} />
+                </div>
+                <button onClick={submitRequest} disabled={submitting}
+                  className="w-full py-3 rounded-xl text-sm font-semibold"
+                  style={{ background:`linear-gradient(135deg,${accentColor},#00d4ff)`, color:'#000',
+                    border:'none', cursor:'pointer', fontFamily:'Sora,sans-serif',
+                    opacity: submitting?0.7:1 }}>
+                  {submitting ? '등록 중...' : '요청 등록하기'}
                 </button>
               </div>
             </motion.div>
-          ))}
-        </motion.div>
-      </div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* 제안하기 모달 */}
+      <AnimatePresence>
+        {proposing && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background:'rgba(0,0,0,0.7)', backdropFilter:'blur(8px)' }}>
+            <motion.div initial={{ scale:0.95, opacity:0 }} animate={{ scale:1, opacity:1 }}
+              exit={{ scale:0.95, opacity:0 }}
+              className="w-full max-w-md rounded-2xl p-7"
+              style={{ background: isDark ? '#070b16' : '#fff', border:'1px solid var(--border)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold"
+                  style={{ color:'var(--foreground)', fontFamily:'Sora,sans-serif' }}>제안하기</h3>
+                <button onClick={() => setProposing(null)}
+                  style={{ background:'none', border:'none', cursor:'pointer', color:'var(--muted)' }}>
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <p className="text-sm mb-1" style={{ color:'var(--foreground)', fontFamily:'Sora,sans-serif' }}>
+                {proposing.title}
+              </p>
+              <p className="text-xs mb-5" style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
+                제안 내용을 보내면 CodeTalk으로 요청자와 연결돼요
+              </p>
+              <textarea value={proposalMsg} onChange={e=>setProposalMsg(e.target.value)} rows={5}
+                placeholder="제안 내용을 작성해주세요. 본인의 경험, 예상 기간, 견적 등을 포함하면 좋아요."
+                style={{ ...inputStyle, resize:'none', marginBottom:12 }} />
+              <button onClick={sendProposal}
+                className="w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
+                style={{ background:`linear-gradient(135deg,${accentColor},#00d4ff)`, color:'#000',
+                  border:'none', cursor:'pointer', fontFamily:'Sora,sans-serif' }}>
+                <Send className="w-4 h-4" /> 제안 보내기
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
