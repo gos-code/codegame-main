@@ -8,7 +8,8 @@ import { useAuth } from '../contexts/AuthContext';
 import MyPageModal from './MyPageModal';
 
 export default function Header() {
-  const { theme, toggleTheme } = useTheme(); // accentColor 제거 (CSS 변수 사용)
+  // accentColor를 다시 추가하여 아래쪽 코드와의 충돌을 방지합니다.
+  const { theme, toggleTheme, accentColor } = useTheme(); 
   const { user, profile, logout } = useAuth();
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -43,7 +44,7 @@ export default function Header() {
                 <Gamepad2 className="w-5 h-5" style={{ color: 'var(--primary-foreground)' }} />
               </div>
               <span className="text-xl font-bold tracking-tighter" 
-                    style={{ fontFamily: 'Orbitron, sans-serif', color: 'var(--primary)' }}>
+                    style={{ fontFamily: 'Orbitron, sans-serif', color: 'var(--foreground)' }}>
                 CodeGame
               </span>
             </Link>
@@ -62,9 +63,10 @@ export default function Header() {
           <div className="flex items-center gap-4">
             <form onSubmit={handleSearch} className="hidden lg:flex items-center px-4 py-2 rounded-full transition-all"
                   style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}>
-              <Search className="w-4 h-4 opacity-40" />
+              <Search className="w-4 h-4 opacity-40" style={{ color: 'var(--foreground)' }} />
               <input type="text" value={search} onChange={e => setSearch(e.target.value)}
-                placeholder="검색" className="bg-transparent border-none outline-none px-3 text-sm w-40 focus:w-60 transition-all" />
+                placeholder="검색" className="bg-transparent border-none outline-none px-3 text-sm w-40 focus:w-60 transition-all"
+                style={{ color: 'var(--foreground)' }} />
             </form>
 
             <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-opacity-10 transition-colors"
@@ -76,9 +78,56 @@ export default function Header() {
               <div className="flex items-center gap-3 pl-3" style={{ borderLeft: '1px solid var(--border)' }}>
                 <button onClick={() => setShowModal(true)} className="flex items-center gap-3 group">
                   <div className="text-right hidden sm:block">
-                    <p className="text-sm font-semibold leading-none">{profile?.nickname || '사용자'}</p>
-                    <p className="text-[10px] opacity-50 mt-1">Lv.{profile?.level || 1}</p>
+                    <p className="text-sm font-semibold leading-none" style={{ color: 'var(--foreground)' }}>{profile?.nickname || '사용자'}</p>
+                    <p className="text-[10px] opacity-50 mt-1" style={{ color: 'var(--foreground)' }}>Lv.{profile?.level || 1}</p>
                   </div>
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 transition-transform group-hover:scale-105"
                        style={{ borderColor: 'var(--cg-accent)' }}>
                     <img src={profile?.avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`} alt="avatar" />
+                  </div>
+                </button>
+                <button onClick={logout} className="p-2 opacity-50 hover:opacity-100 transition-opacity" style={{ color: 'var(--foreground)' }}>
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm font-medium opacity-60 hover:opacity-100 transition-opacity" style={{ color: 'var(--foreground)' }}>로그인</Link>
+                <Link to="/login?mode=signup" className="px-5 py-2.5 rounded-full text-sm font-bold transition-transform hover:scale-105"
+                      style={{ backgroundColor: 'var(--cg-accent)', color: '#03040b' }}>
+                  무료 시작
+                </Link>
+              </>
+            )}
+
+            {/* 모바일 햄버거 버튼 색상 수정 */}
+            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-2" style={{ color: 'var(--foreground)' }}>
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* 모바일 메뉴 테마 적용 */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div initial={{ height:0, opacity:0 }} animate={{ height:'auto', opacity:1 }}
+              exit={{ height:0, opacity:0 }}
+              className="md:hidden overflow-hidden"
+              style={{ backgroundColor: 'var(--background)', borderTop: '1px solid var(--border)' }}>
+              <div className="px-6 py-4 flex flex-col gap-3">
+                {links.map(l => (
+                  <Link key={l.to} to={l.to} onClick={() => setMenuOpen(false)}
+                    className="text-sm py-2" style={{ color: 'var(--foreground)', opacity: 0.8 }}>
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <MyPageModal isOpen={showModal} onClose={() => setShowModal(false)} />
+    </>
+  );
+}
