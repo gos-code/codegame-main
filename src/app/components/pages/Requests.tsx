@@ -58,7 +58,7 @@ export default function Requests() {
   ];
 
   return (
-    <div className="min-h-screen" style={{background:"var(--background)", color:"var(--foreground)"}} style={{background:"var(--background)", color:"var(--foreground)"}} py-12">
+    <div className="min-h-screen py-12" style={{background:"var(--background)", color:"var(--foreground)"}}>
       <div className="max-w-7xl mx-auto px-6">
         {/* 헤더 */}
         <motion.div
