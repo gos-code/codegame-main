@@ -42,7 +42,7 @@ const firebaseConfig = {
   projectId: "codegame-75c54",
   storageBucket: "codegame-75c54.firebasestorage.app",
   messagingSenderId: "63875927338",
-  appId: "1:63875927338:web:codegame"
+  appId: "1:63875927338:web:375fc9bf52e8939138e253"
 };
 
 const app = initializeApp(firebaseConfig);
