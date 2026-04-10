@@ -28,35 +28,40 @@
    💡 핵심 해결 구간 (Utilities Layer)
    여기서 컴포넌트의 text-white, text-slate-400 등을 강제로 무력화합니다.
 ------------------------------------------------------------------- */
-@layer utilities {
-  /* 라이트 모드일 때: 하얀색 계열 글자를 전부 진한 검정색으로 강제 전환 */
-  html:not(.dark) .text-white,
-  html:not(.dark) .text-slate-100,
-  html:not(.dark) .text-slate-200,
-  html:not(.dark) .text-slate-300,
-  html:not(.dark) .text-slate-400,
-  html:not(.dark) .text-gray-400,
-  html:not(.dark) [class*="text-white/"] {
-    color: #111827 !important;
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --border: #e2e8f0;
+    --muted: #64748b;
+    --input: #ffffff;
   }
 
-  /* 라이트 모드일 때: 어두운색 계열 배경을 전부 흰색으로 강제 전환 */
-  html:not(.dark) .bg-slate-900,
-  html:not(.dark) .bg-slate-800,
-  html:not(.dark) .bg-black,
-  html:not(.dark) [class*="bg-white/"],
-  html:not(.dark) [class*="bg-slate-900/"] {
-    background-color: #ffffff !important;
-    border: 1px solid #e5e7eb !important;
+  .dark {
+    --background: #03040b;
+    --foreground: #f8fafc;
+    --card: #080b14;
+    --card-foreground: #f8fafc;
+    --border: #1e293b;
+    --muted: #94a3b8;
+    --input: #0c1220;
   }
 
-  /* 다크 모드일 때: 하얗게 타버리는 배경 방지 및 검은 글씨 보정 */
-  .dark .bg-white {
-    background-color: var(--card) !important;
+  html {
+    font-family: 'Sora', sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
-  
-  .dark .text-black,
-  .dark .text-slate-900 {
-    color: #f9fafb !important;
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    margin: 0;
+    min-height: 100vh;
   }
 }
