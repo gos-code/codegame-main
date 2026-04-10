@@ -76,7 +76,7 @@ export default function Requests() {
               <span>새 요청 등록</span>
             </button>
           </div>
-          <p className="text-xl text-neutral-600">필요한 개발을 요청하고 전문가를 찾아보세요</p>
+          <p className="text-xl ">필요한 개발을 요청하고 전문가를 찾아보세요</p>
         </motion.div>
 
         {/* 새 요청 작성 폼 */}
@@ -93,12 +93,12 @@ export default function Requests() {
                 <input
                   type="text"
                   placeholder="예: React 쇼핑몰 사이트 개발"
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:border-neutral-900"
+                  className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">카테고리</label>
-                <select className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:border-neutral-900">
+                <select className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900">
                   <option>프론트엔드</option>
                   <option>백엔드</option>
                   <option>풀스택</option>
@@ -112,7 +112,7 @@ export default function Requests() {
                   <input
                     type="text"
                     placeholder="예: 500,000 - 800,000원"
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:border-neutral-900"
+                    className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
                   />
                 </div>
                 <div>
@@ -120,7 +120,7 @@ export default function Requests() {
                   <input
                     type="text"
                     placeholder="예: 2주"
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:border-neutral-900"
+                    className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
                   />
                 </div>
               </div>
@@ -129,7 +129,7 @@ export default function Requests() {
                 <textarea
                   rows={6}
                   placeholder="프로젝트에 대한 자세한 설명을 작성해주세요..."
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:border-neutral-900"
+                  className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:border-neutral-900"
                 />
               </div>
               <div className="flex gap-3">
@@ -138,7 +138,7 @@ export default function Requests() {
                 </button>
                 <button
                   onClick={() => setShowNewRequest(false)}
-                  className="px-6 py-3 bg-neutral-200 text-neutral-700 rounded-xl hover:bg-neutral-300 transition-colors"
+                  className="px-6 py-3 bg-neutral-200  rounded-xl hover:bg-neutral-300 transition-colors"
                 >
                   취소
                 </button>
@@ -160,7 +160,7 @@ export default function Requests() {
                 <TrendingUp className="w-6 h-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-neutral-600">활성 요청</p>
+                <p className="text-sm ">활성 요청</p>
                 <p className="text-2xl font-bold">{requests.length}건</p>
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function Requests() {
                 <MessageSquare className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-neutral-600">총 제안</p>
+                <p className="text-sm ">총 제안</p>
                 <p className="text-2xl font-bold">
                   {requests.reduce((sum, r) => sum + r.proposals, 0)}건
                 </p>
@@ -184,7 +184,7 @@ export default function Requests() {
                 <DollarSign className="w-6 h-6 text-purple-600" />
               </div>
               <div>
-                <p className="text-sm text-neutral-600">평균 예산</p>
+                <p className="text-sm ">평균 예산</p>
                 <p className="text-2xl font-bold">₩750K</p>
               </div>
             </div>
@@ -214,9 +214,9 @@ export default function Requests() {
                       {request.status}
                     </span>
                   </div>
-                  <p className="text-neutral-600 mb-4">{request.description}</p>
+                  <p className=" mb-4">{request.description}</p>
 
-                  <div className="flex flex-wrap gap-4 text-sm text-neutral-600">
+                  <div className="flex flex-wrap gap-4 text-sm ">
                     <div className="flex items-center gap-1">
                       <DollarSign className="w-4 h-4" />
                       <span>{request.budget}</span>
@@ -239,10 +239,10 @@ export default function Requests() {
 
               <div className="flex items-center justify-between pt-4 border-t ">
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 bg-neutral-100 text-neutral-700 rounded-full text-sm">
+                  <span className="px-3 py-1 bg-neutral-100  rounded-full text-sm">
                     {request.category}
                   </span>
-                  <span className="text-sm text-neutral-500">{request.postedAt}</span>
+                  <span className="text-sm ">{request.postedAt}</span>
                 </div>
                 <button className="px-6 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors">
                   제안하기

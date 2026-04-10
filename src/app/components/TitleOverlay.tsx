@@ -39,11 +39,11 @@ export function TitleOverlay() {
         <h1 
             className="text-6xl sm:text-7xl md:text-9xl text-white tracking-widest text-center px-4"
             style={{ 
-                fontFamily: '"Press Start 2P", monospace',
+                fontFamily: 'Orbitron, monospace',
                 lineHeight: '1.2'
             }}
         >
-          TOKYO
+          SEOUL
         </h1>
       </motion.div>
 
@@ -55,8 +55,8 @@ export function TitleOverlay() {
         className="mb-24 text-center"
       >
         <p className="text-xl md:text-2xl tracking-wider"
-           style={{ fontFamily: '"Press Start 2P", monospace', textShadow: '2px 2px 0px #000' }}>
-            EXPLORE THE CITY
+           style={{ fontFamily: 'Orbitron, monospace', textShadow: '2px 2px 0px #000' }}>
+            도시를 탐험하세요
         </p>
       </motion.div>
 
@@ -68,7 +68,7 @@ export function TitleOverlay() {
          <div 
             className={`text-lg md:text-xl text-yellow-400 bg-black/90 px-8 py-4 border-4 border-white transition-opacity duration-0 ${showPress ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
             style={{ 
-                fontFamily: '"Press Start 2P", monospace',
+                fontFamily: 'Orbitron, monospace',
                 boxShadow: '4px 4px 0px rgba(0,0,0,0.5)'
             }}
          >

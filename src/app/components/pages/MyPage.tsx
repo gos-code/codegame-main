@@ -72,22 +72,22 @@ export default function MyPage() {
   ];
 
   return (
-    <div className="min-h-screen px-6 py-8" style={{ background:bgColor }}>
+    <div className="min-h-screen px-6 py-8" style={{ background:'var(--background)' }}>
       <div className="max-w-5xl mx-auto">
         {/* 프로필 헤더 */}
         <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
           className="flex items-center gap-5 mb-8 p-6 rounded-2xl"
-          style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', backdropFilter:'blur(20px)' }}>
+          style={{ background:'var(--card)', border:'1px solid var(--border)', backdropFilter:'blur(20px)' }}>
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black"
             style={{ background:`linear-gradient(135deg,${accentColor},#00d4ff)`, color:'#000',
               fontFamily:'Orbitron,monospace', boxShadow:`0 0 30px ${accentColor}40`, flexShrink:0 }}>
             {(profile?.nickname||'U')[0].toUpperCase()}
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-white" style={{ fontFamily:'Sora,sans-serif' }}>
+            <h1 className="text-xl font-bold text-white" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>
               {profile?.nickname || user.email}
             </h1>
-            <p className="text-sm text-white/40 mt-0.5" style={{ fontFamily:'Sora,sans-serif' }}>{user.email}</p>
+            <p className="text-sm text-white/40 mt-0.5" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>{user.email}</p>
             <div className="flex items-center gap-3 mt-2">
               <span className="text-xs font-bold" style={{ color:accentColor, fontFamily:'Orbitron,monospace' }}>
                 LV.{String(profile?.level||1).padStart(2,'0')}
@@ -107,22 +107,22 @@ export default function MyPage() {
               { label:'구매', val: purchases.length },
             ].map(s => (
               <div key={s.label} className="text-center rounded-xl py-3 px-4"
-                style={{ background:'rgba(255,255,255,0.04)' }}>
+                style={{ background:'var(--card)' }}>
                 <div className="text-lg font-bold" style={{ color:accentColor, fontFamily:'Orbitron,monospace' }}>{s.val}</div>
-                <div className="text-xs text-white/30 mt-0.5" style={{ fontFamily:'Sora,sans-serif' }}>{s.label}</div>
+                <div className="text-xs text-white/30 mt-0.5" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>{s.label}</div>
               </div>
             ))}
           </div>
         </motion.div>
 
         {/* 탭 */}
-        <div className="flex gap-1 mb-6 p-1 rounded-xl" style={{ background:'rgba(255,255,255,0.04)' }}>
+        <div className="flex gap-1 mb-6 p-1 rounded-xl" style={{ background:'var(--card)' }}>
           {tabs.map(t => (
             <button key={t.id} onClick={()=>setTab(t.id)}
               className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-medium transition-all"
               style={{ background: tab===t.id ? accentColor : 'transparent',
                 color: tab===t.id ? '#000' : 'rgba(255,255,255,0.45)',
-                fontFamily:'Sora,sans-serif' }}>
+                fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>
               <t.icon className="w-3.5 h-3.5" />{t.label}
             </button>
           ))}
@@ -140,14 +140,14 @@ export default function MyPage() {
             {tab==='purchases' && (
               <div className="space-y-3">
                 {purchases.length===0 ? (
-                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif' }}>
+                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>
                     구매한 상품이 없어요
                   </div>
                 ) : purchases.map(p => (
                   <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl"
-                    style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif' }}>{p.title}</div>
+                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>{p.title}</div>
                       <div className="text-xs text-white/35 mt-1" style={{ fontFamily:'JetBrains Mono,monospace' }}>
                         {p.purchasedAt?.toDate?.()?.toLocaleDateString('ko-KR')||'—'} · ₩{(p.price||0).toLocaleString()}
                       </div>
@@ -155,7 +155,7 @@ export default function MyPage() {
                     <a href={p.fileUrl} target="_blank" rel="noreferrer" onClick={()=>recordDownload(p.id)}
                       className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs transition-all"
                       style={{ background:`${accentColor}12`, color:accentColor, border:`1px solid ${accentColor}25`,
-                        fontFamily:'Sora,sans-serif' }}>
+                        fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>
                       <Download className="w-3.5 h-3.5" />다운로드
                     </a>
                   </div>
@@ -167,14 +167,14 @@ export default function MyPage() {
             {tab==='sales' && (
               <div className="space-y-3">
                 {sales.length===0 ? (
-                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif' }}>
+                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>
                     등록한 상품이 없어요
                   </div>
                 ) : sales.map(s => (
                   <div key={s.id} className="flex items-center gap-4 p-4 rounded-xl"
-                    style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif' }}>{s.title}</div>
+                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>{s.title}</div>
                       <div className="flex items-center gap-3 mt-1">
                         <span className="text-xs px-2 py-0.5 rounded-full"
                           style={{ background: s.status==='approved' ? `${accentColor}15` : s.status==='pending' ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)',
@@ -209,19 +209,19 @@ export default function MyPage() {
                     { label:'등록 상품', val:`${sales.length}개`, color:'white' },
                   ].map(s => (
                     <div key={s.label} className="text-center rounded-xl p-5"
-                      style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                      style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
                       <div className="text-2xl font-bold mb-1"
                         style={{ color:s.color==='white'?'rgba(255,255,255,0.85)':s.color, fontFamily:'Orbitron,monospace' }}>
                         {s.val}
                       </div>
-                      <div className="text-xs text-white/30" style={{ fontFamily:'Sora,sans-serif' }}>{s.label}</div>
+                      <div className="text-xs text-white/30" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>{s.label}</div>
                     </div>
                   ))}
                 </div>
                 {sales.filter(s=>s.status==='approved').map(s => (
                   <div key={s.id} className="flex items-center justify-between p-4 rounded-xl"
-                    style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)' }}>
-                    <div className="text-sm text-white/75" style={{ fontFamily:'Sora,sans-serif' }}>{s.title}</div>
+                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                    <div className="text-sm text-white/75" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>{s.title}</div>
                     <div className="text-right">
                       <div className="text-sm font-bold" style={{ color:accentColor, fontFamily:'Orbitron,monospace' }}>
                         ₩{(s.revenue||0).toLocaleString()}
@@ -237,12 +237,12 @@ export default function MyPage() {
             {tab==='licenses' && (
               <div className="space-y-3">
                 {purchases.length===0 ? (
-                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif' }}>라이선스 키가 없어요</div>
+                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>라이선스 키가 없어요</div>
                 ) : purchases.map(p => (
                   <div key={p.id} className="p-4 rounded-xl"
-                    style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
                     <div className="flex items-center justify-between mb-3">
-                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif' }}>{p.title}</div>
+                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>{p.title}</div>
                       <span className="text-xs px-2 py-0.5 rounded-full"
                         style={{ background:`${accentColor}12`, color:accentColor, border:`1px solid ${accentColor}25`,
                           fontFamily:'JetBrains Mono,monospace' }}>
@@ -271,8 +271,8 @@ export default function MyPage() {
             {/* 설정 */}
             {tab==='settings' && (
               <div className="space-y-4 max-w-md">
-                <div className="p-5 rounded-xl" style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)' }}>
-                  <h3 className="text-sm font-semibold text-white/80 mb-4" style={{ fontFamily:'Sora,sans-serif' }}>계정 정보</h3>
+                <div className="p-5 rounded-xl" style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                  <h3 className="text-sm font-semibold text-white/80 mb-4" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>계정 정보</h3>
                   <div className="space-y-2 text-xs text-white/50">
                     <div>이메일: <span className="text-white/70">{user.email}</span></div>
                     <div>닉네임: <span className="text-white/70">{profile?.nickname}</span></div>
@@ -282,7 +282,7 @@ export default function MyPage() {
                 <button onClick={()=>logout().then(()=>nav('/'))}
                   className="flex items-center gap-2 px-5 py-3 rounded-xl text-sm transition-all"
                   style={{ background:'rgba(239,68,68,0.08)', border:'1px solid rgba(239,68,68,0.2)',
-                    color:'#f87171', fontFamily:'Sora,sans-serif' }}>
+                    color:'#f87171', fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>
                   <LogOut className="w-4 h-4" />로그아웃
                 </button>
               </div>

@@ -113,7 +113,7 @@ export default function Community() {
               글쓰기
             </button>
           </div>
-          <p className="text-xl text-neutral-600">개발자들과 지식을 공유하고 소통하세요</p>
+          <p className="text-xl ">개발자들과 지식을 공유하고 소통하세요</p>
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -153,7 +153,7 @@ export default function Community() {
                     className={`px-4 py-2 rounded-lg transition-colors ${
                       selectedCategory === category.name
                         ? "bg-neutral-900 dark:bg-blue-600 text-white"
-                        : "bg-neutral-100  text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600"
+                        : "bg-neutral-100   dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600"
                     }`}
                   >
                     {category.name}
@@ -167,11 +167,11 @@ export default function Community() {
             <div className="space-y-4">
               {filteredPosts.length === 0 ? (
                 <div style={{background:"var(--card)"}} className="  rounded-2xl p-12 border  text-center">
-                  <MessageSquare className="w-16 h-16 text-neutral-300 dark:text-neutral-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-neutral-600 dark:text-neutral-400 mb-2">
+                  <MessageSquare className="w-16 h-16 text-neutral-300 dark: mx-auto mb-4" />
+                  <h3 className="text-xl font-bold  dark:text-neutral-400 mb-2">
                     검색 결과가 없습니다
                   </h3>
-                  <p className="text-neutral-500 dark:text-neutral-500">
+                  <p className=" dark:">
                     다른 키워드로 검색해보세요
                   </p>
                 </div>
@@ -190,7 +190,7 @@ export default function Community() {
                       <button className="w-10 h-10 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 flex items-center justify-center transition-colors">
                         <ThumbsUp className="w-5 h-5 text-neutral-400 group-hover:text-blue-600" />
                       </button>
-                      <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">{post.likes}</span>
+                      <span className="text-sm font-medium  dark:text-neutral-400">{post.likes}</span>
                     </div>
 
                     {/* 콘텐츠 */}
@@ -199,21 +199,21 @@ export default function Community() {
                         <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded text-xs font-medium">
                           {post.category}
                         </span>
-                        <span className="text-sm text-neutral-500 dark:text-neutral-400">{post.postedAt}</span>
+                        <span className="text-sm  dark:text-neutral-400">{post.postedAt}</span>
                       </div>
 
                       <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors ">
                         {post.title}
                       </h3>
 
-                      <p className="text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-2">{post.excerpt}</p>
+                      <p className=" dark:text-neutral-400 mb-4 line-clamp-2">{post.excerpt}</p>
 
                       {/* 태그 */}
                       <div className="flex flex-wrap gap-2 mb-4">
                         {post.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="px-2 py-1 bg-neutral-100  text-neutral-600 dark:text-neutral-300 rounded text-sm hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors"
+                            className="px-2 py-1 bg-neutral-100   dark:text-neutral-300 rounded text-sm hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors"
                           >
                             #{tag}
                           </span>
@@ -221,7 +221,7 @@ export default function Community() {
                       </div>
 
                       {/* 메타 정보 */}
-                      <div className="flex items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400">
+                      <div className="flex items-center gap-4 text-sm  dark:text-neutral-400">
                         <span>{post.author}</span>
                         <div className="flex items-center gap-1">
                           <Eye className="w-4 h-4" />
@@ -241,7 +241,7 @@ export default function Community() {
             {/* 더보기 버튼 */}
             {filteredPosts.length > 0 && (
               <div className="text-center">
-                <button className="px-8 py-3  border border-neutral-300 dark:border-neutral-700 rounded-xl hover:border-neutral-900 dark:hover:border-neutral-500 transition-colors ">
+                <button className="px-8 py-3  border   rounded-xl hover:border-neutral-900 dark:hover:border-neutral-500 transition-colors ">
                   더보기
                 </button>
               </div>
@@ -271,7 +271,7 @@ export default function Community() {
                       <Hash className="w-4 h-4 text-neutral-400 group-hover:text-blue-600" />
                       <span className="font-medium ">{tag.name}</span>
                     </div>
-                    <span className="text-sm text-neutral-500 dark:text-neutral-400">{tag.count}</span>
+                    <span className="text-sm  dark:text-neutral-400">{tag.count}</span>
                   </button>
                 ))}
               </div>
@@ -318,11 +318,11 @@ export default function Community() {
                   { user: "CodeGuru", action: "댓글을 남겼습니다", time: "5분 전" },
                   { user: "BackendPro", action: "글을 수정했습니다", time: "10분 전" }
                 ].map((activity, index) => (
-                  <div key={index} className="pb-3 border-b border-neutral-100 dark:border-neutral-700 last:border-0">
+                  <div key={index} className="pb-3 border-b border-neutral-100  last:border-0">
                     <p className=" mb-1">
                       <span className="font-medium">{activity.user}</span>님이 {activity.action}
                     </p>
-                    <p className="text-neutral-500 dark:text-neutral-400 text-xs">{activity.time}</p>
+                    <p className=" dark:text-neutral-400 text-xs">{activity.time}</p>
                   </div>
                 ))}
               </div>

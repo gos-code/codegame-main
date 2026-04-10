@@ -1,17 +1,20 @@
 // @ts-nocheck
 import { Outlet, useLocation } from 'react-router';
 import Header from './Header';
+import CodeTalkWidget from './CodeTalkWidget';
 
 export default function Layout() {
   const loc = useLocation();
   const hideHeader = loc.pathname === '/login';
+
   return (
-    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+    <div className="min-h-screen" style={{ background:'var(--background)', color:'var(--foreground)' }}>
       {!hideHeader && <Header />}
-      <main style={{ paddingTop: hideHeader ? 0 : '64px', minHeight: '100vh',
-        background: 'var(--background)', color: 'var(--foreground)' }}>
+      <main style={{ paddingTop: hideHeader ? 0 : '64px', minHeight:'100vh',
+        background:'var(--background)', color:'var(--foreground)' }}>
         <Outlet />
       </main>
+      <CodeTalkWidget />
     </div>
   );
 }

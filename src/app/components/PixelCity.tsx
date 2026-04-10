@@ -231,7 +231,7 @@ export function PixelCity() {
                 height={45} 
                 width={10} 
                 windows="grid-blue" 
-                neon="KARAOKE" 
+                neon="노래방" 
                 neonColor="#00ffff" 
                 billboard
                 hasBalcony
@@ -241,7 +241,7 @@ export function PixelCity() {
                 width={16} 
                 windows="grid-orange" 
                 sign="vertical" 
-                signText="ラーメン" 
+                signText="라멘" 
                 signColor="#ffaa00" 
                 hasVents
                 hasLanterns
@@ -280,7 +280,7 @@ export function PixelCity() {
                  height={45} 
                  width={10} 
                  windows="grid-blue" 
-                 neon="BAR" 
+                 neon="포차" 
                  neonColor="#ff0088" 
                  hasVents
                  hasAC
@@ -906,17 +906,17 @@ function Building({ height, width, windows, neon, neonColor, sign, signText, sig
              <div className="flex items-baseline gap-[3px]">
                <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#ff6644', letterSpacing: 1,
                  textShadow: '0 0 4px #ff4422, 0 0 10px #ff220088', fontWeight: 700, lineHeight: 1 }}>
-                 本場
+                 정통
                </span>
                <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#ffdd44', letterSpacing: 2,
                  textShadow: '0 0 5px #ffaa00, 0 0 12px #ff880066', fontWeight: 700, lineHeight: 1 }}>
-                 ラーメン
+                 라멘
                </span>
              </div>
              {/* English subtitle */}
              <div style={{ fontFamily: '"Press Start 2P", monospace', fontSize: 5, color: '#ffbb88',
                letterSpacing: 1, textShadow: '0 0 4px rgba(255,120,60,0.7)', lineHeight: 1.4 }}>
-               AUTHENTIC RAMEN
+               정통 라멘
              </div>
              {/* Price tag */}
              <motion.div className="flex items-center gap-[3px] mt-[2px]"

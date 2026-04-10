@@ -82,7 +82,7 @@ export function CharacterCustomization() {
         setIsExiting(true);
         localStorage.setItem('to_character', JSON.stringify({ style: st, hair: hr, hairColor: hc, gender: gn, skin: sk }));
         setTimeout(() => {
-          navigate('/city', { state: { character: { style: st, hair: hr, hairColor: hc, gender: gn, skin: sk } } });
+          navigate('/dev-garden/city', { state: { character: { style: st, hair: hr, hairColor: hc, gender: gn, skin: sk } } });
         }, 600);
       }
     };
@@ -97,7 +97,7 @@ export function CharacterCustomization() {
     
     // Wait for fade out animation
     setTimeout(() => {
-        navigate('/city', { 
+        navigate('/dev-garden/city', { 
             state: { 
                 character: { style, hair, hairColor, gender, skin } 
             } 
