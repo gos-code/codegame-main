@@ -19,14 +19,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('cg_theme', theme);
     const root = document.documentElement;
     
-    // 1. 기존 클래스 제거 후 현재 테마만 추가
+    // 클래스 초기화 후 현재 테마만 적용
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
     
-    // 2. CSS 변수 충돌 방지를 위해 인라인 스타일 강제 제거
-    root.style.removeProperty('--background');
-    root.style.removeProperty('--foreground');
-    root.style.removeProperty('--cg-bg');
+    // 테마 변경 시 브라우저 기본 색상 테마도 연동
+    root.style.colorScheme = theme;
   }, [theme]);
 
   const toggleTheme = () => setTheme(p => p === 'dark' ? 'light' : 'dark');

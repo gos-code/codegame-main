@@ -1,14 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
-@custom-variant dark (&:is(.dark *));
-
+/* 변수 정의 */
 :root {
   --background: #ffffff;
   --foreground: #111827;
-  --card: #f9fafb;
+  --card: #ffffff;
   --border: #e5e7eb;
-  --primary: #03040b;
-  --primary-foreground: #ffffff;
   --cg-accent: #00f5c4;
 }
 
@@ -17,55 +14,60 @@
   --foreground: #f9fafb;
   --card: #0c0e1a;
   --border: #1e293b;
-  --primary: #00f5c4;
-  --primary-foreground: #03040b;
 }
 
+/* 베이스 스타일 강제 적용 */
 @layer base {
   html, body {
     background-color: var(--background) !important;
     color: var(--foreground) !important;
     font-family: 'Sora', sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: 0;
   }
 
-  /* 💡 라이트 모드 강제 교정 (흰 배경에서 안 보이는 글자 해결) */
-  :root.light {
-    .text-white, 
-    .text-white\/70, 
-    .text-white\/50, 
-    .text-slate-100, 
-    .text-slate-200, 
-    .text-slate-300, 
-    .text-slate-400, 
-    .text-gray-400 {
-      color: #111827 !important;
-    }
-
-    .bg-slate-900, 
-    .bg-black, 
-    .bg-white\/5,
-    .bg-slate-900\/50 {
-      background-color: #ffffff !important;
-      border: 1px solid #e5e7eb !important;
-      color: #111827 !important;
-    }
+  /* 라이트 모드일 때 모든 요소를 흰색 배경 / 검은 글자로 강제 고정 */
+  :root.light body {
+    background-color: #ffffff !important;
+    color: #111827 !important;
   }
 
-  /* 💡 다크 모드 강제 교정 (검은 배경에서 안 보이는 글자 해결) */
-  :root.dark {
-    .text-black, 
-    .text-slate-900, 
-    .text-gray-900 {
-      color: #f9fafb !important;
-    }
+  :root.light .text-white, 
+  :root.light .text-slate-100, 
+  :root.light .text-slate-200, 
+  :root.light .text-slate-300, 
+  :root.light .text-slate-400,
+  :root.light .text-gray-400,
+  :root.light .text-white\/70,
+  :root.light .text-white\/50 {
+    color: #111827 !important;
+  }
 
-    .bg-white {
-      background-color: var(--card) !important;
-      color: var(--foreground) !important;
-    }
+  :root.light .bg-slate-900, 
+  :root.light .bg-black, 
+  :root.light .bg-slate-800,
+  :root.light .bg-white\/5 {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    color: #111827 !important;
+  }
+
+  /* 다크 모드일 때 모든 요소를 검은 배경 / 흰색 글자로 강제 고정 */
+  :root.dark body {
+    background-color: #03040b !important;
+    color: #f9fafb !important;
+  }
+
+  :root.dark .text-black,
+  :root.dark .text-slate-900 {
+    color: #f9fafb !important;
+  }
+
+  :root.dark .bg-white {
+    background-color: var(--card) !important;
+    color: var(--foreground) !important;
   }
 }
 
-/* UI 요소 공통 스타일 */
+/* 기타 UI 요소 */
 * { border-color: var(--border); }
