@@ -86,8 +86,14 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         setCurrentIdx(0);
       }
     }
-    setIsPlaying(true);
-    audioRef.current?.play().catch(() => {});
+    if (audioRef.current) {
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {
+        // 자동재생 차단 - 사용자 클릭 후 재생됨
+        setIsPlaying(false);
+      });
+    }
   };
 
   const pause = () => {

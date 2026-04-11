@@ -128,10 +128,10 @@ export default function Contact() {
                         style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>예산 범위</label>
                       <select value={form.budget} onChange={set('budget')} style={inputStyle}>
                         <option value="">선택해주세요</option>
-                        <option value="under5m">500만원 미만</option>
-                        <option value="5m-10m">500~1,000만원</option>
-                        <option value="10m-30m">1,000~3,000만원</option>
-                        <option value="over30m">3,000만원 이상</option>
+                        <option value="500만원 미만">500만원 미만</option>
+                        <option value="500~1,000만원">500~1,000만원</option>
+                        <option value="1,000~3,000만원">1,000~3,000만원</option>
+                        <option value="3,000만원 이상">3,000만원 이상</option>
                       </select>
                     </div>
                   </div>

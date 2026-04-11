@@ -1,4 +1,5 @@
 // @ts-nocheck
+import AdminEditableText from '../../components/AdminEditableText';
 import { Link } from 'react-router';
 import { motion } from "motion/react";
 import { BookOpen, Code2, Shield, DollarSign, Users, ArrowRight, CheckCircle2 } from "lucide-react";
@@ -163,12 +164,14 @@ export default function Guide() {
           <div className="space-y-6">
             {[
               {
-                q: "코드 구매 후 환불이 가능한가요?",
-                a: "구매 후 7일 이내, 다운로드하지 않은 경우 전액 환불이 가능합니다."
+                id: "faq_refund",
+              q: "코드 구매 후 환불이 가능한가요?",
+                a: "구매 후 3일 이내 환불 신청 가능합니다. 구매 당일 100% 환불, 1일 후 70% 환불, 2일 후 40% 환불, 3일 후 환불 불가합니다. 단, 파일 다운로드 후에는 환불이 제한될 수 있습니다."
               },
               {
-                q: "판매 수수료는 얼마인가요?",
-                a: "판매 금액의 15%를 수수료로 부과하며, 정산은 매월 1일에 진행됩니다."
+                id: "faq_fee",
+              q: "판매 수수료는 얼마인가요?",
+                a: "판매 금액의 20%를 수수료로 부과하며, 판매자에게는 80%가 지급됩니다. 정산은 매월 1일에 진행됩니다."
               },
               {
                 q: "라이선스는 어떻게 관리되나요?",
@@ -181,7 +184,7 @@ export default function Guide() {
             ].map((faq, index) => (
               <div key={index} className="pb-6 border-b  last:border-0">
                 <h3 className="font-bold mb-2 text-lg">{faq.q}</h3>
-                <p className="text-neutral-600">{faq.a}</p>
+                <AdminEditableText id={faq.id || \'faq_\'+index} defaultText={faq.a} tag="p" className="text-neutral-600" multiline={true} />
               </div>
             ))}
           </div>

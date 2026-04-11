@@ -60,13 +60,13 @@ export default function AdminPanel({ accentColor }) {
       {!loading && tab==='inquiries' && (
         <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
           {inquiries.length===0 ? (
-            <div style={{ textAlign:'center', padding:'40px 0', color:'rgba(255,255,255,0.3)',
+            <div style={{ textAlign:'center', padding:'40px 0', color:'var(--muted-foreground)',
               fontSize:12, fontFamily:'Sora,sans-serif' }}>문의 없음</div>
           ) : inquiries.map(inq => (
             <div key={inq.id} style={{ padding:14, borderRadius:12,
-              background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)' }}>
+              background:'var(--card)', border:'1px solid var(--border)' }}>
               <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
-                <span style={{ fontSize:13, fontWeight:600, color:'rgba(255,255,255,0.9)',
+                <span style={{ fontSize:13, fontWeight:600, color:'var(--foreground)',
                   fontFamily:'Sora,sans-serif' }}>{inq.company} — {inq.name}</span>
                 <span style={{ fontSize:10, padding:'2px 8px', borderRadius:99,
                   background:'rgba(245,158,11,0.1)', color:'#f59e0b',
@@ -74,12 +74,12 @@ export default function AdminPanel({ accentColor }) {
                   {inq.type||'문의'}
                 </span>
               </div>
-              <div style={{ fontSize:11, color:'rgba(255,255,255,0.4)', marginBottom:4,
+              <div style={{ fontSize:11, color:'var(--muted-foreground)', marginBottom:4,
                 fontFamily:'Sora,sans-serif' }}>{inq.email} · {inq.phone}</div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,0.65)', lineHeight:1.6,
+              <div style={{ fontSize:12, color:'var(--foreground)', lineHeight:1.6,
                 fontFamily:'Sora,sans-serif' }}>{inq.message}</div>
               {inq.budget && (
-                <div style={{ fontSize:11, color:'rgba(255,255,255,0.3)', marginTop:4 }}>예산: {inq.budget}</div>
+                <div style={{ fontSize:11, color:'var(--muted-foreground)', marginTop:4 }}>예산: {inq.budget}</div>
               )}
             </div>
           ))}
@@ -93,7 +93,7 @@ export default function AdminPanel({ accentColor }) {
             {['pending','approved','rejected'].map(s => (
               <button key={s} onClick={()=>setStatus(s)}
                 style={{ padding:'6px 14px', borderRadius:8, fontSize:12, cursor:'pointer',
-                  border:'1px solid rgba(255,255,255,0.08)',
+                  border:'1px solid var(--border)',
                   background: status===s ? accentColor : 'rgba(255,255,255,0.05)',
                   color: status===s ? '#000' : 'rgba(255,255,255,0.5)',
                   fontFamily:'Sora,sans-serif' }}>
@@ -102,18 +102,18 @@ export default function AdminPanel({ accentColor }) {
             ))}
           </div>
           {items.length===0 ? (
-            <div style={{ textAlign:'center', padding:'40px 0', color:'rgba(255,255,255,0.3)',
+            <div style={{ textAlign:'center', padding:'40px 0', color:'var(--muted-foreground)',
               fontSize:12, fontFamily:'Sora,sans-serif' }}>{status} 항목 없음</div>
           ) : (
             <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
               {items.map(item => (
                 <div key={item.id} style={{ padding:16, borderRadius:14,
-                  background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                  background:'var(--card)', border:'1px solid var(--border)' }}>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:12, marginBottom:10 }}>
                     <div>
-                      <div style={{ fontSize:13, fontWeight:600, color:'rgba(255,255,255,0.9)',
+                      <div style={{ fontSize:13, fontWeight:600, color:'var(--foreground)',
                         fontFamily:'Sora,sans-serif', marginBottom:2 }}>{item.title}</div>
-                      <div style={{ fontSize:11, color:'rgba(255,255,255,0.4)',
+                      <div style={{ fontSize:11, color:'var(--muted-foreground)',
                         fontFamily:'JetBrains Mono,monospace' }}>
                         {item.nickname} · {item.category} · ₩{(item.price||0).toLocaleString()}
                       </div>
@@ -127,7 +127,7 @@ export default function AdminPanel({ accentColor }) {
                     </a>
                   </div>
                   {item.description && (
-                    <p style={{ fontSize:11, color:'rgba(255,255,255,0.4)', marginBottom:10,
+                    <p style={{ fontSize:11, color:'var(--muted-foreground)', marginBottom:10,
                       fontFamily:'Sora,sans-serif', lineHeight:1.5,
                       overflow:'hidden', display:'-webkit-box',
                       WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>

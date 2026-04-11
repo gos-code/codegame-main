@@ -111,7 +111,6 @@ export default function Sell() {
         {/* 헤더 */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily:'Sora,sans-serif' }}>코드 판매하기</h1>
-          <p className="text-sm text-white/40" style={{ fontFamily:'Sora,sans-serif' }}>판매 수익의 80%가 바로 지급돼요</p>
         </div>
 
         {/* 스텝 표시 */}
@@ -288,7 +287,7 @@ export default function Sell() {
                   <div className="flex justify-between text-xs text-white/50 mb-2" style={{ fontFamily:'JetBrains Mono,monospace' }}>
                     <span>업로드 중...</span><span>{progress}%</span>
                   </div>
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background:'rgba(255,255,255,0.08)' }}>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background:'var(--secondary)' }}>
                     <div className="h-full rounded-full transition-all"
                       style={{ width:`${progress}%`, background:`linear-gradient(90deg,${accentColor},#00d4ff)`,
                         boxShadow:`0 0 10px ${accentColor}60` }} />
@@ -303,7 +302,7 @@ export default function Sell() {
             {step > 0 && (
               <button onClick={()=>setStep(p=>p-1)}
                 className="flex items-center gap-1.5 px-4 py-3 rounded-xl text-sm transition-all"
-                style={{ background:'rgba(255,255,255,0.05)', color:'rgba(255,255,255,0.6)', fontFamily:'Sora,sans-serif' }}>
+                style={{ background:'rgba(255,255,255,0.05)', color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
                 <ChevronLeft className="w-4 h-4" />이전
               </button>
             )}
