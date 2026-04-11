@@ -184,7 +184,7 @@ export default function Guide() {
             ].map((faq, index) => (
               <div key={index} className="pb-6 border-b  last:border-0">
                 <h3 className="font-bold mb-2 text-lg">{faq.q}</h3>
-                <AdminEditableText id={faq.id || \'faq_\'+index} defaultText={faq.a} tag="p" className="text-neutral-600" multiline={true} />
+                <AdminEditableText id={faq.id || ('faq_'+index)} defaultText={faq.a} tag="p" style={{color:"var(--muted)", fontFamily:"Sora,sans-serif"}} multiline={true} />
               </div>
             ))}
           </div>
