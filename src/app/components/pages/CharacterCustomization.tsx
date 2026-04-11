@@ -88,14 +88,11 @@ const SHOES_FEM = [
   { id:'HEELS',      label:'구두',        desc:'정장/성숙형' },
 ];
 const SKIN_TONES = [
-  { id:'SK01', color:'#F6D7C3', label:'매우 밝은 톤' },
-  { id:'SK02', color:'#EFC4A8', label:'밝은 톤' },
-  { id:'SK03', color:'#DDAA87', label:'밝은 중간 톤' },
-  { id:'SK04', color:'#C98D68', label:'중간 톤' },
-  { id:'SK05', color:'#B5744F', label:'건강한 톤' },
-  { id:'SK06', color:'#9A5E3D', label:'구릿빛 톤' },
-  { id:'SK07', color:'#7A472F', label:'짙은 톤' },
-  { id:'SK08', color:'#5B3423', label:'매우 짙은 톤' },
+  { id:'SK01', color:'#FDEBD0', label:'화이트' },
+  { id:'SK02', color:'#EFC4A8', label:'살색' },
+  { id:'SK03', color:'#D4A843', label:'노란색' },
+  { id:'SK04', color:'#8B5E3C', label:'갈색' },
+  { id:'SK05', color:'#3B1A0A', label:'검정색' },
 ];
 const HAIR_COLORS = [
   { id:'HC01', color:'#1a1a1a', label:'검정' },
@@ -375,7 +372,7 @@ export function CharacterCustomization() {
                   {activeTab==='피부' && (
                     <div>
                       <TabTitle color={activeColor}>SKIN TONE</TabTitle>
-                      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:8, marginBottom:12 }}>
+                      <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:8, marginBottom:12 }}>
                         {SKIN_TONES.map(s => (
                           <button key={s.id} onClick={() => setSkin(s.color)} title={s.label} style={{
                             width:'100%', aspectRatio:'1', background:s.color, cursor:'none',
@@ -427,7 +424,9 @@ export function CharacterCustomization() {
                 borderRadius:'50%', filter:'blur(5px)' }} />
               {/* 캐릭터 */}
               <div style={{ position:'relative', zIndex:2, filter:'drop-shadow(0 6px 12px rgba(0,0,0,0.9))' }}>
-                <PixelCharacter style={charStyle} hair={charHair}
+                <PixelCharacter
+                  outfit={outfit} bottom={bottom}
+                  style={charStyle} hair={charHair}
                   hairColor={hairColor} gender={charGender} skin={skin} scale={8} />
               </div>
               {/* 코너 마킹 */}
