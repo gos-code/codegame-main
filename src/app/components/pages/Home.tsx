@@ -26,7 +26,7 @@ export default function Home() {
     { icon: Shield, title: 'Code Risk Scanner', desc: '악성코드 자동 탐지 · API키 노출 방지 · 라이선스 검증' },
     { icon: Zap, title: '즉시 거래', desc: '라이선스 키 자동 발급 · 구매 즉시 다운로드 · 영구 소유' },
     { icon: Code2, title: '검증된 코드', desc: '관리자 검수 통과 · 완성형 코드만 판매 · README 포함' },
-    { icon: TrendingUp, title: '수익 창출', desc: '판매 수익 80% 지급 · 반복 수익 · 자는 동안도 수익' },
+    { icon: TrendingUp, title: '수익 창출', desc: '반복 수익 · 자는 동안도 수익 · 월 정산' },
   ];
 
   return (

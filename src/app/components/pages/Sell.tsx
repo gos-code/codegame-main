@@ -95,7 +95,7 @@ export default function Sell() {
   if (!user) return (
     <div className="min-h-screen flex items-center justify-center" style={{ background:'var(--background)' }}>
       <div className="text-center">
-        <p className="text-white/50 text-sm mb-4" style={{ fontFamily:'Sora,sans-serif' }}>로그인이 필요해요</p>
+        <p className="text-sm mb-4" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>로그인이 필요해요</p>
         <button onClick={() => nav('/login')}
           className="px-6 py-3 rounded-xl text-sm font-semibold"
           style={{ background:`linear-gradient(135deg,${accentColor},#00d4ff)`, color:'#000', fontFamily:'Sora,sans-serif' }}>
@@ -110,7 +110,7 @@ export default function Sell() {
       <div className="max-w-2xl mx-auto">
         {/* 헤더 */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily:'Sora,sans-serif' }}>코드 판매하기</h1>
+          <h1 className="text-2xl font-bold mb-1" style={{ fontFamily:'Sora,sans-serif', color:'var(--foreground)' }}>코드 판매하기</h1>
         </div>
 
         {/* 스텝 표시 */}
@@ -120,11 +120,11 @@ export default function Sell() {
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all"
                   style={{ background: i<=step ? accentColor : 'rgba(255,255,255,0.06)',
-                    color: i<=step ? '#000' : 'rgba(255,255,255,0.3)',
+                    color: i<=step ? '#000' : 'var(--muted-foreground)',
                     fontFamily:'Orbitron,monospace' }}>
                   {i<step ? <Check className="w-3.5 h-3.5" /> : i+1}
                 </div>
-                <span className="text-xs" style={{ color: i===step ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)',
+                <span className="text-xs" style={{ color: i===step ? 'var(--foreground)' : 'var(--muted)',
                   fontFamily:'Sora,sans-serif' }}>{s}</span>
               </div>
               {i<STEPS.length-1 && <div className="w-8 h-px" style={{ background:'rgba(255,255,255,0.1)' }} />}
@@ -140,38 +140,38 @@ export default function Sell() {
           {step===0 && (
             <div className="space-y-4">
               <div>
-                <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest"
+                <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }}
                   style={{ fontFamily:'JetBrains Mono,monospace' }}>상품명 *</label>
                 <input value={title} onChange={e=>setTitle(e.target.value)}
                   placeholder="예: 스마트스토어 주문 자동 처리 봇 v2.0"
-                  className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/25 outline-none"
+                  className="w-full px-4 py-3 rounded-xl text-sm outline-none" style={{ color:'var(--foreground)' }}
                   style={{ background:'var(--input)', border:'1px solid var(--border)', fontFamily:'Sora,sans-serif' }} />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest" style={{ fontFamily:'JetBrains Mono,monospace' }}>카테고리</label>
+                  <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>카테고리</label>
                   <select value={category} onChange={e=>setCategory(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white outline-none"
+                    className="w-full px-4 py-3 rounded-xl text-sm outline-none" style={{ color:'var(--foreground)' }}
                     style={{ background:'var(--input)', border:'1px solid var(--border)', fontFamily:'Sora,sans-serif' }}>
                     {CATEGORIES.map(c => <option key={c} value={c} style={{ background:'#06080f' }}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest" style={{ fontFamily:'JetBrains Mono,monospace' }}>언어/도구</label>
+                  <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>언어/도구</label>
                   <input value={lang} onChange={e=>setLang(e.target.value)} placeholder="예: Python 3.11"
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/25 outline-none"
+                    className="w-full px-4 py-3 rounded-xl text-sm outline-none" style={{ color:'var(--foreground)' }}
                     style={{ background:'var(--input)', border:'1px solid var(--border)', fontFamily:'Sora,sans-serif' }} />
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest" style={{ fontFamily:'JetBrains Mono,monospace' }}>상품 설명 *</label>
+                <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>상품 설명 *</label>
                 <textarea value={desc} onChange={e=>setDesc(e.target.value)} rows={4}
                   placeholder="어떤 문제를 해결하는지, 어떻게 사용하는지 구체적으로 설명해주세요."
-                  className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/25 outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none" style={{ color:'var(--foreground)' }}
                   style={{ background:'var(--input)', border:'1px solid var(--border)', fontFamily:'Sora,sans-serif' }} />
               </div>
               <div>
-                <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest" style={{ fontFamily:'JetBrains Mono,monospace' }}>라이선스</label>
+                <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>라이선스</label>
                 <div className="grid grid-cols-2 gap-2">
                   {LICENSES.map(l => (
                     <button key={l} onClick={()=>setLicense(l)}
@@ -191,13 +191,13 @@ export default function Sell() {
           {step===1 && (
             <div className="space-y-5">
               <div>
-                <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest" style={{ fontFamily:'JetBrains Mono,monospace' }}>메인 파일 *</label>
+                <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>메인 파일 *</label>
                 <input ref={fileRef} type="file" accept=".py,.js,.ts,.json,.zip,.ipynb,.html,.sh,.txt" className="hidden"
                   onChange={e=>e.target.files?.[0] && setFile(e.target.files[0])} />
                 {file ? (
                   <div className="flex items-center gap-3 px-4 py-3 rounded-xl"
                     style={{ background:`${accentColor}08`, border:`1px solid ${accentColor}25` }}>
-                    <span className="text-sm text-white/80 flex-1 truncate" style={{ fontFamily:'JetBrains Mono,monospace' }}>{file.name}</span>
+                    <span className="text-sm flex-1 truncate" style={{ color:'var(--foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>{file.name}</span>
                     <span className="text-xs text-white/40">{(file.size/1024).toFixed(0)}KB</span>
                     <button onClick={()=>setFile(null)} className="text-white/30 hover:text-red-400"><X className="w-4 h-4" /></button>
                   </div>
@@ -214,7 +214,7 @@ export default function Sell() {
                 )}
               </div>
               <div>
-                <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest" style={{ fontFamily:'JetBrains Mono,monospace' }}>스크린샷 (선택 · 최대 5장)</label>
+                <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>스크린샷 (선택 · 최대 5장)</label>
                 <input ref={ssRef} type="file" accept="image/*" multiple className="hidden"
                   onChange={e=>e.target.files && handleScreenshots(e.target.files)} />
                 <div className="flex gap-2 flex-wrap">
@@ -244,9 +244,9 @@ export default function Sell() {
           {step===2 && (
             <div className="space-y-5">
               <div>
-                <label className="block text-xs text-white/40 mb-2 uppercase tracking-widest" style={{ fontFamily:'JetBrains Mono,monospace' }}>판매 가격 (원) *</label>
+                <label className="block text-xs mb-2 uppercase tracking-widest" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>판매 가격 (원) *</label>
                 <input type="number" value={price} onChange={e=>setPrice(e.target.value)} placeholder="예: 29000"
-                  className="w-full px-4 py-3 rounded-xl text-lg font-bold text-white placeholder-white/25 outline-none"
+                  className="w-full px-4 py-3 rounded-xl text-lg font-bold outline-none" style={{ color:'var(--foreground)' }}
                   style={{ background:'var(--input)', border:'1px solid var(--border)',
                     fontFamily:'Orbitron,monospace', color:accentColor }} />
                 <p className="text-xs text-white/30 mt-1.5" style={{ fontFamily:'Sora,sans-serif' }}>
@@ -333,7 +333,7 @@ export default function Sell() {
               className="w-full max-w-sm rounded-2xl p-6"
               style={{ background:'rgba(6,8,18,0.95)', border:`1px solid ${accentColor}25` }}>
               <div className="flex items-center justify-between mb-5">
-                <h3 className="text-base font-bold text-white" style={{ fontFamily:'Sora,sans-serif' }}>수익 시뮬레이터</h3>
+                <h3 className="text-base font-bold" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>수익 시뮬레이터</h3>
                 <button onClick={()=>setShowCalc(false)} className="text-white/30"><X className="w-5 h-5" /></button>
               </div>
               <div className="space-y-4">
@@ -376,7 +376,7 @@ export default function Sell() {
             style={{ background:'rgba(6,8,18,0.95)', border:`1px solid ${accentColor}25`,
               boxShadow:`0 40px 100px rgba(0,0,0,0.9)` }}>
             <div className="text-5xl mb-4">✅</div>
-            <h3 className="text-lg font-bold text-white mb-2" style={{ fontFamily:'Sora,sans-serif' }}>완료되었습니다</h3>
+            <h3 className="text-lg font-bold mb-2" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>완료되었습니다</h3>
             <p className="text-xs text-white/40 mb-6 leading-relaxed" style={{ fontFamily:'Sora,sans-serif' }}>
               관리자 검토 후 1~2일 내에<br />판매 목록에 자동 등록됩니다.
             </p>

@@ -1,18 +1,32 @@
 // @ts-nocheck
 import { Outlet, useLocation } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMusic } from '../contexts/MusicContext';
 import Header from './Header';
 import CodeTalkWidget from './CodeTalkWidget';
 
 export default function Layout() {
   const loc = useLocation();
-  const { play, isPlaying } = useMusic();
+  const { play } = useMusic();
+  const startedRef = useRef(false);
+
   useEffect(() => {
-    const handler = () => { if (!isPlaying) play(); };
+    if (startedRef.current) return;
+    const handler = () => {
+      if (startedRef.current) return;
+      startedRef.current = true;
+      play();
+    };
     document.addEventListener('click', handler, { once: true });
-    return () => document.removeEventListener('click', handler);
-  }, [isPlaying]);
+    document.addEventListener('keydown', handler, { once: true });
+    document.addEventListener('touchstart', handler, { once: true });
+    return () => {
+      document.removeEventListener('click', handler);
+      document.removeEventListener('keydown', handler);
+      document.removeEventListener('touchstart', handler);
+    };
+  }, [play]);
+
   const hideHeader = loc.pathname === '/login';
 
   return (
