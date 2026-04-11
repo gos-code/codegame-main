@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
-import { MusicProvider } from './components/MusicContext';
+import { MusicProvider } from './contexts/MusicContext';
 import Layout from './components/Layout';
 import Home from './components/pages/Home';
 import Marketplace from './components/pages/Marketplace';
@@ -52,9 +52,7 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <MusicProvider>
-        <MusicProvider>
           <RouterProvider router={router} />
-        </MusicProvider>
         </MusicProvider>
       </AuthProvider>
     </ThemeProvider>

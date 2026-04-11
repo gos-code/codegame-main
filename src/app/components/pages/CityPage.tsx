@@ -6,7 +6,7 @@ import { Rain } from '../Rain';
 import { PixelCharacter } from '../PixelCharacter';
 import { PixelCat, CAT_COLORS } from '../PixelCat';
 import { CUFacade, Emart24Facade, GS25Facade, PochaFacade, HangangCafeFacade } from '../SeoulStreetFacades';
-import { useMusic } from '../MusicContext';
+import { useMusic } from '../../contexts/MusicContext';
 
 // ── 계절 설정 (분기별로 변경) ──────────────────────────────────────
 const SEASON = 'winter'; // spring | summer | autumn | winter
@@ -106,7 +106,7 @@ export function CityPage() {
   const nav = useNavigate();
   const [curAd, setCurAd] = useState(0);
   const [openShop, setOpenShop] = useState(null);
-  const { playTrack } = useMusic?.() || {};
+  const { play } = useMusic();
   const charX = useRef(400);
   const [charPos, setCharPos] = useState(400);
   const [charDir, setCharDir] = useState(1);
