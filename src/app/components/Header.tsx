@@ -71,14 +71,14 @@ export default function Header() {
                   </Link>
                 );
               })}
-              {/* Dev Garden — 새 탭으로 열기 */}
-              <a href="/codegame-main/dev-garden" target="_blank" rel="noopener noreferrer"
+              {/* Dev Garden */}
+              <Link to="/dev-garden"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all"
                 style={{ background: isDark ? 'rgba(124,58,237,0.12)' : 'rgba(124,58,237,0.08)',
                   border: '1px solid rgba(124,58,237,0.25)', color: '#7c3aed',
                   fontFamily: 'Sora, sans-serif' }}>
                 <Gamepad2 className="w-3.5 h-3.5" />Dev Garden
-              </a>
+              </Link>
             </nav>
           </div>
 
@@ -160,11 +160,11 @@ export default function Header() {
                     {l.label}
                   </Link>
                 ))}
-                <a href="/codegame-main/dev-garden" target="_blank" rel="noopener noreferrer"
+                <Link to="/dev-garden" onClick={() => setMenuOpen(false)}
                   className="text-sm py-2.5 px-3 rounded-lg"
                   style={{ color: '#7c3aed', fontFamily: 'Sora, sans-serif' }}>
                   🎮 Dev Garden
-                </a>
+                </Link>
               </div>
             </motion.div>
           )}

@@ -2,12 +2,24 @@
 <html>
 <head>
   <script>
+    // GitHub Pages SPA 라우팅 처리
+    // basename = '/codegame-main'
+    // 어떤 경로로 와도 /codegame-main/ 으로 redirect하면서 원래 path를 sessionStorage에 저장
+    var base = '/codegame-main';
     var path = window.location.pathname;
     var query = window.location.search;
     var hash = window.location.hash;
-    var base = '/codegame-main';
-    if (path.startsWith(base)) path = path.slice(base.length) || '/';
-    sessionStorage.setItem('spa_redirect', JSON.stringify({ path, query, hash }));
+
+    // path에서 base prefix 제거 → 앱 내부 경로만 저장
+    var appPath = path.startsWith(base) ? (path.slice(base.length) || '/') : path;
+
+    sessionStorage.setItem('spa_redirect', JSON.stringify({
+      path: appPath,
+      query: query,
+      hash: hash
+    }));
+
+    // 항상 base/ 로 이동 (index.html 로드)
     window.location.replace(base + '/');
   </script>
 </head>
