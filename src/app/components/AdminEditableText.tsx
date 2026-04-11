@@ -2,7 +2,7 @@
 // 관리자가 사이트 내에서 직접 텍스트 수정할 수 있는 컴포넌트
 // 사용법: <AdminEditableText id="faq_refund" defaultText="기본 텍스트" tag="p" className="..." />
 import { useState, useEffect, useRef } from 'react';
-import { db, doc, getDoc, setDoc, serverTimestamp } from '../lib/firebase';
+import { db, doc, getDoc, setDoc, serverTimestamp } from '../../lib/firebase';
 import { useAuth } from '../contexts/AuthContext';
 
 interface Props {
