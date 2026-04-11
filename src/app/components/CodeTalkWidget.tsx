@@ -5,7 +5,7 @@ import { X, Send, MessageCircle, Plus, Search, ArrowLeft, User } from 'lucide-re
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { db, collection, addDoc, getDocs, query, where, orderBy,
-  onSnapshot, serverTimestamp, doc, setDoc, getDoc, updateDoc } from '../../lib/firebase';
+  onSnapshot, serverTimestamp, doc, setDoc, getDoc, updateDoc } from '../lib/firebase';
 
 export default function CodeTalkWidget() {
   const [open, setOpen] = useState(false);

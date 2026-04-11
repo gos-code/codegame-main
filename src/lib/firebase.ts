@@ -14,6 +14,8 @@ import {
 } from 'firebase/auth';
 import {
   getFirestore,
+  onSnapshot,
+  onSnapshot,
   collection,
   doc,
   addDoc,
@@ -60,6 +62,7 @@ export {
   deleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  onSnapshot,
   collection,
   doc,
   addDoc,
