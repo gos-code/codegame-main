@@ -15,7 +15,6 @@ import {
 import {
   getFirestore,
   onSnapshot,
-  onSnapshot,
   collection,
   doc,
   addDoc,
@@ -54,6 +53,7 @@ export const db = getFirestore(app);
 export const storage = getStorage(app);
 
 export {
+  onSnapshot,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
@@ -62,7 +62,6 @@ export {
   deleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  onSnapshot,
   collection,
   doc,
   addDoc,
