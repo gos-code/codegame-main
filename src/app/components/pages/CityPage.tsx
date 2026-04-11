@@ -124,6 +124,7 @@ export function CityPage() {
   const charX = useRef(400);
   const [charPos, setCharPos] = useState(400);
   const [charDir, setCharDir] = useState(1);
+  const savedChar = (() => { try { return JSON.parse(localStorage.getItem('cg_character') || '{}'); } catch { return {}; } })();
   const [isWalking, setIsWalking] = useState(false);
   const keys = useRef({});
   const rafRef = useRef(null);
@@ -270,7 +271,15 @@ export function CityPage() {
 
         {/* 캐릭터 */}
         <div style={{ position:'absolute', bottom:'28%', left:charPos, zIndex:10, transform:'translateX(-50%)' }}>
-          <PixelCharacter direction={charDir} isWalking={isWalking} />
+          <PixelCharacter
+            direction={charDir} isWalking={isWalking}
+            style={savedChar?.outfit?.includes('SCHOOL') ? 'SCHOOL' : savedChar?.outfit?.includes('TECH') ? 'TECHWEAR' : savedChar?.outfit?.includes('SUIT') ? 'VINTAGE' : 'STREETWEAR'}
+            hair={savedChar?.hair?.includes('LONG') || savedChar?.hair?.includes('WAVE') ? 'LONG' : savedChar?.hair?.includes('BEANIE') ? 'BEANIE' : savedChar?.hair?.includes('SPIKY') ? 'SPIKY' : 'SHORT'}
+            hairColor={savedChar?.hairColor || '#1a1a1a'}
+            gender={savedChar?.gender === '여자' ? 'FEM' : 'MASC'}
+            skin={savedChar?.skin || '#EFC4A8'}
+            scale={4}
+          />
           <div style={{ color:'rgba(255,255,255,0.5)', fontFamily:'monospace', fontSize:9,
             textAlign:'center', marginTop:2 }}>YOU</div>
         </div>
