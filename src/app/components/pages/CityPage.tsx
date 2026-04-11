@@ -121,14 +121,10 @@ export function CityPage() {
     return () => clearInterval(t);
   }, []);
 
-  // 배경음악
+  // 배경음악 - MusicContext 사용 (랜덤 재생)
+  const { play, isPlaying } = useMusic();
   useEffect(() => {
-    const audio = new Audio('/codegame-main/music/city_main.mp3');
-    audio.loop = true;
-    audio.volume = 0.3;
-    audio.play().catch(() => {});
-    musicRef.current = audio;
-    return () => { audio.pause(); audio.src = ''; };
+    play(); // 랜덤 순서로 시작
   }, []);
 
   // 키보드 이동

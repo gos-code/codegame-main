@@ -1,8 +1,9 @@
 // @ts-nocheck
 import { AnimatePresence, motion } from 'motion/react';
-import { X, Settings, Palette, Music, Play, Pause, ChevronRight } from 'lucide-react';
+import { X, Settings, Palette, Music, Play, Pause, ChevronRight, SkipForward, SkipBack, Volume2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { useMusic } from '../contexts/MusicContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -13,8 +14,8 @@ interface Props { isOpen: boolean; onClose: () => void; }
 
 export default function MyPageModal({ isOpen, onClose }: Props) {
   const { accentColor, setAccentColor, bgColor, setBgColor } = useTheme();
+  const { tracks, currentTrack, isPlaying, volume, play, pause, toggle, next, prev, setVolume } = useMusic();
   const { user, profile, isAdmin } = useAuth();
-  const [isPlaying, setIsPlaying] = useState(false);
 
   if (!user) return null;
 
@@ -76,24 +77,51 @@ export default function MyPageModal({ isOpen, onClose }: Props) {
             </div>
 
             {/* 음악 플레이어 */}
-            <div className="mx-5 mb-4 rounded-xl p-4"
-              style={{ background:'rgba(255,255,255,0.03)', border:`1px solid rgba(255,255,255,0.07)` }}>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl"
-                  style={{ background:`rgba(255,255,255,0.05)` }}>🎵</div>
+            <div className="mx-5 mb-3 rounded-xl p-3"
+              style={{ background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
+                  style={{ background:'rgba(255,255,255,0.05)' }}>🎵</div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-medium text-white/80 truncate" style={{ fontFamily:'Sora,sans-serif' }}>
-                    Lo-fi Coding Beats
+                  <div className="text-xs font-medium truncate"
+                    style={{ color:'rgba(255,255,255,0.8)', fontFamily:'Sora,sans-serif' }}>
+                    {currentTrack?.title || 'No Track'}
                   </div>
-                  <div className="text-xs text-white/30" style={{ fontFamily:'JetBrains Mono,monospace' }}>CodeMusic</div>
+                  <div className="text-xs" style={{ color:'rgba(255,255,255,0.3)', fontFamily:'JetBrains Mono,monospace' }}>CodeGame Music</div>
                 </div>
-                <button onClick={() => setIsPlaying(!isPlaying)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110"
-                  style={{ background: accentColor }}>
-                  {isPlaying
-                    ? <Pause className="w-4 h-4 text-black" fill="black" />
-                    : <Play className="w-4 h-4 text-black ml-0.5" fill="black" />}
-                </button>
+                <div className="flex items-center gap-1">
+                  <button onClick={prev} style={{ background:'none', border:'none', cursor:'pointer', color:'rgba(255,255,255,0.4)', padding:2 }}>
+                    <SkipBack className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={toggle}
+                    className="w-7 h-7 rounded-full flex items-center justify-center"
+                    style={{ background: accentColor }}>
+                    {isPlaying
+                      ? <Pause className="w-3 h-3 text-black" fill="black" />
+                      : <Play className="w-3 h-3 text-black ml-0.5" fill="black" />}
+                  </button>
+                  <button onClick={next} style={{ background:'none', border:'none', cursor:'pointer', color:'rgba(255,255,255,0.4)', padding:2 }}>
+                    <SkipForward className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-2">
+                <Volume2 className="w-3 h-3 flex-shrink-0" style={{ color:'rgba(255,255,255,0.3)' }} />
+                <input type="range" min="0" max="1" step="0.05" value={volume}
+                  onChange={e => setVolume(parseFloat(e.target.value))}
+                  style={{ flex:1, accentColor }} />
+              </div>
+              <div style={{ maxHeight:96, overflowY:'auto' }}>
+                {tracks.map(t => (
+                  <button key={t.id} onClick={() => play(t)}
+                    style={{ width:'100%', textAlign:'left', padding:'4px 8px', borderRadius:6,
+                      fontSize:11, cursor:'pointer', border:'none', transition:'all 0.1s',
+                      background: currentTrack?.id===t.id ? `${accentColor}18` : 'transparent',
+                      color: currentTrack?.id===t.id ? accentColor : 'rgba(255,255,255,0.4)',
+                      fontFamily:'Sora,sans-serif' }}>
+                    {currentTrack?.id===t.id && isPlaying ? '▶ ' : '　'}{t.title}
+                  </button>
+                ))}
               </div>
             </div>
 

@@ -52,7 +52,9 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <MusicProvider>
+        <MusicProvider>
           <RouterProvider router={router} />
+        </MusicProvider>
         </MusicProvider>
       </AuthProvider>
     </ThemeProvider>
