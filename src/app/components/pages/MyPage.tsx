@@ -84,18 +84,18 @@ export default function MyPage() {
             {(profile?.nickname||'U')[0].toUpperCase()}
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-white" style={{ fontFamily:'Sora,sans-serif' }}>
+            <h1 className="text-xl font-bold" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>
               {profile?.nickname || user.email}
             </h1>
-            <p className="text-sm text-white/40 mt-0.5" style={{ fontFamily:'Sora,sans-serif' }}>{user.email}</p>
+            <p className="text-sm mt-0.5" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>{user.email}</p>
             <div className="flex items-center gap-3 mt-2">
               <span className="text-xs font-bold" style={{ color:accentColor, fontFamily:'Orbitron,monospace' }}>
                 LV.{String(profile?.level||1).padStart(2,'0')}
               </span>
-              <div className="w-24 h-1.5 rounded-full" style={{ background:'rgba(255,255,255,0.08)' }}>
+              <div className="w-24 h-1.5 rounded-full" style={{ background:'var(--border)' }}>
                 <div className="h-full rounded-full" style={{ width:`${(profile?.xp||0)%100}%`, background:accentColor }} />
               </div>
-              <span className="text-xs text-white/30" style={{ fontFamily:'JetBrains Mono,monospace' }}>
+              <span className="text-xs" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>
                 {profile?.xp||0} XP
               </span>
             </div>
@@ -109,7 +109,7 @@ export default function MyPage() {
               <div key={s.label} className="text-center rounded-xl py-3 px-4"
                 style={{ background:'var(--card)' }}>
                 <div className="text-lg font-bold" style={{ color:accentColor, fontFamily:'Orbitron,monospace' }}>{s.val}</div>
-                <div className="text-xs text-white/30 mt-0.5" style={{ fontFamily:'Sora,sans-serif' }}>{s.label}</div>
+                <div className="text-xs mt-0.5" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -121,7 +121,7 @@ export default function MyPage() {
             <button key={t.id} onClick={()=>setTab(t.id)}
               className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-medium transition-all"
               style={{ background: tab===t.id ? accentColor : 'transparent',
-                color: tab===t.id ? '#000' : 'rgba(255,255,255,0.45)',
+                color: tab===t.id ? '#000' : 'var(--muted-foreground)',
                 fontFamily:'Sora,sans-serif' }}>
               <t.icon className="w-3.5 h-3.5" />{t.label}
             </button>
@@ -140,15 +140,15 @@ export default function MyPage() {
             {tab==='purchases' && (
               <div className="space-y-3">
                 {purchases.length===0 ? (
-                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif' }}>
+                  <div className="text-center py-20 text-sm" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>
                     구매한 상품이 없어요
                   </div>
                 ) : purchases.map(p => (
                   <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl"
-                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                    style={{ background:'var(--card)', border:'1px solid var(--border)' }}>
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif' }}>{p.title}</div>
-                      <div className="text-xs text-white/35 mt-1" style={{ fontFamily:'JetBrains Mono,monospace' }}>
+                      <div className="text-sm font-medium" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>{p.title}</div>
+                      <div className="text-xs mt-1" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>
                         {p.purchasedAt?.toDate?.()?.toLocaleDateString('ko-KR')||'—'} · ₩{(p.price||0).toLocaleString()}
                       </div>
                     </div>
@@ -167,14 +167,14 @@ export default function MyPage() {
             {tab==='sales' && (
               <div className="space-y-3">
                 {sales.length===0 ? (
-                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif' }}>
+                  <div className="text-center py-20 text-sm" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>
                     등록한 상품이 없어요
                   </div>
                 ) : sales.map(s => (
                   <div key={s.id} className="flex items-center gap-4 p-4 rounded-xl"
-                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                    style={{ background:'var(--card)', border:'1px solid var(--border)' }}>
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif' }}>{s.title}</div>
+                      <div className="text-sm font-medium" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>{s.title}</div>
                       <div className="flex items-center gap-3 mt-1">
                         <span className="text-xs px-2 py-0.5 rounded-full"
                           style={{ background: s.status==='approved' ? `${accentColor}15` : s.status==='pending' ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)',
@@ -183,7 +183,7 @@ export default function MyPage() {
                             fontFamily:'JetBrains Mono,monospace' }}>
                           {s.status==='approved' ? '승인' : s.status==='pending' ? '검수중' : '반려'}
                         </span>
-                        <span className="text-xs text-white/35" style={{ fontFamily:'JetBrains Mono,monospace' }}>
+                        <span className="text-xs" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>
                           {s.salesCount||0}판매 · ₩{(s.revenue||0).toLocaleString()}
                         </span>
                       </div>
@@ -191,7 +191,7 @@ export default function MyPage() {
                     <div className="text-sm font-bold" style={{ color:accentColor, fontFamily:'Orbitron,monospace' }}>
                       ₩{(s.price||0).toLocaleString()}
                     </div>
-                    <button onClick={()=>deleteSale(s.id)} className="text-white/25 hover:text-red-400 transition-colors p-1.5">
+                    <button onClick={()=>deleteSale(s.id)} className="hover:text-red-400 transition-colors p-1.5" style={{ color:'var(--muted-foreground)' }}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -209,24 +209,24 @@ export default function MyPage() {
                     { label:'등록 상품', val:`${sales.length}개`, color:'white' },
                   ].map(s => (
                     <div key={s.label} className="text-center rounded-xl p-5"
-                      style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                      style={{ background:'var(--card)', border:'1px solid var(--border)' }}>
                       <div className="text-2xl font-bold mb-1"
-                        style={{ color:s.color==='white'?'rgba(255,255,255,0.85)':s.color, fontFamily:'Orbitron,monospace' }}>
+                        style={{ color:s.color==='white'?'var(--foreground)':s.color, fontFamily:'Orbitron,monospace' }}>
                         {s.val}
                       </div>
-                      <div className="text-xs text-white/30" style={{ fontFamily:'Sora,sans-serif' }}>{s.label}</div>
+                      <div className="text-xs" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>{s.label}</div>
                     </div>
                   ))}
                 </div>
                 {sales.filter(s=>s.status==='approved').map(s => (
                   <div key={s.id} className="flex items-center justify-between p-4 rounded-xl"
-                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
-                    <div className="text-sm text-white/75" style={{ fontFamily:'Sora,sans-serif' }}>{s.title}</div>
+                    style={{ background:'var(--card)', border:'1px solid var(--border)' }}>
+                    <div className="text-sm" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>{s.title}</div>
                     <div className="text-right">
                       <div className="text-sm font-bold" style={{ color:accentColor, fontFamily:'Orbitron,monospace' }}>
                         ₩{(s.revenue||0).toLocaleString()}
                       </div>
-                      <div className="text-xs text-white/30" style={{ fontFamily:'JetBrains Mono,monospace' }}>{s.salesCount||0}건</div>
+                      <div className="text-xs" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>{s.salesCount||0}건</div>
                     </div>
                   </div>
                 ))}
@@ -237,12 +237,12 @@ export default function MyPage() {
             {tab==='licenses' && (
               <div className="space-y-3">
                 {purchases.length===0 ? (
-                  <div className="text-center py-20 text-white/30 text-sm" style={{ fontFamily:'Sora,sans-serif' }}>라이선스 키가 없어요</div>
+                  <div className="text-center py-20 text-sm" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>라이선스 키가 없어요</div>
                 ) : purchases.map(p => (
                   <div key={p.id} className="p-4 rounded-xl"
-                    style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
+                    style={{ background:'var(--card)', border:'1px solid var(--border)' }}>
                     <div className="flex items-center justify-between mb-3">
-                      <div className="text-sm font-medium text-white/85" style={{ fontFamily:'Sora,sans-serif' }}>{p.title}</div>
+                      <div className="text-sm font-medium" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>{p.title}</div>
                       <span className="text-xs px-2 py-0.5 rounded-full"
                         style={{ background:`${accentColor}12`, color:accentColor, border:`1px solid ${accentColor}25`,
                           fontFamily:'JetBrains Mono,monospace' }}>
@@ -257,12 +257,12 @@ export default function MyPage() {
                       {p.licenseKey && (
                         <button onClick={()=>copyKey(p.licenseKey)}
                           className="flex-shrink-0 p-1.5 rounded-lg transition-colors"
-                          style={{ background:'rgba(255,255,255,0.06)' }}>
-                          {copiedKey===p.licenseKey ? <Check className="w-4 h-4" style={{ color:accentColor }} /> : <Copy className="w-4 h-4 text-white/40" />}
+                          style={{ background:'var(--secondary)' }}>
+                          {copiedKey===p.licenseKey ? <Check className="w-4 h-4" style={{ color:accentColor }} /> : <Copy className="w-4 h-4" style={{ color:'var(--muted-foreground)' }} />}
                         </button>
                       )}
                     </div>
-                    <div className="text-xs text-white/25 mt-2" style={{ fontFamily:'JetBrains Mono,monospace' }}>유효기간: 영구</div>
+                    <div className="text-xs mt-2" style={{ color:'var(--muted-foreground)' }} style={{ fontFamily:'JetBrains Mono,monospace' }}>유효기간: 영구</div>
                   </div>
                 ))}
               </div>
@@ -271,11 +271,11 @@ export default function MyPage() {
             {/* 설정 */}
             {tab==='settings' && (
               <div className="space-y-4 max-w-md">
-                <div className="p-5 rounded-xl" style={{ background:'var(--card)', border:'1px solid rgba(255,255,255,0.07)' }}>
-                  <h3 className="text-sm font-semibold text-white/80 mb-4" style={{ fontFamily:'Sora,sans-serif' }}>계정 정보</h3>
-                  <div className="space-y-2 text-xs text-white/50">
-                    <div>이메일: <span className="text-white/70">{user.email}</span></div>
-                    <div>닉네임: <span className="text-white/70">{profile?.nickname}</span></div>
+                <div className="p-5 rounded-xl" style={{ background:'var(--card)', border:'1px solid var(--border)' }}>
+                  <h3 className="text-sm font-semibold mb-4" style={{ color:'var(--foreground)' }} style={{ fontFamily:'Sora,sans-serif' }}>계정 정보</h3>
+                  <div className="space-y-2 text-xs" style={{ color:'var(--muted-foreground)' }}>
+                    <div>이메일: <span className="" style={{ color:'var(--foreground)' }}>{user.email}</span></div>
+                    <div>닉네임: <span className="" style={{ color:'var(--foreground)' }}>{profile?.nickname}</span></div>
                     <div>레벨: <span style={{ color:accentColor }}>LV.{profile?.level||1}</span></div>
                   </div>
                 </div>

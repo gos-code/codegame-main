@@ -105,11 +105,11 @@ export default function Requests() {
         {/* 통계 */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           {[
-            { icon: Plus, label:'활성 요청', value: requests.filter(r=>r.status==='open').length+'건' },
-            { icon: MessageSquare, label:'총 제안', value: requests.reduce((a,r)=>a+(r.proposalCount||0),0)+'건' },
-            { icon: DollarSign, label:'평균 예산', value: requests.length
-              ? '₩'+Math.round(requests.reduce((a,r)=>a+((r.budgetMin+r.budgetMax)/2||0),0)/requests.length/10000)+'만'
-              : '—' },
+            { icon: Plus, label:'활성 요청', num: requests.filter(r=>r.status==='open').length, unit:'건' },
+            { icon: MessageSquare, label:'총 제안', num: requests.reduce((a,r)=>a+(r.proposalCount||0),0), unit:'건' },
+            { icon: DollarSign, label:'평균 예산',
+              num: requests.length ? '₩'+Math.round(requests.reduce((a,r)=>a+((r.budgetMin+r.budgetMax)/2||0),0)/requests.length/10000) : '—',
+              unit: requests.length ? '만원' : '' },
           ].map((s,i) => (
             <div key={i} style={cardStyle}>
               <div className="flex items-center gap-3">
@@ -121,9 +121,9 @@ export default function Requests() {
                   <div className="text-xs" style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif' }}>
                     {s.label}
                   </div>
-                  <div className="text-lg font-bold"
-                    style={{ color:'var(--foreground)', fontFamily:'Orbitron,monospace' }}>
-                    {s.value}
+                  <div className="text-lg font-bold flex items-baseline gap-0.5">
+                    <span style={{ color:'var(--foreground)', fontFamily:'Orbitron,monospace' }}>{s.num}</span>
+                    {s.unit && <span style={{ color:'var(--muted)', fontFamily:'Sora,sans-serif', fontSize:12 }}>{s.unit}</span>}
                   </div>
                 </div>
               </div>

@@ -10,6 +10,21 @@ const CATEGORIES = ['style', 'gender', 'hair', 'hairColor', 'skin'] as const;
 type Category = typeof CATEGORIES[number];
 
 export function CharacterCustomization() {
+  // Dev Garden: 배경 강제 검정
+  useEffect(() => {
+    document.body.classList.add('dev-garden-page');
+    document.documentElement.style.background = '#000';
+    document.body.style.background = '#000';
+    const root = document.getElementById('root');
+    if (root) root.style.background = '#000';
+    return () => {
+      document.body.classList.remove('dev-garden-page');
+      document.documentElement.style.background = '';
+      document.body.style.background = '';
+      if (root) root.style.background = '';
+    };
+  }, []);
+
   const [style, setStyle] = useState('STREETWEAR');
   const [hair, setHair] = useState('SPIKY');
   const [hairColor, setHairColor] = useState('#4a3020'); // Default Brown

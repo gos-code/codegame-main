@@ -38,16 +38,28 @@
   --secondary-foreground: rgba(255,255,255,0.7);
 }
 
+/* ── Dev Garden 전용 — 항상 검정 배경 ── */
+.dev-garden-page {
+  background: #000 !important;
+  color: #fff;
+}
+.dev-garden-page ~ * { background: #000 !important; }
+
 /* ── 기본 스타일 ── */
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body, #root {
+html, body {
   background-color: var(--background);
   color: var(--foreground);
   min-height: 100%;
   margin: 0;
   font-family: 'Sora', sans-serif;
   transition: background-color 0.25s, color 0.25s;
+}
+
+/* #root는 background 강제 설정 제거 → 자식 페이지가 직접 제어 */
+#root {
+  min-height: 100%;
 }
 
 /* 헤더 높이만큼 padding */
