@@ -106,7 +106,6 @@ export function CityPage() {
   const nav = useNavigate();
   const [curAd, setCurAd] = useState(0);
   const [openShop, setOpenShop] = useState(null);
-  const { play } = useMusic();
   const charX = useRef(400);
   const [charPos, setCharPos] = useState(400);
   const [charDir, setCharDir] = useState(1);
