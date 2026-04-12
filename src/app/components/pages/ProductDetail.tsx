@@ -96,22 +96,35 @@ export default function ProductDetail() {
     if (purchaseId) {
       await updateDoc(doc(db,'purchases',purchaseId), { downloadCount: increment(1) }).catch(()=>{});
     }
+    const fileName = product?.fileName || product?.safeFileName || 'download';
     try {
-      // Firebase Storage는 크로스 오리진이라 fetch로 blob 변환 후 다운로드
-      const response = await fetch(fileUrl);
-      if (!response.ok) throw new Error('다운로드 실패');
+      // 방법 1: fetch → blob → 강제 다운로드
+      const response = await fetch(fileUrl, { mode: 'cors' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+      const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
-      a.download = product?.fileName || 'download';
+      a.href = blobUrl;
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
     } catch(e) {
-      // fetch 실패 시 새 탭으로 열기 (fallback)
-      window.open(fileUrl, '_blank');
+      try {
+        // 방법 2: a 태그 직접 다운로드
+        const a = document.createElement('a');
+        a.href = fileUrl;
+        a.download = fileName;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch(e2) {
+        // 방법 3: 새 탭 열기
+        window.open(fileUrl, '_blank');
+      }
     }
   };
 

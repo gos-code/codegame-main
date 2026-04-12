@@ -10,7 +10,22 @@ import { useMusic } from '../../contexts/MusicContext';
 
 const STREET_W = 2400;
 
-// ── 배경 ──────────────────────────────────────────────────────────────
+// ── 배경 (랜덤값 컴포넌트 외부에 고정 → 리렌더 시 깜빡임 방지) ──────
+const STAR_DATA = [...Array(50)].map((_,i) => ({
+  top: Math.random()*50, left: Math.random()*100,
+  opA: 0.2+Math.random()*0.5, dur: 3+Math.random()*4, delay: Math.random()*5,
+}));
+const BLDG_HEIGHTS = [100,60,140,50,120,80,160,55,110,70,130,45,95,150,65];
+const BLDG_WINDOWS = BLDG_HEIGHTS.map(h =>
+  [...Array(Math.floor(h/20))].map((_,j) => ({
+    j,
+    bright: Math.random() > 0.4,
+    dur: 4+Math.random()*6,
+    delay: Math.random()*5,
+    color: ['#ffee88','#88bbff','#ffaa44','#aaffdd'][Math.floor(Math.random()*4)],
+  }))
+);
+
 function SkyBackground() {
   return (
     <div style={{ position:'absolute', inset:0, overflow:'hidden', pointerEvents:'none' }}>
@@ -22,40 +37,39 @@ function SkyBackground() {
           borderRadius:'50%',
           background:'radial-gradient(circle at 35% 35%, #fffff0, #d4d4a0 60%, #a0a060)',
           boxShadow:'0 0 25px rgba(255,255,200,0.25)' }} />
-      {/* 별 */}
-      {useMemo(() => [...Array(50)].map((_,i) => (
+      {/* 별 - 고정 랜덤값 */}
+      {STAR_DATA.map((st,i) => (
         <motion.div key={i}
-          animate={{ opacity:[0.2+Math.random()*0.5, 0.9, 0.2+Math.random()*0.5] }}
-          transition={{ duration:3+Math.random()*4, repeat:Infinity, delay:Math.random()*5 }}
-          style={{ position:'absolute', top:`${Math.random()*50}%`, left:`${Math.random()*100}%`,
+          animate={{ opacity:[st.opA, 0.9, st.opA] }}
+          transition={{ duration:st.dur, repeat:Infinity, delay:st.delay }}
+          style={{ position:'absolute', top:`${st.top}%`, left:`${st.left}%`,
             width:2, height:2, backgroundColor:'#fff', borderRadius:'50%' }} />
-      )), [])}
+      ))}
       {/* 수평선 빛 반사 */}
       <div style={{ position:'absolute', bottom:'28%', left:0, right:0, height:60,
         background:'linear-gradient(to bottom, transparent, rgba(10,30,60,0.5))',
         borderTop:'1px solid rgba(68,136,255,0.15)' }}>
         {[...Array(6)].map((_,i) => (
-          <motion.div key={i} animate={{ opacity:[0.08,0.3,0.08] }}
-            transition={{ duration:4+i*0.8, repeat:Infinity, delay:i*0.5 }}
+          <motion.div key={i} animate={{ opacity:[0.06,0.22,0.06] }}
+            transition={{ duration:5+i*1.2, repeat:Infinity, delay:i*0.8 }}
             style={{ position:'absolute', top:`${15+i*10}%`, left:`${8+i*13}%`,
               width:`${5+i*2}%`, height:1.5,
               backgroundColor:['#ffcc00','#ff8800','#4488ff','#ff0088','#00ffaa','#ffaa00'][i],
               borderRadius:99, filter:'blur(1px)' }} />
         ))}
       </div>
-      {/* 원경 빌딩 */}
+      {/* 원경 빌딩 - 고정 랜덤값 */}
       <div style={{ position:'absolute', bottom:'26%', left:0, right:0,
         display:'flex', alignItems:'flex-end', gap:1, padding:'0 3%', pointerEvents:'none' }}>
-        {[100,60,140,50,120,80,160,55,110,70,130,45,95,150,65].map((h,i) => (
+        {BLDG_HEIGHTS.map((h,i) => (
           <div key={i} style={{ flex:1, height:h, minWidth:20,
             backgroundColor:i%3===0?'#0d1f40':i%3===1?'#091530':'#0b1838', position:'relative' }}>
-            {[...Array(Math.floor(h/20))].map((_,j) => (
-              <motion.div key={j}
-                animate={{ opacity:Math.random()>0.4?[1,0.2,1]:[0.1,0.7,0.1] }}
-                transition={{ duration:4+Math.random()*6, repeat:Infinity, delay:Math.random()*5 }}
-                style={{ position:'absolute', top:4+j*18, left:'15%', right:'15%', height:7,
-                  backgroundColor:['#ffee88','#88bbff','#ffaa44','#aaffdd'][Math.floor(Math.random()*4)],
-                  opacity:0.4, filter:'blur(0.5px)' }} />
+            {BLDG_WINDOWS[i].map((w) => (
+              <motion.div key={w.j}
+                animate={{ opacity: w.bright ? [1,0.2,1] : [0.1,0.7,0.1] }}
+                transition={{ duration:w.dur, repeat:Infinity, delay:w.delay }}
+                style={{ position:'absolute', top:4+w.j*18, left:'15%', right:'15%', height:7,
+                  backgroundColor:w.color, opacity:0.4, filter:'blur(0.5px)' }} />
             ))}
           </div>
         ))}

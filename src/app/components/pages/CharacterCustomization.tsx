@@ -5,76 +5,69 @@ import { PixelCity } from '../PixelCity';
 import { useNavigate } from 'react-router';
 import { PixelDuck } from '../PixelDuck';
 
-// ── 데이터 ───────────────────────────────────────────────────────────
 const HATS = [
-  { id:'none',   label:'없음',       desc:'민머리 오리' },
-  { id:'cap',    label:'야구 모자',  desc:'스트리트 감성' },
-  { id:'beanie', label:'비니',       desc:'힙한 느낌' },
-  { id:'party',  label:'파티 모자',  desc:'축제 분위기' },
-  { id:'crown',  label:'왕관',       desc:'귀족 오리' },
+  { id:'none',   label:'없음',      desc:'민머리 오리' },
+  { id:'cap',    label:'야구 모자', desc:'스트리트 감성' },
+  { id:'beanie', label:'비니',      desc:'힙한 느낌' },
+  { id:'party',  label:'파티 모자', desc:'축제 분위기' },
+  { id:'crown',  label:'왕관',      desc:'귀족 오리' },
 ];
-
 const TOP_COLORS = [
-  { id:'blue',    color:'#4a90d9', label:'블루' },
-  { id:'red',     color:'#d94a4a', label:'레드' },
-  { id:'green',   color:'#4a9d5c', label:'그린' },
-  { id:'purple',  color:'#7c4ad9', label:'퍼플' },
-  { id:'orange',  color:'#d97c4a', label:'오렌지' },
-  { id:'pink',    color:'#d94a8a', label:'핑크' },
-  { id:'yellow',  color:'#d9c44a', label:'옐로우' },
-  { id:'black',   color:'#2a2a2a', label:'블랙' },
-  { id:'white',   color:'#f0f0f0', label:'화이트' },
-  { id:'cyan',    color:'#4ad9d9', label:'시안' },
+  { id:'blue',   color:'#4a90d9', label:'블루' },
+  { id:'red',    color:'#d94a4a', label:'레드' },
+  { id:'green',  color:'#4a9d5c', label:'그린' },
+  { id:'purple', color:'#7c4ad9', label:'퍼플' },
+  { id:'orange', color:'#d97c4a', label:'오렌지' },
+  { id:'pink',   color:'#d94a8a', label:'핑크' },
+  { id:'yellow', color:'#d9c44a', label:'옐로우' },
+  { id:'black',  color:'#2a2a2a', label:'블랙' },
+  { id:'white',  color:'#f0f0f0', label:'화이트' },
+  { id:'cyan',   color:'#4ad9d9', label:'시안' },
 ];
-
 const BOTTOM_COLORS = [
-  { id:'navy',    color:'#2c5f8a', label:'네이비' },
-  { id:'black',   color:'#1a1a2a', label:'블랙' },
-  { id:'khaki',   color:'#6b7c4a', label:'카키' },
-  { id:'brown',   color:'#6b4a2a', label:'브라운' },
-  { id:'gray',    color:'#5a5a6a', label:'그레이' },
-  { id:'denim',   color:'#3d5a8a', label:'데님' },
-  { id:'white',   color:'#e0e0e0', label:'화이트' },
-  { id:'green',   color:'#3a6a4a', label:'그린' },
-  { id:'red',     color:'#8a2a2a', label:'버건디' },
-  { id:'purple',  color:'#5a3a8a', label:'퍼플' },
+  { id:'navy',   color:'#2c5f8a', label:'네이비' },
+  { id:'black',  color:'#1a1a2a', label:'블랙' },
+  { id:'khaki',  color:'#6b7c4a', label:'카키' },
+  { id:'brown',  color:'#6b4a2a', label:'브라운' },
+  { id:'gray',   color:'#5a5a6a', label:'그레이' },
+  { id:'denim',  color:'#3d5a8a', label:'데님' },
+  { id:'white',  color:'#e0e0e0', label:'화이트' },
+  { id:'green',  color:'#3a6a4a', label:'그린' },
+  { id:'red',    color:'#8a2a2a', label:'버건디' },
+  { id:'purple', color:'#5a3a8a', label:'퍼플' },
 ];
-
 const BODY_COLORS = [
-  { id:'white',   color:'#f5f0dc', label:'화이트' },
-  { id:'yellow',  color:'#f0d060', label:'옐로우' },
-  { id:'gray',    color:'#c0c0c0', label:'그레이' },
-  { id:'brown',   color:'#c09060', label:'브라운' },
-  { id:'black',   color:'#404040', label:'블랙' },
+  { id:'white',  color:'#f5f0dc', label:'화이트' },
+  { id:'yellow', color:'#f0d060', label:'옐로우' },
+  { id:'gray',   color:'#c0c0c0', label:'그레이' },
+  { id:'brown',  color:'#c09060', label:'브라운' },
+  { id:'black',  color:'#404040', label:'블랙' },
 ];
-
 const HAT_COLORS = [
-  { id:'red',     color:'#cc2222', label:'레드' },
-  { id:'blue',    color:'#2244cc', label:'블루' },
-  { id:'black',   color:'#111111', label:'블랙' },
-  { id:'white',   color:'#eeeeee', label:'화이트' },
-  { id:'green',   color:'#228822', label:'그린' },
-  { id:'yellow',  color:'#ddaa00', label:'옐로우' },
-  { id:'purple',  color:'#882288', label:'퍼플' },
-  { id:'orange',  color:'#dd6600', label:'오렌지' },
-  { id:'pink',    color:'#dd4499', label:'핑크' },
-  { id:'navy',    color:'#1a2d5a', label:'네이비' },
+  { id:'red',    color:'#cc2222', label:'레드' },
+  { id:'blue',   color:'#2244cc', label:'블루' },
+  { id:'black',  color:'#111111', label:'블랙' },
+  { id:'white',  color:'#eeeeee', label:'화이트' },
+  { id:'green',  color:'#228822', label:'그린' },
+  { id:'yellow', color:'#ddaa00', label:'옐로우' },
+  { id:'purple', color:'#882288', label:'퍼플' },
+  { id:'orange', color:'#dd6600', label:'오렌지' },
+  { id:'pink',   color:'#dd4499', label:'핑크' },
+  { id:'navy',   color:'#1a2d5a', label:'네이비' },
 ];
 
 const TABS = [
-  { id:'body',    label:'몸통',  icon:'🦆', color:'#f0d060' },
-  { id:'hat',     label:'모자',  icon:'🧢', color:'#ff6666' },
-  { id:'top',     label:'상의',  icon:'👕', color:'#66aaff' },
-  { id:'bottom',  label:'하의',  icon:'👖', color:'#aa66ff' },
+  { id:'body',   label:'몸통', icon:'🦆', color:'#f0d060' },
+  { id:'hat',    label:'모자', icon:'🧢', color:'#ff6666' },
+  { id:'top',    label:'상의', icon:'👕', color:'#66aaff' },
+  { id:'bottom', label:'하의', icon:'👖', color:'#aa66ff' },
 ] as const;
 type TabId = typeof TABS[number]['id'];
 
-// ── 픽셀 커서 ────────────────────────────────────────────────────────
 function PixelCursor({ x, y }: { x:number; y:number }) {
   return (
-    <div style={{ position:'fixed', left:x, top:y, pointerEvents:'none', zIndex:9999,
-      transform:'translate(-1px,-1px)' }}>
-      <svg width="16" height="16" viewBox="0 0 8 8" style={{ imageRendering:'pixelated' }}>
+    <div style={{ position:'fixed', left:x, top:y, pointerEvents:'none', zIndex:9999, transform:'translate(-1px,-1px)' }}>
+      <svg width="20" height="20" viewBox="0 0 8 8" style={{ imageRendering:'pixelated' }}>
         <rect x="0" y="0" width="1" height="6" fill="#f0d060"/>
         <rect x="1" y="1" width="1" height="1" fill="#f0d060"/>
         <rect x="2" y="2" width="1" height="1" fill="#f0d060"/>
@@ -100,14 +93,14 @@ export function CharacterCustomization() {
     };
   }, []);
 
-  const [bodyColor, setBodyColor]     = useState('#f5f0dc');
-  const [hat, setHat]                 = useState('cap');
-  const [hatColor, setHatColor]       = useState('#cc2222');
-  const [topColor, setTopColor]       = useState('#4a90d9');
+  const [bodyColor,   setBodyColor]   = useState('#f5f0dc');
+  const [hat,         setHat]         = useState('cap');
+  const [hatColor,    setHatColor]    = useState('#cc2222');
+  const [topColor,    setTopColor]    = useState('#4a90d9');
   const [bottomColor, setBottomColor] = useState('#2c5f8a');
-  const [activeTab, setActiveTab]     = useState<TabId>('body');
-  const [isExiting, setIsExiting]     = useState(false);
-  const [cursor, setCursor]           = useState({ x:-100, y:-100 });
+  const [activeTab,   setActiveTab]   = useState<TabId>('body');
+  const [isExiting,   setIsExiting]   = useState(false);
+  const [cursor,      setCursor]      = useState({ x:-100, y:-100 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -118,111 +111,113 @@ export function CharacterCustomization() {
 
   const handleEnter = () => {
     setIsExiting(true);
-    const char = { bodyColor, hat, hatColor, topColor, bottomColor, isDuck: true };
+    const char = { bodyColor, hat, hatColor, topColor, bottomColor, isDuck:true };
     localStorage.setItem('cg_character', JSON.stringify(char));
-    setTimeout(() => navigate('/dev-garden/city', { state: { character: char } }), 700);
+    setTimeout(() => navigate('/dev-garden/city', { state:{ character:char } }), 700);
   };
 
   const activeColor = TABS.find(t => t.id === activeTab)?.color || '#f0d060';
 
   return (
-    <div style={{ position:'relative', width:'100%', minHeight:'100vh',
-      background:'#02020f', overflow:'hidden', color:'#fff',
-      cursor:'none', userSelect:'none', fontFamily:'"Press Start 2P", monospace' }}>
-
+    <div style={{
+      position:'fixed', inset:0,
+      background:'#02020f', overflow:'auto',
+      color:'#fff', cursor:'none', userSelect:'none',
+      fontFamily:'"Press Start 2P", monospace',
+      display:'flex', flexDirection:'column',
+      alignItems:'center', justifyContent:'center',
+    }}>
       <PixelCursor x={cursor.x} y={cursor.y} />
 
       {/* 배경 도시 */}
-      <div style={{ position:'absolute', inset:0, opacity:0.15, filter:'blur(3px)', pointerEvents:'none' }}>
+      <div style={{ position:'fixed', inset:0, opacity:0.12, filter:'blur(3px)', pointerEvents:'none', zIndex:0 }}>
         <PixelCity />
       </div>
-      <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
-        background:'linear-gradient(to bottom, rgba(2,2,15,0.75) 0%, rgba(2,2,15,0.55) 50%, rgba(2,2,15,0.88) 100%)' }} />
-
+      {/* 오버레이 */}
+      <div style={{ position:'fixed', inset:0, zIndex:1, pointerEvents:'none',
+        background:'linear-gradient(to bottom,rgba(2,2,15,0.8) 0%,rgba(2,2,15,0.6) 50%,rgba(2,2,15,0.9) 100%)' }} />
+      {/* 스캔라인 */}
+      <div style={{ position:'fixed', inset:0, zIndex:2, pointerEvents:'none', opacity:0.15,
+        backgroundImage:'linear-gradient(transparent 50%,rgba(0,0,0,0.5) 50%)',
+        backgroundSize:'100% 4px' }} />
       {/* 상단 컬러 라인 */}
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:2, zIndex:2,
-        background:`linear-gradient(90deg, transparent, ${activeColor}99, ${activeColor}, ${activeColor}99, transparent)`,
+      <div style={{ position:'fixed', top:0, left:0, right:0, height:2, zIndex:3,
+        background:`linear-gradient(90deg,transparent,${activeColor}99,${activeColor},${activeColor}99,transparent)`,
         transition:'background 0.3s' }} />
 
-      {/* 스캔라인 */}
-      <div style={{ position:'absolute', inset:0, zIndex:2, pointerEvents:'none', opacity:0.2,
-        backgroundImage:'linear-gradient(transparent 50%, rgba(0,0,0,0.4) 50%)',
-        backgroundSize:'100% 4px' }} />
-
-      {/* ── 메인 ── */}
-      <div style={{ position:'relative', zIndex:3, display:'flex', flexDirection:'column',
-        alignItems:'center', justifyContent:'center', minHeight:'100vh', padding:'40px 16px 40px' }}>
+      {/* ── 콘텐츠 ── */}
+      <div style={{ position:'relative', zIndex:4, width:'100%', maxWidth:1100,
+        padding:'32px 24px', display:'flex', flexDirection:'column', alignItems:'center', gap:20 }}>
 
         {/* 헤더 */}
-        <motion.div initial={{ y:-30, opacity:0 }} animate={{ y:0, opacity:1 }}
-          style={{ textAlign:'center', marginBottom:20, width:'100%', maxWidth:1000 }}>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:12, marginBottom:6 }}>
-            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,transparent,${activeColor}55)` }} />
-            <h1 style={{ fontSize:'clamp(13px,1.8vw,20px)', color:activeColor, letterSpacing:'0.2em',
-              margin:0, textShadow:`0 0 20px ${activeColor}66`, transition:'color 0.3s, text-shadow 0.3s' }}>
+        <div style={{ textAlign:'center', width:'100%' }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:16, marginBottom:6 }}>
+            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,transparent,${activeColor}55)`, maxWidth:200 }} />
+            <h1 style={{ fontSize:'clamp(14px,2vw,22px)', color:activeColor, letterSpacing:'0.2em',
+              margin:0, textShadow:`0 0 20px ${activeColor}66`, transition:'color 0.3s' }}>
               🦆 나의 오리 만들기
             </h1>
-            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,${activeColor}55,transparent)` }} />
+            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,${activeColor}55,transparent)`, maxWidth:200 }} />
           </div>
-          <p style={{ fontSize:7, color:'rgba(255,255,255,0.2)', margin:0, letterSpacing:'0.15em' }}>
+          <p style={{ fontSize:8, color:'rgba(255,255,255,0.2)', margin:0, letterSpacing:'0.12em' }}>
             DUCK CREATOR · DEV GARDEN SEOUL
           </p>
-        </motion.div>
+        </div>
 
-        {/* 3열 레이아웃 */}
-        <div style={{ display:'flex', gap:24, width:'100%', maxWidth:1000,
-          alignItems:'flex-start', justifyContent:'center', flexWrap:'wrap' }}>
+        {/* 3열 본문 */}
+        <div style={{ display:'flex', gap:20, width:'100%', alignItems:'flex-start', justifyContent:'center', flexWrap:'wrap' }}>
 
           {/* ─ 왼쪽: 탭 + 옵션 ─ */}
           <motion.div initial={{ x:-30, opacity:0 }} animate={{ x:0, opacity:1 }}
-            style={{ flex:'0 0 300px', minWidth:260, display:'flex', flexDirection:'column', gap:10 }}>
+            style={{ flex:'1 1 300px', maxWidth:340, display:'flex', flexDirection:'column', gap:10 }}>
 
             {/* 탭 */}
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:3 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:4 }}>
               {TABS.map(t => (
                 <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
-                  padding:'12px 4px 8px', border:'1px solid',
+                  padding:'14px 4px 10px', border:'1px solid',
                   borderColor: activeTab===t.id ? t.color : 'rgba(255,255,255,0.08)',
-                  background: activeTab===t.id ? `${t.color}18` : 'rgba(255,255,255,0.02)',
-                  color: activeTab===t.id ? t.color : 'rgba(255,255,255,0.25)',
+                  background: activeTab===t.id ? `${t.color}20` : 'rgba(255,255,255,0.03)',
+                  color: activeTab===t.id ? t.color : 'rgba(255,255,255,0.3)',
                   cursor:'none', transition:'all 0.15s',
-                  boxShadow: activeTab===t.id ? `0 0 12px ${t.color}33` : 'none',
+                  boxShadow: activeTab===t.id ? `0 0 14px ${t.color}44` : 'none',
                   fontFamily:'"Press Start 2P"',
-                  display:'flex', flexDirection:'column', alignItems:'center', gap:4,
+                  display:'flex', flexDirection:'column', alignItems:'center', gap:6,
                 }}>
-                  <span style={{ fontSize:18 }}>{t.icon}</span>
-                  <span style={{ fontSize:7 }}>{t.label}</span>
+                  <span style={{ fontSize:20 }}>{t.icon}</span>
+                  <span style={{ fontSize:8 }}>{t.label}</span>
                 </button>
               ))}
             </div>
 
             {/* 옵션 패널 */}
-            <div style={{ background:'rgba(4,4,18,0.92)', border:`1px solid ${activeColor}33`,
-              boxShadow:`0 0 24px ${activeColor}18`, padding:16, minHeight:320,
-              position:'relative', overflow:'hidden', transition:'border-color 0.3s' }}>
-
+            <div style={{
+              background:'rgba(4,4,18,0.92)', border:`1px solid ${activeColor}33`,
+              boxShadow:`0 0 28px ${activeColor}18`, padding:18,
+              minHeight:340, position:'relative', overflow:'hidden',
+              transition:'border-color 0.3s, box-shadow 0.3s',
+            }}>
               {/* 코너 장식 */}
               {[[0,0],[1,0],[0,1],[1,1]].map(([ri,ci],i) => (
                 <div key={i} style={{ position:'absolute',
-                  top: ri===0 ? 4 : 'auto', bottom: ri===1 ? 4 : 'auto',
-                  left: ci===0 ? 4 : 'auto', right: ci===1 ? 4 : 'auto',
-                  width:8, height:8,
-                  borderTop: ri===0 ? `1px solid ${activeColor}88` : 'none',
+                  top:ri===0?5:'auto', bottom:ri===1?5:'auto',
+                  left:ci===0?5:'auto', right:ci===1?5:'auto',
+                  width:10, height:10,
+                  borderTop:    ri===0 ? `1px solid ${activeColor}88` : 'none',
                   borderBottom: ri===1 ? `1px solid ${activeColor}88` : 'none',
-                  borderLeft: ci===0 ? `1px solid ${activeColor}88` : 'none',
-                  borderRight: ci===1 ? `1px solid ${activeColor}88` : 'none',
+                  borderLeft:   ci===0 ? `1px solid ${activeColor}88` : 'none',
+                  borderRight:  ci===1 ? `1px solid ${activeColor}88` : 'none',
                 }} />
               ))}
 
               <AnimatePresence mode="wait">
-                <motion.div key={activeTab} initial={{ opacity:0, y:6 }} animate={{ opacity:1, y:0 }}
-                  exit={{ opacity:0, y:-6 }} transition={{ duration:0.12 }}>
+                <motion.div key={activeTab} initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }}
+                  exit={{ opacity:0, y:-8 }} transition={{ duration:0.12 }}>
 
-                  {/* 몸통색 */}
                   {activeTab==='body' && (
                     <div>
                       <TabTitle color={activeColor}>BODY COLOR</TabTitle>
-                      <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
+                      <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
                         {BODY_COLORS.map(c => (
                           <ColorRow key={c.id} color={c.color} label={c.label}
                             selected={bodyColor===c.color} activeColor={activeColor}
@@ -232,11 +227,10 @@ export function CharacterCustomization() {
                     </div>
                   )}
 
-                  {/* 모자 */}
                   {activeTab==='hat' && (
                     <div>
                       <TabTitle color={activeColor}>HAT STYLE</TabTitle>
-                      <div style={{ display:'flex', flexDirection:'column', gap:3, marginBottom:14 }}>
+                      <div style={{ display:'flex', flexDirection:'column', gap:4, marginBottom:16 }}>
                         {HATS.map(h => (
                           <OptionRow key={h.id} label={h.label} desc={h.desc}
                             selected={hat===h.id} color={activeColor}
@@ -246,11 +240,10 @@ export function CharacterCustomization() {
                       {hat !== 'none' && (
                         <>
                           <TabTitle color={activeColor} small>HAT COLOR</TabTitle>
-                          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:5 }}>
+                          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:6 }}>
                             {HAT_COLORS.map(c => (
                               <ColorSwatch key={c.id} color={c.color} label={c.label}
-                                selected={hatColor===c.color}
-                                onClick={() => setHatColor(c.color)} />
+                                selected={hatColor===c.color} onClick={() => setHatColor(c.color)} />
                             ))}
                           </div>
                         </>
@@ -258,7 +251,6 @@ export function CharacterCustomization() {
                     </div>
                   )}
 
-                  {/* 상의 */}
                   {activeTab==='top' && (
                     <div>
                       <TabTitle color={activeColor}>TOP COLOR</TabTitle>
@@ -272,7 +264,6 @@ export function CharacterCustomization() {
                     </div>
                   )}
 
-                  {/* 하의 */}
                   {activeTab==='bottom' && (
                     <div>
                       <TabTitle color={activeColor}>BOTTOM COLOR</TabTitle>
@@ -294,66 +285,63 @@ export function CharacterCustomization() {
           {/* ─ 중앙: 오리 프리뷰 ─ */}
           <motion.div initial={{ y:20, opacity:0 }} animate={{ y:0, opacity:1 }}
             transition={{ delay:0.08 }}
-            style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:14 }}>
+            style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16, flexShrink:0 }}>
 
-            {/* 오리 프리뷰 박스 */}
-            <div style={{ position:'relative', width:210, height:260,
-              background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}44`,
+            {/* 프리뷰 박스 */}
+            <div style={{
+              position:'relative', width:260, height:320,
+              background:'rgba(4,4,18,0.88)', border:`1px solid ${activeColor}44`,
               display:'flex', alignItems:'center', justifyContent:'center',
-              boxShadow:`0 0 30px ${activeColor}18, inset 0 0 40px rgba(0,0,0,0.4)`,
-              transition:'border-color 0.3s, box-shadow 0.3s', overflow:'hidden' }}>
-
+              boxShadow:`0 0 40px ${activeColor}18, inset 0 0 40px rgba(0,0,0,0.4)`,
+              transition:'border-color 0.3s, box-shadow 0.3s', overflow:'hidden',
+            }}>
               {/* 격자 바닥 */}
-              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:50,
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:70,
                 backgroundImage:`linear-gradient(${activeColor}15 1px,transparent 1px),linear-gradient(90deg,${activeColor}15 1px,transparent 1px)`,
-                backgroundSize:'18px 18px',
+                backgroundSize:'22px 22px',
                 maskImage:'linear-gradient(transparent,rgba(0,0,0,0.5))',
                 WebkitMaskImage:'linear-gradient(transparent,rgba(0,0,0,0.5))',
               }} />
-
               {/* 스포트라이트 */}
-              <div style={{ position:'absolute', top:'35%', left:'50%',
-                transform:'translate(-50%,-50%)', width:110, height:110,
-                background:`radial-gradient(circle, ${activeColor}18 0%, transparent 70%)`,
+              <div style={{ position:'absolute', top:'40%', left:'50%',
+                transform:'translate(-50%,-50%)', width:150, height:150,
+                background:`radial-gradient(circle,${activeColor}18 0%,transparent 70%)`,
                 borderRadius:'50%', transition:'background 0.3s' }} />
-
               {/* 그림자 */}
-              <div style={{ position:'absolute', bottom:18, left:'50%', transform:'translateX(-50%)',
-                width:60, height:8, background:'rgba(0,0,0,0.5)',
-                borderRadius:'50%', filter:'blur(4px)' }} />
-
+              <div style={{ position:'absolute', bottom:22, left:'50%', transform:'translateX(-50%)',
+                width:80, height:10, background:'rgba(0,0,0,0.5)',
+                borderRadius:'50%', filter:'blur(5px)' }} />
               {/* 오리 */}
               <motion.div
-                animate={{ y:[0,-3,0] }}
-                transition={{ duration:2, repeat:Infinity, ease:'easeInOut' }}
+                animate={{ y:[0,-5,0] }}
+                transition={{ duration:2.5, repeat:Infinity, ease:'easeInOut' }}
                 style={{ position:'relative', zIndex:2,
-                  filter:'drop-shadow(0 6px 10px rgba(0,0,0,0.8))' }}>
+                  filter:'drop-shadow(0 8px 14px rgba(0,0,0,0.8))' }}>
                 <PixelDuck
                   bodyColor={bodyColor} hat={hat} hatColor={hatColor}
                   topColor={topColor} bottomColor={bottomColor}
-                  direction={1} scale={9} />
+                  direction={1} scale={10} />
               </motion.div>
-
               {/* 코너 마킹 */}
               {[[0,0],[1,0],[0,1],[1,1]].map(([ri,ci],i) => (
                 <div key={i} style={{ position:'absolute',
-                  top: ri===0 ? 6 : 'auto', bottom: ri===1 ? 6 : 'auto',
-                  left: ci===0 ? 6 : 'auto', right: ci===1 ? 6 : 'auto',
-                  width:10, height:10,
-                  borderTop: ri===0 ? `1px solid ${activeColor}88` : 'none',
-                  borderBottom: ri===1 ? `1px solid ${activeColor}88` : 'none',
-                  borderLeft: ci===0 ? `1px solid ${activeColor}88` : 'none',
-                  borderRight: ci===1 ? `1px solid ${activeColor}88` : 'none',
+                  top:ri===0?8:'auto', bottom:ri===1?8:'auto',
+                  left:ci===0?8:'auto', right:ci===1?8:'auto',
+                  width:14, height:14,
+                  borderTop:    ri===0 ? `2px solid ${activeColor}88` : 'none',
+                  borderBottom: ri===1 ? `2px solid ${activeColor}88` : 'none',
+                  borderLeft:   ci===0 ? `2px solid ${activeColor}88` : 'none',
+                  borderRight:  ci===1 ? `2px solid ${activeColor}88` : 'none',
                 }} />
               ))}
             </div>
 
             {/* 현재 정보 */}
-            <div style={{ background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}33`,
-              padding:'8px 16px', textAlign:'center', width:'100%',
+            <div style={{ background:'rgba(4,4,18,0.88)', border:`1px solid ${activeColor}33`,
+              padding:'10px 20px', textAlign:'center', width:'100%',
               transition:'border-color 0.3s' }}>
-              <div style={{ fontSize:7, color:'rgba(255,255,255,0.3)', marginBottom:4 }}>MY DUCK</div>
-              <div style={{ fontSize:8, color:activeColor, transition:'color 0.3s' }}>
+              <div style={{ fontSize:8, color:'rgba(255,255,255,0.3)', marginBottom:5 }}>MY DUCK</div>
+              <div style={{ fontSize:10, color:activeColor, transition:'color 0.3s' }}>
                 {HATS.find(h=>h.id===hat)?.label || '민머리'} 오리
               </div>
             </div>
@@ -363,16 +351,16 @@ export function CharacterCustomization() {
               whileHover={{ scale:1.04 }} whileTap={{ scale:0.96 }}
               style={{ cursor:'none', background:'none', border:'none', padding:0, width:'100%' }}>
               <motion.div
-                animate={{ borderColor:['#ffffff66','#ffffff','#ffffff66'],
-                  boxShadow:['0 0 8px #f0d06033','0 0 20px #f0d06077','0 0 8px #f0d06033'] }}
-                transition={{ duration:2, repeat:Infinity }}
-                style={{ padding:'14px 0', fontSize:9, color:'#f0d060',
-                  background:'rgba(0,0,0,0.8)', border:'2px solid',
-                  fontFamily:'"Press Start 2P"', letterSpacing:'0.08em',
+                animate={{ borderColor:['#ffffff55','#ffffff','#ffffff55'],
+                  boxShadow:['0 0 8px #f0d06033','0 0 24px #f0d06088','0 0 8px #f0d06033'] }}
+                transition={{ duration:2.5, repeat:Infinity }}
+                style={{ padding:'16px 0', fontSize:11, color:'#f0d060',
+                  background:'rgba(0,0,0,0.85)', border:'2px solid',
+                  fontFamily:'"Press Start 2P"', letterSpacing:'0.1em',
                   display:'flex', alignItems:'center', justifyContent:'center',
-                  gap:10, width:'100%' }}>
+                  gap:12, width:'100%' }}>
                 <span>🦆 서울로 입장</span>
-                <motion.span animate={{ x:[0,4,0] }} transition={{ duration:1.2, repeat:Infinity }}>►</motion.span>
+                <motion.span animate={{ x:[0,5,0] }} transition={{ duration:1.2, repeat:Infinity }}>►</motion.span>
               </motion.div>
             </motion.button>
           </motion.div>
@@ -380,46 +368,45 @@ export function CharacterCustomization() {
           {/* ─ 오른쪽: 설정 요약 ─ */}
           <motion.div initial={{ x:30, opacity:0 }} animate={{ x:0, opacity:1 }}
             transition={{ delay:0.12 }}
-            style={{ flex:'0 0 190px', minWidth:170,
-              background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}22`,
-              padding:14, transition:'border-color 0.3s' }}>
+            style={{ flex:'1 1 180px', maxWidth:220,
+              background:'rgba(4,4,18,0.88)', border:`1px solid ${activeColor}22`,
+              padding:16, transition:'border-color 0.3s' }}>
 
-            <div style={{ fontSize:8, color:activeColor, marginBottom:12, paddingBottom:8,
+            <div style={{ fontSize:9, color:activeColor, marginBottom:14, paddingBottom:10,
               borderBottom:`1px solid ${activeColor}33`, letterSpacing:'0.1em',
               transition:'color 0.3s' }}>
               ▌ 내 오리
             </div>
 
             {[
-              { label:'모자', value: HATS.find(h=>h.id===hat)?.label || '없음' },
-              { label:'상의', value: TOP_COLORS.find(c=>c.color===topColor)?.label || topColor },
-              { label:'하의', value: BOTTOM_COLORS.find(c=>c.color===bottomColor)?.label || bottomColor },
-              { label:'몸통', value: BODY_COLORS.find(c=>c.color===bodyColor)?.label || bodyColor },
+              { label:'모자',  value: HATS.find(h=>h.id===hat)?.label || '없음' },
+              { label:'상의',  value: TOP_COLORS.find(c=>c.color===topColor)?.label || '-' },
+              { label:'하의',  value: BOTTOM_COLORS.find(c=>c.color===bottomColor)?.label || '-' },
+              { label:'몸통',  value: BODY_COLORS.find(c=>c.color===bodyColor)?.label || '-' },
             ].map(item => (
               <div key={item.label} style={{ display:'flex', justifyContent:'space-between',
-                padding:'5px 0', borderBottom:'1px solid rgba(255,255,255,0.04)', gap:8 }}>
-                <span style={{ fontSize:7, color:'rgba(255,255,255,0.3)', flexShrink:0 }}>{item.label}</span>
-                <span style={{ fontSize:7, color:'rgba(255,255,255,0.75)', textAlign:'right' }}>{item.value}</span>
+                padding:'7px 0', borderBottom:'1px solid rgba(255,255,255,0.05)', gap:8 }}>
+                <span style={{ fontSize:8, color:'rgba(255,255,255,0.3)', flexShrink:0 }}>{item.label}</span>
+                <span style={{ fontSize:8, color:'rgba(255,255,255,0.8)', textAlign:'right' }}>{item.value}</span>
               </div>
             ))}
 
             {/* 컬러 미리보기 */}
-            <div style={{ marginTop:12, display:'flex', gap:4 }}>
+            <div style={{ marginTop:14, display:'flex', gap:5 }}>
               {[bodyColor, topColor, bottomColor, hatColor].map((c,i) => (
-                <div key={i} style={{ flex:1, height:16, background:c,
+                <div key={i} style={{ flex:1, height:18, background:c,
                   border:'1px solid rgba(255,255,255,0.2)' }} />
               ))}
             </div>
 
-            <div style={{ marginTop:14, fontSize:7, color:'rgba(255,255,255,0.12)',
-              lineHeight:2.2, borderTop:'1px solid rgba(255,255,255,0.05)', paddingTop:10 }}>
+            <div style={{ marginTop:16, fontSize:7, color:'rgba(255,255,255,0.15)',
+              lineHeight:2.4, borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:12 }}>
               <div>▸ 탭 눌러서 변경</div>
               <div>▸ 실시간 미리보기</div>
-              <div style={{ marginTop:4, color:'rgba(255,255,255,0.08)' }}>
-                DUCK v1.0
-              </div>
+              <div style={{ marginTop:6, color:'rgba(255,255,255,0.08)' }}>DUCK v1.0</div>
             </div>
           </motion.div>
+
         </div>
       </div>
 
@@ -432,7 +419,7 @@ export function CharacterCustomization() {
               display:'flex', alignItems:'center', justifyContent:'center' }}>
             <motion.div initial={{ scale:0.8, opacity:0 }} animate={{ scale:1, opacity:1 }}
               transition={{ delay:0.15 }}>
-              <div style={{ fontSize:9, color:'#f0d060', letterSpacing:'0.2em',
+              <div style={{ fontSize:10, color:'#f0d060', letterSpacing:'0.2em',
                 fontFamily:'"Press Start 2P"', textShadow:'0 0 20px #f0d060' }}>
                 🦆 ENTERING SEOUL...
               </div>
@@ -444,12 +431,11 @@ export function CharacterCustomization() {
   );
 }
 
-// ── 서브 컴포넌트 ─────────────────────────────────────────────────────
-function TabTitle({ children, color, small=false }: { children:string; color:string; small?:boolean }) {
+function TabTitle({ children, color, small=false }:{ children:string; color:string; small?:boolean }) {
   return (
-    <div style={{ fontSize: small ? 7 : 8, color, marginBottom: small ? 6 : 10,
-      borderBottom: small ? 'none' : `1px solid ${color}33`, paddingBottom: small ? 0 : 7,
-      letterSpacing:'0.12em', fontFamily:'"Press Start 2P"',
+    <div style={{ fontSize: small?7:9, color, marginBottom: small?8:12,
+      borderBottom: small?'none':`1px solid ${color}33`, paddingBottom: small?0:8,
+      letterSpacing:'0.1em', fontFamily:'"Press Start 2P"',
       textShadow:`0 0 6px ${color}66`, transition:'color 0.3s' }}>
       {children}
     </div>
@@ -460,15 +446,15 @@ function OptionRow({ label, desc, selected, color, onClick }:
   { label:string; desc:string; selected:boolean; color:string; onClick:()=>void }) {
   return (
     <button onClick={onClick} style={{
-      width:'100%', padding:'7px 10px', textAlign:'left',
+      width:'100%', padding:'9px 12px', textAlign:'left',
       borderLeft:`3px solid ${selected ? color : 'transparent'}`,
-      background: selected ? `${color}14` : 'transparent',
-      cursor:'none', transition:'all 0.1s', display:'flex',
-      justifyContent:'space-between', alignItems:'center', border:'none',
-      fontFamily:'"Press Start 2P"',
+      background: selected ? `${color}18` : 'transparent',
+      cursor:'none', transition:'all 0.1s',
+      display:'flex', justifyContent:'space-between', alignItems:'center',
+      border:'none', fontFamily:'"Press Start 2P"',
     }}>
       <span style={{ fontSize:9, color: selected ? '#fff' : 'rgba(255,255,255,0.5)' }}>{label}</span>
-      <span style={{ fontSize:7, color: selected ? `${color}cc` : 'rgba(255,255,255,0.2)', marginLeft:6, flexShrink:0 }}>{desc}</span>
+      <span style={{ fontSize:7, color: selected ? `${color}cc` : 'rgba(255,255,255,0.2)', marginLeft:8, flexShrink:0 }}>{desc}</span>
     </button>
   );
 }
@@ -477,16 +463,16 @@ function ColorRow({ color, label, selected, activeColor, onClick }:
   { color:string; label:string; selected:boolean; activeColor:string; onClick:()=>void }) {
   return (
     <button onClick={onClick} style={{
-      width:'100%', padding:'8px 10px', textAlign:'left', cursor:'none',
-      background: selected ? `${activeColor}14` : 'transparent',
+      width:'100%', padding:'9px 10px', textAlign:'left', cursor:'none',
+      background: selected ? `${activeColor}18` : 'transparent',
       border:`1px solid ${selected ? activeColor : 'transparent'}`,
-      display:'flex', alignItems:'center', gap:8, fontFamily:'"Press Start 2P"',
+      display:'flex', alignItems:'center', gap:10, fontFamily:'"Press Start 2P"',
       transition:'all 0.1s',
     }}>
-      <div style={{ width:14, height:14, background:color, flexShrink:0,
-        border: selected ? '2px solid #fff' : '1px solid rgba(255,255,255,0.2)',
-        boxShadow: selected ? `0 0 6px ${color}` : 'none' }} />
-      <span style={{ fontSize:7, color: selected ? '#fff' : 'rgba(255,255,255,0.5)' }}>{label}</span>
+      <div style={{ width:18, height:18, background:color, flexShrink:0,
+        border: selected ? '2px solid #fff' : '1px solid rgba(255,255,255,0.25)',
+        boxShadow: selected ? `0 0 8px ${color}` : 'none' }} />
+      <span style={{ fontSize:8, color: selected ? '#fff' : 'rgba(255,255,255,0.55)' }}>{label}</span>
     </button>
   );
 }
@@ -497,9 +483,9 @@ function ColorSwatch({ color, label, selected, onClick }:
     <button onClick={onClick} title={label} style={{
       width:'100%', aspectRatio:'1', background:color, cursor:'none',
       border: selected ? '2px solid #fff' : '2px solid transparent',
-      transform: selected ? 'scale(1.15)' : 'scale(1)',
-      boxShadow: selected ? `0 0 8px ${color}` : 'none',
-      transition:'all 0.1s',
+      transform: selected ? 'scale(1.2)' : 'scale(1)',
+      boxShadow: selected ? `0 0 10px ${color}` : 'none',
+      transition:'all 0.12s',
     }} />
   );
 }

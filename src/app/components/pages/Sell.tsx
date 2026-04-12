@@ -66,14 +66,18 @@ export default function Sell() {
     if (!title.trim()) { alert('상품명을 입력해주세요'); return; }
     setUploading(true); setProgress(0);
     try {
-      const nick = (profile?.nickname||user.email?.split('@')[0]||'user').replace(/[^a-zA-Z0-9가-힣]/g,'_').substring(0,15);
-      const safeName = title.replace(/[^a-zA-Z0-9가-힣]/g,'_').substring(0,30);
+      const nick = (profile?.nickname||user.email?.split('@')[0]||'user').replace(/[^a-zA-Z0-9]/g,'_').substring(0,15);
+      const safeName = title.replace(/[^a-zA-Z0-9]/g,'_').substring(0,20);
       const ts = Date.now();
-      const path = `uploads/${nick}_${safeName}_${ts}_${file.name}`;
+      // 파일 확장자만 추출 (한글/특수문자 제거)
+      const ext = file.name.split('.').pop()?.replace(/[^a-zA-Z0-9]/g,'') || 'bin';
+      const safeFileName = `file_${ts}.${ext}`;
+      const path = `uploads/${nick}_${safeName}_${ts}_${safeFileName}`;
       const fileUrl = await uploadFile(ref(storage, path), file);
       const ssUrls = [];
       for(let i=0; i<screenshots.length; i++) {
-        const sPath = `screenshots/${nick}_${safeName}_${ts}_${i}_${screenshots[i].name}`;
+        const ssExt = screenshots[i].name.split('.').pop()?.replace(/[^a-zA-Z0-9]/g,'') || 'jpg';
+        const sPath = `screenshots/${nick}_${safeName}_${ts}_${i}.${ssExt}`;
         ssUrls.push(await uploadFile(ref(storage, sPath), screenshots[i]));
         setProgress(0);
       }
@@ -81,7 +85,7 @@ export default function Sell() {
         uid: user.uid, nickname: profile?.nickname||user.email,
         title, description: desc, category, language: lang,
         license, price: parseInt(price)||0,
-        fileName: file.name, fileSize: file.size,
+        fileName: file.name, safeFileName: safeFileName, fileSize: file.size,
         fileUrl, storagePath: path, screenshots: ssUrls,
         status: 'pending', salesCount: 0, revenue: 0,
         createdAt: serverTimestamp()
@@ -256,7 +260,7 @@ export default function Sell() {
                       <span style={{ color:accentColor }}>클릭</span> 또는 드래그해서 파일 업로드
                     </div>
                     <div className="text-xs" style={{ fontFamily:FM, color:'var(--muted-foreground)' }}>
-                      .py .js .ts .json .zip .ipynb · 최대 50MB
+                      .py .js .ts .html .zip .ipynb · 최대 50MB
                     </div>
                   </button>
                 )}
