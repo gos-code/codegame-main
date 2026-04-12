@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { Rain } from '../Rain';
-import { PixelCharacter } from '../PixelCharacter';
+import { PixelDuck } from '../PixelDuck';
 import { PixelCat, CAT_COLORS } from '../PixelCat';
 import { CUFacade, Emart24Facade, GS25Facade } from '../SeoulStreetFacades';
 import { useMusic } from '../../contexts/MusicContext';
@@ -248,10 +248,6 @@ export function CityPage() {
   ];
 
   // 캐릭터 prop 매핑
-  const charHair = savedChar?.hair?.includes('LONG') || savedChar?.hair?.includes('WAVE') || savedChar?.hair?.includes('PONY') ? 'LONG'
-    : savedChar?.hair?.includes('BEANIE') ? 'BEANIE'
-    : savedChar?.hair?.includes('SPIKY') ? 'SPIKY' : 'SHORT';
-
   return (
     <div style={{ width:'100vw', height:'100vh', overflow:'hidden',
       backgroundColor:'#050810', position:'relative', cursor:'none' }}>
@@ -339,16 +335,15 @@ export function CityPage() {
           ))}
         </div>
 
-        {/* ── 캐릭터 ── */}
+        {/* ── 캐릭터 (오리) ── */}
         <div style={{ position:'absolute', bottom:'28%', left:charPos,
           zIndex:10, transform:'translateX(-50%)' }}>
-          <PixelCharacter
-            outfit={savedChar?.outfit}
-            bottom={savedChar?.bottom}
-            hair={charHair}
-            hairColor={savedChar?.hairColor || '#1a1a1a'}
-            gender={savedChar?.gender === '여자' ? 'FEM' : 'MASC'}
-            skin={savedChar?.skin || '#EFC4A8'}
+          <PixelDuck
+            bodyColor={savedChar?.bodyColor || '#f5f0dc'}
+            hat={savedChar?.hat || 'cap'}
+            hatColor={savedChar?.hatColor || '#cc2222'}
+            topColor={savedChar?.topColor || '#4a90d9'}
+            bottomColor={savedChar?.bottomColor || '#2c5f8a'}
             direction={charDir}
             isWalking={isWalking}
             scale={4}

@@ -192,6 +192,39 @@ export default function Sell() {
                   ))}
                 </div>
               </div>
+
+              {/* 예시 이미지 - STEP 0에서 바로 업로드 */}
+              <div>
+                <label style={labelStyle}>예시 이미지 <span style={{ color:'var(--muted-foreground)', fontSize:10 }}>(선택 · 최대 5장 · 구매자에게 표시됨)</span></label>
+                <input ref={ssRef} type="file" accept="image/*" multiple className="hidden"
+                  onChange={e=>e.target.files && handleScreenshots(e.target.files)} />
+                <div className="flex gap-2 flex-wrap">
+                  {screenshotPreviews.map((p, i) => (
+                    <div key={i} className="relative w-24 h-24 rounded-xl overflow-hidden"
+                      style={{ border:`1px solid ${accentColor}30` }}>
+                      <img src={p} alt="" className="w-full h-full object-cover" />
+                      <button onClick={()=>removeScreenshot(i)}
+                        className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/70 flex items-center justify-center"
+                        style={{ border:'none', cursor:'pointer' }}>
+                        <X className="w-3 h-3 text-white" />
+                      </button>
+                    </div>
+                  ))}
+                  {screenshotPreviews.length < 5 && (
+                    <button onClick={()=>ssRef.current?.click()}
+                      className="w-24 h-24 rounded-xl flex flex-col items-center justify-center gap-2 transition-all"
+                      style={{ border:`2px dashed ${accentColor}30`, background:`${accentColor}05`, cursor:'pointer' }}>
+                      <Upload className="w-6 h-6" style={{ color:accentColor }} />
+                      <span style={{ fontSize:9, fontFamily:FM, color:'var(--muted-foreground)' }}>이미지 추가</span>
+                    </button>
+                  )}
+                </div>
+                {screenshotPreviews.length > 0 && (
+                  <p className="text-xs mt-1.5" style={{ fontFamily:F, color:'var(--muted-foreground)' }}>
+                    ✓ {screenshotPreviews.length}장 선택됨 · 상세페이지에 표시됩니다
+                  </p>
+                )}
+              </div>
             </div>
           )}
 
@@ -228,30 +261,23 @@ export default function Sell() {
                   </button>
                 )}
               </div>
-              <div>
-                <label style={labelStyle}>스크린샷 (선택 · 최대 5장)</label>
-                <input ref={ssRef} type="file" accept="image/*" multiple className="hidden"
-                  onChange={e=>e.target.files && handleScreenshots(e.target.files)} />
-                <div className="flex gap-2 flex-wrap">
-                  {screenshotPreviews.map((p, i) => (
-                    <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden"
-                      style={{ border:'1px solid var(--border)' }}>
-                      <img src={p} alt="" className="w-full h-full object-cover" />
-                      <button onClick={()=>removeScreenshot(i)}
-                        className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 flex items-center justify-center">
-                        <X className="w-3 h-3 text-white" />
-                      </button>
-                    </div>
-                  ))}
-                  {screenshotPreviews.length < 5 && (
-                    <button onClick={()=>ssRef.current?.click()}
-                      className="w-20 h-20 rounded-xl flex items-center justify-center transition-all"
-                      style={{ border:'1px dashed var(--border)', background:'var(--background)' }}>
-                      <Upload className="w-6 h-6" style={{ color:'var(--muted-foreground)' }} />
-                    </button>
-                  )}
+              {/* 스크린샷은 STEP 0에서 업로드 - 여기서는 현황만 표시 */}
+              {screenshotPreviews.length > 0 && (
+                <div>
+                  <label style={labelStyle}>업로드된 예시 이미지</label>
+                  <div className="flex gap-2 flex-wrap">
+                    {screenshotPreviews.map((p, i) => (
+                      <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden"
+                        style={{ border:`1px solid ${accentColor}30` }}>
+                        <img src={p} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs mt-1.5" style={{ fontFamily:F, color:accentColor }}>
+                    ✓ {screenshotPreviews.length}장 · 기본 정보 탭에서 수정 가능
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
           )}
 

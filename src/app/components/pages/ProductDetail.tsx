@@ -93,18 +93,26 @@ export default function ProductDetail() {
 
   const handleDownload = async (fileUrl: string, purchaseId?: string) => {
     if (!fileUrl) { alert('다운로드 링크가 없어요'); return; }
-    // 다운로드 카운트 증가
     if (purchaseId) {
       await updateDoc(doc(db,'purchases',purchaseId), { downloadCount: increment(1) }).catch(()=>{});
     }
-    // 강제 다운로드
-    const a = document.createElement('a');
-    a.href = fileUrl;
-    a.download = product?.fileName || 'download';
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    try {
+      // Firebase Storage는 크로스 오리진이라 fetch로 blob 변환 후 다운로드
+      const response = await fetch(fileUrl);
+      if (!response.ok) throw new Error('다운로드 실패');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = product?.fileName || 'download';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch(e) {
+      // fetch 실패 시 새 탭으로 열기 (fallback)
+      window.open(fileUrl, '_blank');
+    }
   };
 
   const copyKey = (key: string) => {

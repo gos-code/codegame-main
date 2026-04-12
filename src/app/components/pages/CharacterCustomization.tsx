@@ -3,132 +3,82 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PixelCity } from '../PixelCity';
 import { useNavigate } from 'react-router';
-import { PixelCharacter } from '../PixelCharacter';
+import { PixelDuck } from '../PixelDuck';
 
-// ── 데이터 ───────────────────────────────────────────────────────────────────
-const OUTFIT_MALE = [
-  { id:'HOODIE',   label:'후드티',      desc:'스트리트 기본' },
-  { id:'TSHIRT',   label:'반팔 티셔츠', desc:'가장 기본형' },
-  { id:'LONGTEE',  label:'긴팔 티셔츠', desc:'캐주얼' },
-  { id:'JACKET',   label:'재킷',        desc:'도시적/쿨한 느낌' },
-  { id:'CARDIGAN', label:'가디건',      desc:'부드럽고 차분한' },
-  { id:'SCHOOL_M', label:'교복 상의',   desc:'학원물 느낌' },
-  { id:'SUIT',     label:'정장 상의',   desc:'직장인/엘리트' },
-  { id:'SPORT',    label:'운동복 상의', desc:'활동적인 캐릭터' },
-  { id:'TECHWEAR', label:'테크웨어',    desc:'사이버펑크' },
-  { id:'VEST',     label:'조끼',        desc:'RPG 느낌' },
-  { id:'JUMPER',   label:'점프수트',    desc:'정비공/기술자' },
-];
-const OUTFIT_FEM = [
-  { id:'HOODIE_F',   label:'후드티',        desc:'캐주얼/학생형' },
-  { id:'BLOUSE',     label:'블라우스',      desc:'단정하고 여성스러운' },
-  { id:'KNIT',       label:'니트',          desc:'포근한 분위기' },
-  { id:'CROP',       label:'반팔 티셔츠',   desc:'가장 기본형' },
-  { id:'ONEPIECE',   label:'원피스',        desc:'실루엣 차별화' },
-  { id:'SCHOOL_F',   label:'교복 상의',     desc:'학교물 적합' },
-  { id:'SUIT_F',     label:'정장 상의',     desc:'오피스/성숙형' },
-  { id:'SPORT_F',    label:'운동복 상의',   desc:'활발한 캐릭터' },
-  { id:'TECHWEAR_F', label:'테크웨어',      desc:'사이버펑크' },
-  { id:'FANTASY',    label:'판타지 드레스', desc:'특별 코스튬' },
-];
-const BOTTOM_MALE = [
-  { id:'CARGO',    label:'카고 팬츠', desc:'스트리트' },
-  { id:'JEANS',    label:'청바지',    desc:'기본' },
-  { id:'SLACKS',   label:'슬랙스',    desc:'단정/커리어형' },
-  { id:'SHORTS',   label:'반바지',    desc:'캐주얼' },
-  { id:'JOGGER',   label:'조거 팬츠', desc:'활동적' },
-  { id:'SCHOOL_B', label:'교복 바지', desc:'학교' },
-];
-const BOTTOM_FEM = [
-  { id:'LONGSKIRT', label:'롱스커트',  desc:'차분한 느낌' },
-  { id:'MINISKIRT', label:'미니스커트',desc:'가볍고 귀여운' },
-  { id:'JEANS_F',   label:'청바지',    desc:'기본' },
-  { id:'LEGGINGS',  label:'레깅스',    desc:'활동성 강조' },
-  { id:'SCHOOL_BF', label:'교복 치마', desc:'교복 세트용' },
-  { id:'SHORTS_F',  label:'숏팬츠',    desc:'발랄함' },
-];
-const HAIR_MALE = [
-  { id:'SHORTCUT',  label:'숏컷',           desc:'가장 기본형' },
-  { id:'BANGSHORT', label:'앞머리 내린 숏컷', desc:'귀엽고 부드러운' },
-  { id:'TWOBLOCK',  label:'투블럭',          desc:'현대적/깔끔' },
-  { id:'ALLBACK',   label:'올백',            desc:'성숙하고 자신감' },
-  { id:'SPIKY',     label:'스파이키',        desc:'활발하고 장난기' },
-  { id:'MIDIUM',    label:'약간 긴 미디엄',  desc:'차분한 느낌' },
-  { id:'CURLY',     label:'곱슬머리',        desc:'개성 강조' },
-  { id:'DANDY',     label:'댄디컷',          desc:'호감형 기본 스타일' },
-  { id:'LONG_M',    label:'장발',            desc:'유니크/서브컬처' },
-  { id:'BEANIE',    label:'비니',            desc:'스트리트 포인트' },
-];
-const HAIR_FEM = [
-  { id:'SHORTCUT_F', label:'숏컷',          desc:'깔끔하고 당찬' },
-  { id:'BOBCUT',     label:'단발',           desc:'기본형으로 매우 좋음' },
-  { id:'BANGBOB',    label:'앞머리 단발',    desc:'귀엽고 친근한' },
-  { id:'MIDBOB',     label:'중단발',         desc:'무난하고 활용도 높음' },
-  { id:'LONGHAIR',   label:'롱헤어',         desc:'가장 대중적' },
-  { id:'WAVELONG',   label:'웨이브 롱헤어',  desc:'우아한 느낌' },
-  { id:'PONYTAIL',   label:'포니테일',       desc:'활동적이고 시원한' },
-  { id:'TWINTAIL',   label:'양갈래',         desc:'귀엽고 개성있는' },
-  { id:'UPDO',       label:'번헤어/올림머리', desc:'단정하고 성숙한' },
-  { id:'CURLYBOB',   label:'곱슬 단발/롱',   desc:'독특한 개성' },
-];
-const SHOES_MALE = [
-  { id:'SNEAKER',  label:'기본 운동화',    desc:'가장 무난' },
-  { id:'HIGHTOP',  label:'하이탑 스니커즈', desc:'스트리트 느낌' },
-  { id:'LOAFER',   label:'로퍼',           desc:'단정한 캐주얼' },
-  { id:'OXFORD',   label:'구두',           desc:'정장용' },
-  { id:'BOOTS',    label:'부츠',           desc:'모험가/판타지형' },
-  { id:'SANDAL',   label:'샌들',           desc:'여름/가벼운' },
-];
-const SHOES_FEM = [
-  { id:'SNEAKER_F',  label:'기본 운동화', desc:'범용성 최고' },
-  { id:'FLAT',       label:'플랫슈즈',    desc:'단정하고 귀여움' },
-  { id:'LOAFER_F',   label:'로퍼',        desc:'교복/캐주얼에 적합' },
-  { id:'ANKLEBOOT',  label:'앵클부츠',    desc:'스타일 강조' },
-  { id:'LONGBOOT',   label:'롱부츠',      desc:'겨울/패션형' },
-  { id:'HEELS',      label:'구두',        desc:'정장/성숙형' },
-];
-const SKIN_TONES = [
-  { id:'SK01', color:'#FDEBD0', label:'화이트' },
-  { id:'SK02', color:'#EFC4A8', label:'살색' },
-  { id:'SK03', color:'#D4A843', label:'노란색' },
-  { id:'SK04', color:'#8B5E3C', label:'갈색' },
-  { id:'SK05', color:'#3B1A0A', label:'검정색' },
-];
-const HAIR_COLORS = [
-  { id:'HC01', color:'#1a1a1a', label:'검정' },
-  { id:'HC02', color:'#3d2b1f', label:'진한 갈색' },
-  { id:'HC03', color:'#8B5E3C', label:'밝은 갈색' },
-  { id:'HC04', color:'#D4A843', label:'금발' },
-  { id:'HC05', color:'#cc3311', label:'레드' },
-  { id:'HC06', color:'#ff6699', label:'핑크/브라운' },
-  { id:'HC07', color:'#bbbbbb', label:'은색' },
-  { id:'HC08', color:'#2255cc', label:'네이비' },
-  { id:'HC09', color:'#ff88cc', label:'핑크' },
-  { id:'HC10', color:'#441188', label:'보라' },
-  { id:'HC11', color:'#00aaff', label:'블루' },
-  { id:'HC12', color:'#22bb66', label:'그린' },
+// ── 데이터 ───────────────────────────────────────────────────────────
+const HATS = [
+  { id:'none',   label:'없음',       desc:'민머리 오리' },
+  { id:'cap',    label:'야구 모자',  desc:'스트리트 감성' },
+  { id:'beanie', label:'비니',       desc:'힙한 느낌' },
+  { id:'party',  label:'파티 모자',  desc:'축제 분위기' },
+  { id:'crown',  label:'왕관',       desc:'귀족 오리' },
 ];
 
-// ── 탭 ───────────────────────────────────────────────────────────────────────
+const TOP_COLORS = [
+  { id:'blue',    color:'#4a90d9', label:'블루' },
+  { id:'red',     color:'#d94a4a', label:'레드' },
+  { id:'green',   color:'#4a9d5c', label:'그린' },
+  { id:'purple',  color:'#7c4ad9', label:'퍼플' },
+  { id:'orange',  color:'#d97c4a', label:'오렌지' },
+  { id:'pink',    color:'#d94a8a', label:'핑크' },
+  { id:'yellow',  color:'#d9c44a', label:'옐로우' },
+  { id:'black',   color:'#2a2a2a', label:'블랙' },
+  { id:'white',   color:'#f0f0f0', label:'화이트' },
+  { id:'cyan',    color:'#4ad9d9', label:'시안' },
+];
+
+const BOTTOM_COLORS = [
+  { id:'navy',    color:'#2c5f8a', label:'네이비' },
+  { id:'black',   color:'#1a1a2a', label:'블랙' },
+  { id:'khaki',   color:'#6b7c4a', label:'카키' },
+  { id:'brown',   color:'#6b4a2a', label:'브라운' },
+  { id:'gray',    color:'#5a5a6a', label:'그레이' },
+  { id:'denim',   color:'#3d5a8a', label:'데님' },
+  { id:'white',   color:'#e0e0e0', label:'화이트' },
+  { id:'green',   color:'#3a6a4a', label:'그린' },
+  { id:'red',     color:'#8a2a2a', label:'버건디' },
+  { id:'purple',  color:'#5a3a8a', label:'퍼플' },
+];
+
+const BODY_COLORS = [
+  { id:'white',   color:'#f5f0dc', label:'화이트' },
+  { id:'yellow',  color:'#f0d060', label:'옐로우' },
+  { id:'gray',    color:'#c0c0c0', label:'그레이' },
+  { id:'brown',   color:'#c09060', label:'브라운' },
+  { id:'black',   color:'#404040', label:'블랙' },
+];
+
+const HAT_COLORS = [
+  { id:'red',     color:'#cc2222', label:'레드' },
+  { id:'blue',    color:'#2244cc', label:'블루' },
+  { id:'black',   color:'#111111', label:'블랙' },
+  { id:'white',   color:'#eeeeee', label:'화이트' },
+  { id:'green',   color:'#228822', label:'그린' },
+  { id:'yellow',  color:'#ddaa00', label:'옐로우' },
+  { id:'purple',  color:'#882288', label:'퍼플' },
+  { id:'orange',  color:'#dd6600', label:'오렌지' },
+  { id:'pink',    color:'#dd4499', label:'핑크' },
+  { id:'navy',    color:'#1a2d5a', label:'네이비' },
+];
+
 const TABS = [
-  { id:'성별', icon:'♀♂', color:'#ff66aa' },
-  { id:'상의', icon:'👕', color:'#cc44ff' },
-  { id:'하의', icon:'👖', color:'#8866ff' },
-  { id:'헤어', icon:'✂', color:'#00ddff' },
-  { id:'신발', icon:'👟', color:'#ffcc00' },
-  { id:'피부', icon:'◉', color:'#ffaa55' },
+  { id:'body',    label:'몸통',  icon:'🦆', color:'#f0d060' },
+  { id:'hat',     label:'모자',  icon:'🧢', color:'#ff6666' },
+  { id:'top',     label:'상의',  icon:'👕', color:'#66aaff' },
+  { id:'bottom',  label:'하의',  icon:'👖', color:'#aa66ff' },
 ] as const;
 type TabId = typeof TABS[number]['id'];
 
-// ── 픽셀 커서 ────────────────────────────────────────────────────────────────
+// ── 픽셀 커서 ────────────────────────────────────────────────────────
 function PixelCursor({ x, y }: { x:number; y:number }) {
   return (
-    <div style={{ position:'fixed', left:x, top:y, pointerEvents:'none', zIndex:9999, transform:'translate(-1px,-1px)' }}>
+    <div style={{ position:'fixed', left:x, top:y, pointerEvents:'none', zIndex:9999,
+      transform:'translate(-1px,-1px)' }}>
       <svg width="16" height="16" viewBox="0 0 8 8" style={{ imageRendering:'pixelated' }}>
-        <rect x="0" y="0" width="1" height="6" fill="#00ffcc"/>
-        <rect x="1" y="1" width="1" height="1" fill="#00ffcc"/>
-        <rect x="2" y="2" width="1" height="1" fill="#00ffcc"/>
-        <rect x="3" y="3" width="1" height="1" fill="#00ffcc"/>
+        <rect x="0" y="0" width="1" height="6" fill="#f0d060"/>
+        <rect x="1" y="1" width="1" height="1" fill="#f0d060"/>
+        <rect x="2" y="2" width="1" height="1" fill="#f0d060"/>
+        <rect x="3" y="3" width="1" height="1" fill="#f0d060"/>
         <rect x="0" y="0" width="1" height="1" fill="#fff"/>
       </svg>
     </div>
@@ -136,7 +86,6 @@ function PixelCursor({ x, y }: { x:number; y:number }) {
 }
 
 export function CharacterCustomization() {
-  // 배경 강제 검정
   useEffect(() => {
     document.body.classList.add('dev-garden-page');
     document.documentElement.style.background = '#000';
@@ -151,16 +100,14 @@ export function CharacterCustomization() {
     };
   }, []);
 
-  const [gender, setGender]       = useState<'남자'|'여자'>('남자');
-  const [outfit, setOutfit]       = useState('HOODIE');
-  const [bottom, setBottom]       = useState('CARGO');
-  const [hair, setHair]           = useState('TWOBLOCK');
-  const [shoes, setShoes]         = useState('SNEAKER');
-  const [skin, setSkin]           = useState('#EFC4A8');
-  const [hairColor, setHairColor] = useState('#1a1a1a');
-  const [activeTab, setActiveTab] = useState<TabId>('성별');
-  const [isExiting, setIsExiting] = useState(false);
-  const [cursor, setCursor]       = useState({ x:-100, y:-100 });
+  const [bodyColor, setBodyColor]     = useState('#f5f0dc');
+  const [hat, setHat]                 = useState('cap');
+  const [hatColor, setHatColor]       = useState('#cc2222');
+  const [topColor, setTopColor]       = useState('#4a90d9');
+  const [bottomColor, setBottomColor] = useState('#2c5f8a');
+  const [activeTab, setActiveTab]     = useState<TabId>('body');
+  const [isExiting, setIsExiting]     = useState(false);
+  const [cursor, setCursor]           = useState({ x:-100, y:-100 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -169,32 +116,19 @@ export function CharacterCustomization() {
     return () => window.removeEventListener('mousemove', move);
   }, []);
 
-  useEffect(() => {
-    if (gender === '남자') { setOutfit('HOODIE'); setBottom('CARGO'); setHair('TWOBLOCK'); setShoes('SNEAKER'); }
-    else { setOutfit('HOODIE_F'); setBottom('JEANS_F'); setHair('MIDBOB'); setShoes('SNEAKER_F'); }
-  }, [gender]);
-
-  const outfits  = gender === '남자' ? OUTFIT_MALE : OUTFIT_FEM;
-  const bottoms  = gender === '남자' ? BOTTOM_MALE : BOTTOM_FEM;
-  const hairs    = gender === '남자' ? HAIR_MALE   : HAIR_FEM;
-  const shoeList = gender === '남자' ? SHOES_MALE  : SHOES_FEM;
-
   const handleEnter = () => {
     setIsExiting(true);
-    const char = { gender, outfit, bottom, hair, shoes, skin, hairColor };
+    const char = { bodyColor, hat, hatColor, topColor, bottomColor, isDuck: true };
     localStorage.setItem('cg_character', JSON.stringify(char));
     setTimeout(() => navigate('/dev-garden/city', { state: { character: char } }), 700);
   };
 
-  const charStyle  = outfit.includes('SCHOOL') ? 'SCHOOL' : outfit.includes('TECH') ? 'TECHWEAR' : outfit.includes('SUIT') ? 'VINTAGE' : 'STREETWEAR';
-  const charGender = gender === '남자' ? 'MASC' : 'FEM';
-  const charHair   = hair.includes('LONG') || hair.includes('WAVE') || hair.includes('PONY') ? 'LONG' : hair.includes('BEANIE') ? 'BEANIE' : hair.includes('SPIKY') ? 'SPIKY' : 'SHORT';
-  const activeColor = TABS.find(t => t.id === activeTab)?.color || '#00ffcc';
+  const activeColor = TABS.find(t => t.id === activeTab)?.color || '#f0d060';
 
   return (
-    <div style={{ position:'relative', width:'100%', minHeight:'100vh', background:'#02020f',
-      overflow:'hidden', color:'#fff', cursor:'none', userSelect:'none',
-      fontFamily:'"Press Start 2P", monospace' }}>
+    <div style={{ position:'relative', width:'100%', minHeight:'100vh',
+      background:'#02020f', overflow:'hidden', color:'#fff',
+      cursor:'none', userSelect:'none', fontFamily:'"Press Start 2P", monospace' }}>
 
       <PixelCursor x={cursor.x} y={cursor.y} />
 
@@ -202,53 +136,49 @@ export function CharacterCustomization() {
       <div style={{ position:'absolute', inset:0, opacity:0.15, filter:'blur(3px)', pointerEvents:'none' }}>
         <PixelCity />
       </div>
-
-      {/* 그라디언트 오버레이 */}
       <div style={{ position:'absolute', inset:0, zIndex:1, pointerEvents:'none',
-        background:'linear-gradient(to bottom, rgba(2,2,15,0.7) 0%, rgba(2,2,15,0.5) 50%, rgba(2,2,15,0.85) 100%)' }} />
+        background:'linear-gradient(to bottom, rgba(2,2,15,0.75) 0%, rgba(2,2,15,0.55) 50%, rgba(2,2,15,0.88) 100%)' }} />
 
-      {/* 수평선 장식 */}
+      {/* 상단 컬러 라인 */}
       <div style={{ position:'absolute', top:0, left:0, right:0, height:2, zIndex:2,
-        background:`linear-gradient(90deg, transparent 0%, ${activeColor}88 30%, ${activeColor} 50%, ${activeColor}88 70%, transparent 100%)`,
+        background:`linear-gradient(90deg, transparent, ${activeColor}99, ${activeColor}, ${activeColor}99, transparent)`,
         transition:'background 0.3s' }} />
-      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:1, zIndex:2,
-        background:`linear-gradient(90deg, transparent, ${activeColor}44, transparent)` }} />
 
       {/* 스캔라인 */}
-      <div style={{ position:'absolute', inset:0, zIndex:2, pointerEvents:'none', opacity:0.25,
+      <div style={{ position:'absolute', inset:0, zIndex:2, pointerEvents:'none', opacity:0.2,
         backgroundImage:'linear-gradient(transparent 50%, rgba(0,0,0,0.4) 50%)',
         backgroundSize:'100% 4px' }} />
 
-      {/* ── 메인 컨텐츠 ── */}
+      {/* ── 메인 ── */}
       <div style={{ position:'relative', zIndex:3, display:'flex', flexDirection:'column',
-        alignItems:'center', minHeight:'100vh', padding:'20px 12px 32px' }}>
+        alignItems:'center', minHeight:'100vh', padding:'20px 16px 36px' }}>
 
-        {/* ── 헤더 ── */}
+        {/* 헤더 */}
         <motion.div initial={{ y:-30, opacity:0 }} animate={{ y:0, opacity:1 }}
           style={{ textAlign:'center', marginBottom:24, width:'100%', maxWidth:900 }}>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:12, marginBottom:6 }}>
-            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,transparent,${activeColor}66)` }} />
-            <h1 style={{ fontSize:'clamp(11px,1.8vw,18px)', color:activeColor, letterSpacing:'0.2em', margin:0,
-              textShadow:`0 0 20px ${activeColor}66`, transition:'color 0.3s, text-shadow 0.3s' }}>
-              나의 서울 시민 만들기
+            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,transparent,${activeColor}55)` }} />
+            <h1 style={{ fontSize:'clamp(10px,1.6vw,16px)', color:activeColor, letterSpacing:'0.2em',
+              margin:0, textShadow:`0 0 20px ${activeColor}66`, transition:'color 0.3s, text-shadow 0.3s' }}>
+              🦆 나의 오리 만들기
             </h1>
-            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,${activeColor}66,transparent)` }} />
+            <div style={{ height:1, flex:1, background:`linear-gradient(90deg,${activeColor}55,transparent)` }} />
           </div>
-          <p style={{ fontSize:8, color:'rgba(255,255,255,0.25)', margin:0, letterSpacing:'0.15em' }}>
-            SEOUL CITIZEN CREATOR · DEV GARDEN
+          <p style={{ fontSize:7, color:'rgba(255,255,255,0.2)', margin:0, letterSpacing:'0.15em' }}>
+            DUCK CREATOR · DEV GARDEN SEOUL
           </p>
         </motion.div>
 
-        {/* ── 본문 3열 레이아웃 ── */}
-        <div style={{ display:'flex', gap:16, width:'100%', maxWidth:980,
-          alignItems:'flex-start', justifyContent:'center', flexWrap:'wrap', flex:1 }}>
+        {/* 3열 레이아웃 */}
+        <div style={{ display:'flex', gap:16, width:'100%', maxWidth:900,
+          alignItems:'flex-start', justifyContent:'center', flexWrap:'wrap' }}>
 
           {/* ─ 왼쪽: 탭 + 옵션 ─ */}
           <motion.div initial={{ x:-30, opacity:0 }} animate={{ x:0, opacity:1 }}
-            style={{ flex:'0 0 270px', minWidth:220, display:'flex', flexDirection:'column', gap:8 }}>
+            style={{ flex:'0 0 260px', minWidth:220, display:'flex', flexDirection:'column', gap:8 }}>
 
-            {/* 탭 버튼 */}
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:3 }}>
+            {/* 탭 */}
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:3 }}>
               {TABS.map(t => (
                 <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
                   padding:'8px 4px 6px', border:'1px solid',
@@ -256,179 +186,154 @@ export function CharacterCustomization() {
                   background: activeTab===t.id ? `${t.color}18` : 'rgba(255,255,255,0.02)',
                   color: activeTab===t.id ? t.color : 'rgba(255,255,255,0.25)',
                   cursor:'none', transition:'all 0.15s',
-                  boxShadow: activeTab===t.id ? `0 0 12px ${t.color}33, inset 0 0 8px ${t.color}11` : 'none',
-                  fontFamily:'"Press Start 2P"', display:'flex', flexDirection:'column',
-                  alignItems:'center', gap:4,
+                  boxShadow: activeTab===t.id ? `0 0 12px ${t.color}33` : 'none',
+                  fontFamily:'"Press Start 2P"',
+                  display:'flex', flexDirection:'column', alignItems:'center', gap:4,
                 }}>
-                  <span style={{ fontSize:12 }}>{t.icon}</span>
-                  <span style={{ fontSize:7 }}>{t.id}</span>
+                  <span style={{ fontSize:14 }}>{t.icon}</span>
+                  <span style={{ fontSize:6 }}>{t.label}</span>
                 </button>
               ))}
             </div>
 
             {/* 옵션 패널 */}
-            <div style={{
-              background:'rgba(4,4,18,0.92)', border:`1px solid ${activeColor}33`,
-              boxShadow:`0 0 24px ${activeColor}18, inset 0 0 20px rgba(0,0,0,0.4)`,
-              padding:14, transition:'border-color 0.3s, box-shadow 0.3s', minHeight:320,
-              position:'relative', overflow:'hidden',
-            }}>
+            <div style={{ background:'rgba(4,4,18,0.92)', border:`1px solid ${activeColor}33`,
+              boxShadow:`0 0 24px ${activeColor}18`, padding:14, minHeight:280,
+              position:'relative', overflow:'hidden', transition:'border-color 0.3s' }}>
+
               {/* 코너 장식 */}
-              {[['0%','0%'],['100%','0%'],['0%','100%'],['100%','100%']].map(([l,t],i) => (
-                <div key={i} style={{ position:'absolute', left:l, top:t, width:6, height:6,
-                  borderTop: i<2 ? `2px solid ${activeColor}88` : 'none',
-                  borderBottom: i>=2 ? `2px solid ${activeColor}88` : 'none',
-                  borderLeft: i%2===0 ? `2px solid ${activeColor}88` : 'none',
-                  borderRight: i%2===1 ? `2px solid ${activeColor}88` : 'none',
-                  transform: i===0?'none':i===1?'none':i===2?'none':'none',
+              {[[0,0],[1,0],[0,1],[1,1]].map(([ri,ci],i) => (
+                <div key={i} style={{ position:'absolute',
+                  top: ri===0 ? 4 : 'auto', bottom: ri===1 ? 4 : 'auto',
+                  left: ci===0 ? 4 : 'auto', right: ci===1 ? 4 : 'auto',
+                  width:8, height:8,
+                  borderTop: ri===0 ? `1px solid ${activeColor}88` : 'none',
+                  borderBottom: ri===1 ? `1px solid ${activeColor}88` : 'none',
+                  borderLeft: ci===0 ? `1px solid ${activeColor}88` : 'none',
+                  borderRight: ci===1 ? `1px solid ${activeColor}88` : 'none',
                 }} />
               ))}
 
               <AnimatePresence mode="wait">
-                <motion.div key={activeTab} initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }}
-                  exit={{ opacity:0, y:-8 }} transition={{ duration:0.15 }}>
+                <motion.div key={activeTab} initial={{ opacity:0, y:6 }} animate={{ opacity:1, y:0 }}
+                  exit={{ opacity:0, y:-6 }} transition={{ duration:0.12 }}>
 
-                  {/* ── 성별 ── */}
-                  {activeTab==='성별' && (
+                  {/* 몸통색 */}
+                  {activeTab==='body' && (
                     <div>
-                      <TabTitle color={activeColor}>GENDER</TabTitle>
-                      <div style={{ display:'flex', gap:8, marginBottom:20 }}>
-                        {(['남자','여자'] as const).map(g => (
-                          <button key={g} onClick={() => setGender(g)} style={{
-                            flex:1, padding:'18px 8px', fontSize:10, fontFamily:'"Press Start 2P"',
-                            border:`2px solid ${gender===g ? activeColor : 'rgba(255,255,255,0.1)'}`,
-                            background: gender===g ? `${activeColor}22` : 'transparent',
-                            color: gender===g ? activeColor : 'rgba(255,255,255,0.3)',
-                            cursor:'none', transition:'all 0.2s',
-                            boxShadow: gender===g ? `0 0 16px ${activeColor}44` : 'none',
-                          }}>
-                            {g === '남자' ? '♂  남자' : '♀  여자'}
-                          </button>
-                        ))}
-                      </div>
-                      <div style={{ fontSize:7, color:'rgba(255,255,255,0.2)', lineHeight:2.2,
-                        borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:12 }}>
-                        <div>▸ 성별 선택 시 옷/헤어 옵션이 변경돼요</div>
-                        <div>▸ 피부색은 남녀 공통 팔레트입니다</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* ── 상의 ── */}
-                  {activeTab==='상의' && (
-                    <div>
-                      <TabTitle color={activeColor}>OUTFIT TOP</TabTitle>
-                      <div style={{ display:'flex', flexDirection:'column', gap:2, maxHeight:290, overflowY:'auto',
-                        scrollbarWidth:'thin', scrollbarColor:`${activeColor}44 transparent` }}>
-                        {outfits.map(o => <OptionRow key={o.id} {...o} selected={outfit===o.id} color={activeColor} onClick={() => setOutfit(o.id)} />)}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* ── 하의 ── */}
-                  {activeTab==='하의' && (
-                    <div>
-                      <TabTitle color={activeColor}>OUTFIT BOTTOM</TabTitle>
-                      <div style={{ display:'flex', flexDirection:'column', gap:2 }}>
-                        {bottoms.map(b => <OptionRow key={b.id} {...b} selected={bottom===b.id} color={activeColor} onClick={() => setBottom(b.id)} />)}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* ── 헤어 ── */}
-                  {activeTab==='헤어' && (
-                    <div>
-                      <TabTitle color={activeColor}>HAIR STYLE</TabTitle>
-                      <div style={{ display:'flex', flexDirection:'column', gap:2, maxHeight:180, overflowY:'auto', marginBottom:14,
-                        scrollbarWidth:'thin', scrollbarColor:`${activeColor}44 transparent` }}>
-                        {hairs.map(h => <OptionRow key={h.id} {...h} selected={hair===h.id} color={activeColor} onClick={() => setHair(h.id)} />)}
-                      </div>
-                      <TabTitle color={activeColor} small>HAIR COLOR</TabTitle>
-                      <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:5 }}>
-                        {HAIR_COLORS.map(c => (
-                          <button key={c.id} onClick={() => setHairColor(c.color)} title={c.label} style={{
-                            width:'100%', aspectRatio:'1', background:c.color, cursor:'none',
-                            border: hairColor===c.color ? '2px solid #fff' : '2px solid transparent',
-                            transform: hairColor===c.color ? 'scale(1.2)' : 'scale(1)',
-                            boxShadow: hairColor===c.color ? `0 0 8px ${c.color}` : 'none',
-                            transition:'all 0.1s',
-                          }} />
+                      <TabTitle color={activeColor}>BODY COLOR</TabTitle>
+                      <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
+                        {BODY_COLORS.map(c => (
+                          <ColorRow key={c.id} color={c.color} label={c.label}
+                            selected={bodyColor===c.color} activeColor={activeColor}
+                            onClick={() => setBodyColor(c.color)} />
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* ── 신발 ── */}
-                  {activeTab==='신발' && (
+                  {/* 모자 */}
+                  {activeTab==='hat' && (
                     <div>
-                      <TabTitle color={activeColor}>SHOES</TabTitle>
-                      <div style={{ display:'flex', flexDirection:'column', gap:2 }}>
-                        {shoeList.map(s => <OptionRow key={s.id} {...s} selected={shoes===s.id} color={activeColor} onClick={() => setShoes(s.id)} />)}
+                      <TabTitle color={activeColor}>HAT STYLE</TabTitle>
+                      <div style={{ display:'flex', flexDirection:'column', gap:3, marginBottom:14 }}>
+                        {HATS.map(h => (
+                          <OptionRow key={h.id} label={h.label} desc={h.desc}
+                            selected={hat===h.id} color={activeColor}
+                            onClick={() => setHat(h.id)} />
+                        ))}
+                      </div>
+                      {hat !== 'none' && (
+                        <>
+                          <TabTitle color={activeColor} small>HAT COLOR</TabTitle>
+                          <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:5 }}>
+                            {HAT_COLORS.map(c => (
+                              <ColorSwatch key={c.id} color={c.color} label={c.label}
+                                selected={hatColor===c.color}
+                                onClick={() => setHatColor(c.color)} />
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 상의 */}
+                  {activeTab==='top' && (
+                    <div>
+                      <TabTitle color={activeColor}>TOP COLOR</TabTitle>
+                      <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:4 }}>
+                        {TOP_COLORS.map(c => (
+                          <ColorRow key={c.id} color={c.color} label={c.label}
+                            selected={topColor===c.color} activeColor={activeColor}
+                            onClick={() => setTopColor(c.color)} />
+                        ))}
                       </div>
                     </div>
                   )}
 
-                  {/* ── 피부 ── */}
-                  {activeTab==='피부' && (
+                  {/* 하의 */}
+                  {activeTab==='bottom' && (
                     <div>
-                      <TabTitle color={activeColor}>SKIN TONE</TabTitle>
-                      <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:8, marginBottom:12 }}>
-                        {SKIN_TONES.map(s => (
-                          <button key={s.id} onClick={() => setSkin(s.color)} title={s.label} style={{
-                            width:'100%', aspectRatio:'1', background:s.color, cursor:'none',
-                            border: skin===s.color ? '2px solid #fff' : '2px solid rgba(255,255,255,0.15)',
-                            transform: skin===s.color ? 'scale(1.15)' : 'scale(1)',
-                            boxShadow: skin===s.color ? '0 0 10px rgba(255,255,255,0.5)' : 'none',
-                            transition:'all 0.12s',
-                          }} />
+                      <TabTitle color={activeColor}>BOTTOM COLOR</TabTitle>
+                      <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:4 }}>
+                        {BOTTOM_COLORS.map(c => (
+                          <ColorRow key={c.id} color={c.color} label={c.label}
+                            selected={bottomColor===c.color} activeColor={activeColor}
+                            onClick={() => setBottomColor(c.color)} />
                         ))}
-                      </div>
-                      <div style={{ fontSize:7, color:'rgba(255,255,255,0.2)', lineHeight:2 }}>
-                        <div>▸ 남녀 공통 팔레트 · 8단계</div>
-                        <div>▸ 픽셀아트 최적화 색상</div>
                       </div>
                     </div>
                   )}
+
                 </motion.div>
               </AnimatePresence>
             </div>
           </motion.div>
 
-          {/* ─ 중앙: 캐릭터 + 입장 버튼 ─ */}
-          <motion.div initial={{ y:20, opacity:0 }} animate={{ y:0, opacity:1 }} transition={{ delay:0.08 }}
-            style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:14, minWidth:180 }}>
+          {/* ─ 중앙: 오리 프리뷰 ─ */}
+          <motion.div initial={{ y:20, opacity:0 }} animate={{ y:0, opacity:1 }}
+            transition={{ delay:0.08 }}
+            style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:14 }}>
 
-            {/* 캐릭터 프리뷰 박스 */}
-            <div style={{ position:'relative', width:200, height:280,
+            {/* 오리 프리뷰 박스 */}
+            <div style={{ position:'relative', width:180, height:220,
               background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}44`,
               display:'flex', alignItems:'center', justifyContent:'center',
-              boxShadow:`0 0 30px ${activeColor}18, inset 0 0 40px rgba(0,0,0,0.5)`,
-              transition:'border-color 0.3s, box-shadow 0.3s',
-              overflow:'hidden',
-            }}>
+              boxShadow:`0 0 30px ${activeColor}18, inset 0 0 40px rgba(0,0,0,0.4)`,
+              transition:'border-color 0.3s, box-shadow 0.3s', overflow:'hidden' }}>
+
               {/* 격자 바닥 */}
-              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:60,
-                backgroundImage:`linear-gradient(${activeColor}18 1px,transparent 1px),linear-gradient(90deg,${activeColor}18 1px,transparent 1px)`,
-                backgroundSize:'20px 20px',
-                maskImage:'linear-gradient(transparent,rgba(0,0,0,0.6))',
-                WebkitMaskImage:'linear-gradient(transparent,rgba(0,0,0,0.6))',
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:50,
+                backgroundImage:`linear-gradient(${activeColor}15 1px,transparent 1px),linear-gradient(90deg,${activeColor}15 1px,transparent 1px)`,
+                backgroundSize:'18px 18px',
+                maskImage:'linear-gradient(transparent,rgba(0,0,0,0.5))',
+                WebkitMaskImage:'linear-gradient(transparent,rgba(0,0,0,0.5))',
               }} />
+
               {/* 스포트라이트 */}
-              <div style={{ position:'absolute', top:'40%', left:'50%',
-                transform:'translate(-50%,-50%)', width:120, height:120,
+              <div style={{ position:'absolute', top:'35%', left:'50%',
+                transform:'translate(-50%,-50%)', width:110, height:110,
                 background:`radial-gradient(circle, ${activeColor}18 0%, transparent 70%)`,
                 borderRadius:'50%', transition:'background 0.3s' }} />
+
               {/* 그림자 */}
-              <div style={{ position:'absolute', bottom:20, left:'50%', transform:'translateX(-50%)',
-                width:70, height:10, background:'rgba(0,0,0,0.5)',
-                borderRadius:'50%', filter:'blur(5px)' }} />
-              {/* 캐릭터 */}
-              <div style={{ position:'relative', zIndex:2, filter:'drop-shadow(0 6px 12px rgba(0,0,0,0.9))' }}>
-                <PixelCharacter
-                  outfit={outfit} bottom={bottom}
-                  style={charStyle} hair={charHair}
-                  hairColor={hairColor} gender={charGender} skin={skin} scale={8} />
-              </div>
+              <div style={{ position:'absolute', bottom:18, left:'50%', transform:'translateX(-50%)',
+                width:60, height:8, background:'rgba(0,0,0,0.5)',
+                borderRadius:'50%', filter:'blur(4px)' }} />
+
+              {/* 오리 */}
+              <motion.div
+                animate={{ y:[0,-3,0] }}
+                transition={{ duration:2, repeat:Infinity, ease:'easeInOut' }}
+                style={{ position:'relative', zIndex:2,
+                  filter:'drop-shadow(0 6px 10px rgba(0,0,0,0.8))' }}>
+                <PixelDuck
+                  bodyColor={bodyColor} hat={hat} hatColor={hatColor}
+                  topColor={topColor} bottomColor={bottomColor}
+                  direction={1} scale={7} />
+              </motion.div>
+
               {/* 코너 마킹 */}
               {[[0,0],[1,0],[0,1],[1,1]].map(([ri,ci],i) => (
                 <div key={i} style={{ position:'absolute',
@@ -443,84 +348,75 @@ export function CharacterCustomization() {
               ))}
             </div>
 
-            {/* 현재 설정 미니 정보 */}
+            {/* 현재 정보 */}
             <div style={{ background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}33`,
               padding:'8px 16px', textAlign:'center', width:'100%',
               transition:'border-color 0.3s' }}>
-              <div style={{ fontSize:7, color:'rgba(255,255,255,0.3)', marginBottom:5, letterSpacing:'0.1em' }}>CURRENT LOOK</div>
-              <div style={{ fontSize:8, color:activeColor, marginBottom:2, transition:'color 0.3s' }}>
-                {gender} · {outfits.find(o=>o.id===outfit)?.label || outfit}
-              </div>
-              <div style={{ fontSize:7, color:'rgba(255,255,255,0.4)' }}>
-                {hairs.find(h=>h.id===hair)?.label || hair}
-              </div>
-              <div style={{ display:'flex', justifyContent:'center', gap:6, marginTop:8 }}>
-                <ColorDot color={skin} label="피부" />
-                <ColorDot color={hairColor} label="헤어" />
+              <div style={{ fontSize:7, color:'rgba(255,255,255,0.3)', marginBottom:4 }}>MY DUCK</div>
+              <div style={{ fontSize:8, color:activeColor, transition:'color 0.3s' }}>
+                {HATS.find(h=>h.id===hat)?.label || '민머리'} 오리
               </div>
             </div>
 
             {/* 입장 버튼 */}
             <motion.button onClick={handleEnter}
-              whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }}
+              whileHover={{ scale:1.04 }} whileTap={{ scale:0.96 }}
               style={{ cursor:'none', background:'none', border:'none', padding:0, width:'100%' }}>
               <motion.div
-                animate={{ borderColor:['#ffffff88','#ffffff','#ffffff88'],
-                  boxShadow:['0 0 8px #ffcc0033','0 0 20px #ffcc0077','0 0 8px #ffcc0033'] }}
+                animate={{ borderColor:['#ffffff66','#ffffff','#ffffff66'],
+                  boxShadow:['0 0 8px #f0d06033','0 0 20px #f0d06077','0 0 8px #f0d06033'] }}
                 transition={{ duration:2, repeat:Infinity }}
-                style={{ padding:'14px 0', fontSize:10, color:'#ffcc00',
+                style={{ padding:'14px 0', fontSize:9, color:'#f0d060',
                   background:'rgba(0,0,0,0.8)', border:'2px solid',
                   fontFamily:'"Press Start 2P"', letterSpacing:'0.08em',
-                  display:'flex', alignItems:'center', justifyContent:'center', gap:12,
-                  width:'100%', textAlign:'center' }}>
-                <span>서울로 입장</span>
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  gap:10, width:'100%' }}>
+                <span>🦆 서울로 입장</span>
                 <motion.span animate={{ x:[0,4,0] }} transition={{ duration:1.2, repeat:Infinity }}>►</motion.span>
               </motion.div>
             </motion.button>
           </motion.div>
 
           {/* ─ 오른쪽: 설정 요약 ─ */}
-          <motion.div initial={{ x:30, opacity:0 }} animate={{ x:0, opacity:1 }} transition={{ delay:0.12 }}
-            style={{ flex:'0 0 185px', minWidth:160,
+          <motion.div initial={{ x:30, opacity:0 }} animate={{ x:0, opacity:1 }}
+            transition={{ delay:0.12 }}
+            style={{ flex:'0 0 170px', minWidth:150,
               background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}22`,
-              padding:14, display:'flex', flexDirection:'column', gap:0,
-              transition:'border-color 0.3s' }}>
+              padding:14, transition:'border-color 0.3s' }}>
 
             <div style={{ fontSize:8, color:activeColor, marginBottom:12, paddingBottom:8,
               borderBottom:`1px solid ${activeColor}33`, letterSpacing:'0.1em',
-              transition:'color 0.3s, border-color 0.3s' }}>
-              ▌ 현재 설정
+              transition:'color 0.3s' }}>
+              ▌ 내 오리
             </div>
 
             {[
-              { label:'성별', value: gender },
-              { label:'상의', value: outfits.find(o=>o.id===outfit)?.label || outfit },
-              { label:'하의', value: bottoms.find(b=>b.id===bottom)?.label || bottom },
-              { label:'헤어', value: hairs.find(h=>h.id===hair)?.label || hair },
-              { label:'신발', value: shoeList.find(s=>s.id===shoes)?.label || shoes },
+              { label:'모자', value: HATS.find(h=>h.id===hat)?.label || '없음' },
+              { label:'상의', value: TOP_COLORS.find(c=>c.color===topColor)?.label || topColor },
+              { label:'하의', value: BOTTOM_COLORS.find(c=>c.color===bottomColor)?.label || bottomColor },
+              { label:'몸통', value: BODY_COLORS.find(c=>c.color===bodyColor)?.label || bodyColor },
             ].map(item => (
               <div key={item.label} style={{ display:'flex', justifyContent:'space-between',
-                padding:'6px 0', borderBottom:'1px solid rgba(255,255,255,0.04)', gap:8 }}>
+                padding:'5px 0', borderBottom:'1px solid rgba(255,255,255,0.04)', gap:8 }}>
                 <span style={{ fontSize:7, color:'rgba(255,255,255,0.3)', flexShrink:0 }}>{item.label}</span>
-                <span style={{ fontSize:7, color:'rgba(255,255,255,0.75)', textAlign:'right', wordBreak:'keep-all', lineHeight:1.6 }}>
-                  {item.value}
-                </span>
+                <span style={{ fontSize:7, color:'rgba(255,255,255,0.75)', textAlign:'right' }}>{item.value}</span>
               </div>
             ))}
 
-            {/* 컬러 팔레트 미리보기 */}
-            <div style={{ marginTop:12, display:'flex', gap:6 }}>
-              <ColorBlock color={skin} label="피부" />
-              <ColorBlock color={hairColor} label="헤어" />
+            {/* 컬러 미리보기 */}
+            <div style={{ marginTop:12, display:'flex', gap:4 }}>
+              {[bodyColor, topColor, bottomColor, hatColor].map((c,i) => (
+                <div key={i} style={{ flex:1, height:16, background:c,
+                  border:'1px solid rgba(255,255,255,0.2)' }} />
+              ))}
             </div>
 
-            {/* 팁 */}
-            <div style={{ marginTop:16, fontSize:7, color:'rgba(255,255,255,0.15)', lineHeight:2.2,
-              borderTop:'1px solid rgba(255,255,255,0.05)', paddingTop:12 }}>
-              <div>▸ 탭을 눌러 각 항목 변경</div>
-              <div>▸ 선택 즉시 미리보기 반영</div>
-              <div style={{ marginTop:6, color:'rgba(255,255,255,0.1)' }}>
-                v1.0 · SEOUL PIXEL ART
+            <div style={{ marginTop:14, fontSize:7, color:'rgba(255,255,255,0.12)',
+              lineHeight:2.2, borderTop:'1px solid rgba(255,255,255,0.05)', paddingTop:10 }}>
+              <div>▸ 탭 눌러서 변경</div>
+              <div>▸ 실시간 미리보기</div>
+              <div style={{ marginTop:4, color:'rgba(255,255,255,0.08)' }}>
+                DUCK v1.0
               </div>
             </div>
           </motion.div>
@@ -535,10 +431,10 @@ export function CharacterCustomization() {
             style={{ position:'fixed', inset:0, zIndex:50, background:'#000',
               display:'flex', alignItems:'center', justifyContent:'center' }}>
             <motion.div initial={{ scale:0.8, opacity:0 }} animate={{ scale:1, opacity:1 }}
-              transition={{ delay:0.1 }}>
-              <div style={{ fontSize:10, color:'#00ffcc', letterSpacing:'0.2em',
-                fontFamily:'"Press Start 2P"', textShadow:'0 0 20px #00ffcc' }}>
-                LOADING SEOUL...
+              transition={{ delay:0.15 }}>
+              <div style={{ fontSize:9, color:'#f0d060', letterSpacing:'0.2em',
+                fontFamily:'"Press Start 2P"', textShadow:'0 0 20px #f0d060' }}>
+                🦆 ENTERING SEOUL...
               </div>
             </motion.div>
           </motion.div>
@@ -548,13 +444,13 @@ export function CharacterCustomization() {
   );
 }
 
-// ── 서브 컴포넌트 ─────────────────────────────────────────────────────────────
-function TabTitle({ children, color, small=false }:{ children:string; color:string; small?:boolean }) {
+// ── 서브 컴포넌트 ─────────────────────────────────────────────────────
+function TabTitle({ children, color, small=false }: { children:string; color:string; small?:boolean }) {
   return (
-    <div style={{ fontSize: small ? 7 : 8, color, marginBottom: small ? 8 : 10,
-      borderBottom: small ? 'none' : `1px solid ${color}33`, paddingBottom: small ? 0 : 8,
+    <div style={{ fontSize: small ? 7 : 8, color, marginBottom: small ? 6 : 10,
+      borderBottom: small ? 'none' : `1px solid ${color}33`, paddingBottom: small ? 0 : 7,
       letterSpacing:'0.12em', fontFamily:'"Press Start 2P"',
-      textShadow:`0 0 8px ${color}66`, transition:'color 0.3s' }}>
+      textShadow:`0 0 6px ${color}66`, transition:'color 0.3s' }}>
       {children}
     </div>
   );
@@ -564,37 +460,46 @@ function OptionRow({ label, desc, selected, color, onClick }:
   { label:string; desc:string; selected:boolean; color:string; onClick:()=>void }) {
   return (
     <button onClick={onClick} style={{
-      width:'100%', padding:'8px 10px', textAlign:'left',
-      borderLeft: `3px solid ${selected ? color : 'transparent'}`,
+      width:'100%', padding:'7px 10px', textAlign:'left',
+      borderLeft:`3px solid ${selected ? color : 'transparent'}`,
       background: selected ? `${color}14` : 'transparent',
-      cursor:'none', transition:'all 0.1s',
-      display:'flex', justifyContent:'space-between', alignItems:'center',
-      border:'none', borderLeft: `3px solid ${selected ? color : 'transparent'}`,
+      cursor:'none', transition:'all 0.1s', display:'flex',
+      justifyContent:'space-between', alignItems:'center', border:'none',
       fontFamily:'"Press Start 2P"',
     }}>
       <span style={{ fontSize:8, color: selected ? '#fff' : 'rgba(255,255,255,0.45)' }}>{label}</span>
-      <span style={{ fontSize:6, color: selected ? `${color}cc` : 'rgba(255,255,255,0.15)',
-        marginLeft:6, flexShrink:0 }}>{desc}</span>
+      <span style={{ fontSize:6, color: selected ? `${color}cc` : 'rgba(255,255,255,0.15)', marginLeft:6, flexShrink:0 }}>{desc}</span>
     </button>
   );
 }
 
-function ColorDot({ color, label }:{ color:string; label:string }) {
+function ColorRow({ color, label, selected, activeColor, onClick }:
+  { color:string; label:string; selected:boolean; activeColor:string; onClick:()=>void }) {
   return (
-    <div style={{ display:'flex', alignItems:'center', gap:4 }}>
-      <div style={{ width:10, height:10, background:color,
-        border:'1px solid rgba(255,255,255,0.3)' }} />
-      <span style={{ fontSize:6, color:'rgba(255,255,255,0.3)', fontFamily:'"Press Start 2P"' }}>{label}</span>
-    </div>
+    <button onClick={onClick} style={{
+      width:'100%', padding:'6px 8px', textAlign:'left', cursor:'none',
+      background: selected ? `${activeColor}14` : 'transparent',
+      border:`1px solid ${selected ? activeColor : 'transparent'}`,
+      display:'flex', alignItems:'center', gap:8, fontFamily:'"Press Start 2P"',
+      transition:'all 0.1s',
+    }}>
+      <div style={{ width:14, height:14, background:color, flexShrink:0,
+        border: selected ? '2px solid #fff' : '1px solid rgba(255,255,255,0.2)',
+        boxShadow: selected ? `0 0 6px ${color}` : 'none' }} />
+      <span style={{ fontSize:7, color: selected ? '#fff' : 'rgba(255,255,255,0.5)' }}>{label}</span>
+    </button>
   );
 }
 
-function ColorBlock({ color, label }:{ color:string; label:string }) {
+function ColorSwatch({ color, label, selected, onClick }:
+  { color:string; label:string; selected:boolean; onClick:()=>void }) {
   return (
-    <div style={{ flex:1, display:'flex', flexDirection:'column', gap:4 }}>
-      <div style={{ height:20, background:color, border:'1px solid rgba(255,255,255,0.2)' }} />
-      <div style={{ fontSize:6, color:'rgba(255,255,255,0.25)', fontFamily:'"Press Start 2P"',
-        textAlign:'center' }}>{label}</div>
-    </div>
+    <button onClick={onClick} title={label} style={{
+      width:'100%', aspectRatio:'1', background:color, cursor:'none',
+      border: selected ? '2px solid #fff' : '2px solid transparent',
+      transform: selected ? 'scale(1.15)' : 'scale(1)',
+      boxShadow: selected ? `0 0 8px ${color}` : 'none',
+      transition:'all 0.1s',
+    }} />
   );
 }
