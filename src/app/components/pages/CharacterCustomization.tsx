@@ -151,14 +151,14 @@ export function CharacterCustomization() {
 
       {/* ── 메인 ── */}
       <div style={{ position:'relative', zIndex:3, display:'flex', flexDirection:'column',
-        alignItems:'center', minHeight:'100vh', padding:'20px 16px 36px' }}>
+        alignItems:'center', justifyContent:'center', minHeight:'100vh', padding:'40px 16px 40px' }}>
 
         {/* 헤더 */}
         <motion.div initial={{ y:-30, opacity:0 }} animate={{ y:0, opacity:1 }}
-          style={{ textAlign:'center', marginBottom:24, width:'100%', maxWidth:900 }}>
+          style={{ textAlign:'center', marginBottom:20, width:'100%', maxWidth:1000 }}>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:12, marginBottom:6 }}>
             <div style={{ height:1, flex:1, background:`linear-gradient(90deg,transparent,${activeColor}55)` }} />
-            <h1 style={{ fontSize:'clamp(10px,1.6vw,16px)', color:activeColor, letterSpacing:'0.2em',
+            <h1 style={{ fontSize:'clamp(13px,1.8vw,20px)', color:activeColor, letterSpacing:'0.2em',
               margin:0, textShadow:`0 0 20px ${activeColor}66`, transition:'color 0.3s, text-shadow 0.3s' }}>
               🦆 나의 오리 만들기
             </h1>
@@ -170,18 +170,18 @@ export function CharacterCustomization() {
         </motion.div>
 
         {/* 3열 레이아웃 */}
-        <div style={{ display:'flex', gap:16, width:'100%', maxWidth:900,
+        <div style={{ display:'flex', gap:24, width:'100%', maxWidth:1000,
           alignItems:'flex-start', justifyContent:'center', flexWrap:'wrap' }}>
 
           {/* ─ 왼쪽: 탭 + 옵션 ─ */}
           <motion.div initial={{ x:-30, opacity:0 }} animate={{ x:0, opacity:1 }}
-            style={{ flex:'0 0 260px', minWidth:220, display:'flex', flexDirection:'column', gap:8 }}>
+            style={{ flex:'0 0 300px', minWidth:260, display:'flex', flexDirection:'column', gap:10 }}>
 
             {/* 탭 */}
             <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:3 }}>
               {TABS.map(t => (
                 <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
-                  padding:'8px 4px 6px', border:'1px solid',
+                  padding:'12px 4px 8px', border:'1px solid',
                   borderColor: activeTab===t.id ? t.color : 'rgba(255,255,255,0.08)',
                   background: activeTab===t.id ? `${t.color}18` : 'rgba(255,255,255,0.02)',
                   color: activeTab===t.id ? t.color : 'rgba(255,255,255,0.25)',
@@ -190,15 +190,15 @@ export function CharacterCustomization() {
                   fontFamily:'"Press Start 2P"',
                   display:'flex', flexDirection:'column', alignItems:'center', gap:4,
                 }}>
-                  <span style={{ fontSize:14 }}>{t.icon}</span>
-                  <span style={{ fontSize:6 }}>{t.label}</span>
+                  <span style={{ fontSize:18 }}>{t.icon}</span>
+                  <span style={{ fontSize:7 }}>{t.label}</span>
                 </button>
               ))}
             </div>
 
             {/* 옵션 패널 */}
             <div style={{ background:'rgba(4,4,18,0.92)', border:`1px solid ${activeColor}33`,
-              boxShadow:`0 0 24px ${activeColor}18`, padding:14, minHeight:280,
+              boxShadow:`0 0 24px ${activeColor}18`, padding:16, minHeight:320,
               position:'relative', overflow:'hidden', transition:'border-color 0.3s' }}>
 
               {/* 코너 장식 */}
@@ -297,7 +297,7 @@ export function CharacterCustomization() {
             style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:14 }}>
 
             {/* 오리 프리뷰 박스 */}
-            <div style={{ position:'relative', width:180, height:220,
+            <div style={{ position:'relative', width:210, height:260,
               background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}44`,
               display:'flex', alignItems:'center', justifyContent:'center',
               boxShadow:`0 0 30px ${activeColor}18, inset 0 0 40px rgba(0,0,0,0.4)`,
@@ -331,7 +331,7 @@ export function CharacterCustomization() {
                 <PixelDuck
                   bodyColor={bodyColor} hat={hat} hatColor={hatColor}
                   topColor={topColor} bottomColor={bottomColor}
-                  direction={1} scale={7} />
+                  direction={1} scale={9} />
               </motion.div>
 
               {/* 코너 마킹 */}
@@ -380,7 +380,7 @@ export function CharacterCustomization() {
           {/* ─ 오른쪽: 설정 요약 ─ */}
           <motion.div initial={{ x:30, opacity:0 }} animate={{ x:0, opacity:1 }}
             transition={{ delay:0.12 }}
-            style={{ flex:'0 0 170px', minWidth:150,
+            style={{ flex:'0 0 190px', minWidth:170,
               background:'rgba(4,4,18,0.85)', border:`1px solid ${activeColor}22`,
               padding:14, transition:'border-color 0.3s' }}>
 
@@ -467,8 +467,8 @@ function OptionRow({ label, desc, selected, color, onClick }:
       justifyContent:'space-between', alignItems:'center', border:'none',
       fontFamily:'"Press Start 2P"',
     }}>
-      <span style={{ fontSize:8, color: selected ? '#fff' : 'rgba(255,255,255,0.45)' }}>{label}</span>
-      <span style={{ fontSize:6, color: selected ? `${color}cc` : 'rgba(255,255,255,0.15)', marginLeft:6, flexShrink:0 }}>{desc}</span>
+      <span style={{ fontSize:9, color: selected ? '#fff' : 'rgba(255,255,255,0.5)' }}>{label}</span>
+      <span style={{ fontSize:7, color: selected ? `${color}cc` : 'rgba(255,255,255,0.2)', marginLeft:6, flexShrink:0 }}>{desc}</span>
     </button>
   );
 }
@@ -477,7 +477,7 @@ function ColorRow({ color, label, selected, activeColor, onClick }:
   { color:string; label:string; selected:boolean; activeColor:string; onClick:()=>void }) {
   return (
     <button onClick={onClick} style={{
-      width:'100%', padding:'6px 8px', textAlign:'left', cursor:'none',
+      width:'100%', padding:'8px 10px', textAlign:'left', cursor:'none',
       background: selected ? `${activeColor}14` : 'transparent',
       border:`1px solid ${selected ? activeColor : 'transparent'}`,
       display:'flex', alignItems:'center', gap:8, fontFamily:'"Press Start 2P"',

@@ -26,7 +26,7 @@ function SkyBackground() {
       {useMemo(() => [...Array(50)].map((_,i) => (
         <motion.div key={i}
           animate={{ opacity:[0.2+Math.random()*0.5, 0.9, 0.2+Math.random()*0.5] }}
-          transition={{ duration:1.5+Math.random()*3, repeat:Infinity, delay:Math.random()*3 }}
+          transition={{ duration:3+Math.random()*4, repeat:Infinity, delay:Math.random()*5 }}
           style={{ position:'absolute', top:`${Math.random()*50}%`, left:`${Math.random()*100}%`,
             width:2, height:2, backgroundColor:'#fff', borderRadius:'50%' }} />
       )), [])}
@@ -35,8 +35,8 @@ function SkyBackground() {
         background:'linear-gradient(to bottom, transparent, rgba(10,30,60,0.5))',
         borderTop:'1px solid rgba(68,136,255,0.15)' }}>
         {[...Array(6)].map((_,i) => (
-          <motion.div key={i} animate={{ opacity:[0.1,0.35,0.1], scaleX:[1,1.4,1] }}
-            transition={{ duration:2.5+i*0.6, repeat:Infinity, delay:i*0.4 }}
+          <motion.div key={i} animate={{ opacity:[0.08,0.3,0.08] }}
+            transition={{ duration:4+i*0.8, repeat:Infinity, delay:i*0.5 }}
             style={{ position:'absolute', top:`${15+i*10}%`, left:`${8+i*13}%`,
               width:`${5+i*2}%`, height:1.5,
               backgroundColor:['#ffcc00','#ff8800','#4488ff','#ff0088','#00ffaa','#ffaa00'][i],
@@ -52,7 +52,7 @@ function SkyBackground() {
             {[...Array(Math.floor(h/20))].map((_,j) => (
               <motion.div key={j}
                 animate={{ opacity:Math.random()>0.4?[1,0.2,1]:[0.1,0.7,0.1] }}
-                transition={{ duration:2+Math.random()*4, repeat:Infinity, delay:Math.random()*3 }}
+                transition={{ duration:4+Math.random()*6, repeat:Infinity, delay:Math.random()*5 }}
                 style={{ position:'absolute', top:4+j*18, left:'15%', right:'15%', height:7,
                   backgroundColor:['#ffee88','#88bbff','#ffaa44','#aaffdd'][Math.floor(Math.random()*4)],
                   opacity:0.4, filter:'blur(0.5px)' }} />
@@ -171,8 +171,8 @@ function Streetlight({ x }: { x:number }) {
     <div style={{ position:'absolute', bottom:'28%', left:x, zIndex:3 }}>
       <div style={{ width:5, height:75, backgroundColor:'#334466', margin:'0 auto' }} />
       <motion.div
-        animate={{ boxShadow:['0 0 10px #ffee8866','0 0 18px #ffee88aa','0 0 10px #ffee8866'] }}
-        transition={{ duration:4, repeat:Infinity }}
+        animate={{ boxShadow:['0 0 8px #ffee8855','0 0 14px #ffee8888','0 0 8px #ffee8855'] }}
+        transition={{ duration:6, repeat:Infinity }}
         style={{ width:18, height:12, backgroundColor:'#ffee88',
           margin:'0 auto', borderRadius:'2px 2px 5px 5px' }} />
     </div>

@@ -20,14 +20,14 @@ export function Rain() {
       // Reset raindrops on resize
       raindrops = [];
       splashes = [];
-      const count = Math.floor(canvas.width / 4);
+      const count = Math.floor(canvas.width / 10);
       for (let i = 0; i < count; i++) {
         raindrops.push({
           x: Math.random() * canvas.width * 1.5 - canvas.width * 0.2, // Wider spawn area for diagonal rain
           y: Math.random() * canvas.height,
-          speed: 15 + Math.random() * 10, // Faster
-          length: 5 + Math.random() * 7,
-          opacity: 0.3 + Math.random() * 0.5
+          speed: 4 + Math.random() * 4,
+          length: 8 + Math.random() * 10,
+          opacity: 0.15 + Math.random() * 0.25
         });
       }
     };
