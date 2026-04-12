@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState, useEffect } from 'react';
-import { db, collection, query, where, getDocs, doc, updateDoc, serverTimestamp } from '../../lib/firebase';
+import { db, storage, collection, query, where, getDocs, doc, updateDoc, serverTimestamp, ref, uploadBytesResumable, getDownloadURL } from '../../lib/firebase';
 
 // 영어 value → 한국어 표시 매핑 (과거 데이터 + 현재 데이터 모두 처리)
 const BUDGET_KO = {
@@ -28,6 +28,9 @@ export default function AdminPanel({ accentColor }) {
   const [items, setItems] = useState([]);
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [replaceTarget, setReplaceTarget] = useState(null);
+  const [replacing, setReplacing] = useState(false);
+  const [replaceProgress, setReplaceProgress] = useState(0);
 
   useEffect(() => { load(); }, [tab, status]);
 
@@ -44,6 +47,36 @@ export default function AdminPanel({ accentColor }) {
       }
     } catch(e) { console.error(e); }
     setLoading(false);
+  };
+
+  const handleFileReplace = async (item, newFile) => {
+    if (!newFile) return;
+    setReplacing(true);
+    setReplaceProgress(0);
+    try {
+      const storageRef = ref(storage, item.storagePath || `uploads/replaced_${item.id}_${newFile.name}`);
+      const task = uploadBytesResumable(storageRef, newFile);
+      await new Promise((resolve, reject) => {
+        task.on('state_changed',
+          snap => setReplaceProgress(Math.round(snap.bytesTransferred/snap.totalBytes*100)),
+          reject,
+          async () => {
+            const newUrl = await getDownloadURL(storageRef);
+            await updateDoc(doc(db,'uploads',item.id), {
+              fileUrl: newUrl,
+              fileName: newFile.name,
+              fileSize: newFile.size,
+              replacedAt: serverTimestamp(),
+            });
+            resolve(null);
+          }
+        );
+      });
+      alert('파일 교체 완료!');
+      setReplaceTarget(null);
+      load();
+    } catch(e) { alert('교체 실패: '+e.message); }
+    setReplacing(false);
   };
 
   const action = async (id, act) => {
@@ -85,6 +118,20 @@ export default function AdminPanel({ accentColor }) {
         {tabBtn('uploads', '파일 검수')}
         {tabBtn('inquiries', `기업 문의${inquiries.length>0?' ('+inquiries.length+')':''}`)}
       </div>
+
+      {replacing && (
+        <div style={{ marginBottom:12, padding:'10px 14px', borderRadius:10,
+          background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.2)' }}>
+          <div style={{ display:'flex', justifyContent:'space-between', fontSize:11,
+            fontFamily:'Sora,sans-serif', color:'#f59e0b', marginBottom:6 }}>
+            <span>파일 교체 중...</span><span>{replaceProgress}%</span>
+          </div>
+          <div style={{ height:4, borderRadius:99, background:'rgba(245,158,11,0.15)', overflow:'hidden' }}>
+            <div style={{ height:'100%', borderRadius:99, background:'#f59e0b',
+              width:`${replaceProgress}%`, transition:'width 0.2s' }} />
+          </div>
+        </div>
+      )}
 
       {loading && (
         <div style={{ display:'flex', justifyContent:'center', padding:'40px 0' }}>
@@ -153,13 +200,26 @@ export default function AdminPanel({ accentColor }) {
                         {item.nickname} · {item.category} · ₩{(item.price||0).toLocaleString()}
                       </div>
                     </div>
-                    <a href={item.fileUrl} target="_blank" rel="noreferrer"
-                      style={{ fontSize:11, padding:'5px 12px', borderRadius:8, flexShrink:0,
-                        background:`${accentColor}12`, color:accentColor,
-                        border:`1px solid ${accentColor}25`, fontFamily:'Sora,sans-serif',
-                        textDecoration:'none' }}>
-                      파일 확인
-                    </a>
+                    <div style={{ display:'flex', gap:6, flexShrink:0 }}>
+                      <a href={item.fileUrl} target="_blank" rel="noreferrer"
+                        style={{ fontSize:11, padding:'5px 12px', borderRadius:8,
+                          background:`${accentColor}12`, color:accentColor,
+                          border:`1px solid ${accentColor}25`, fontFamily:'Sora,sans-serif',
+                          textDecoration:'none' }}>
+                        파일 확인
+                      </a>
+                      <label style={{ fontSize:11, padding:'5px 12px', borderRadius:8, cursor:'pointer',
+                        background:'rgba(245,158,11,0.1)', color:'#f59e0b',
+                        border:'1px solid rgba(245,158,11,0.25)', fontFamily:'Sora,sans-serif' }}>
+                        📁 교체
+                        <input type="file" style={{ display:'none' }}
+                          onChange={e => {
+                            const f = e.target.files?.[0];
+                            if (f) handleFileReplace(item, f);
+                            e.target.value = '';
+                          }} />
+                      </label>
+                    </div>
                   </div>
                   {item.description && (
                     <p style={{ fontSize:11, color:'var(--muted-foreground)', marginBottom:10,

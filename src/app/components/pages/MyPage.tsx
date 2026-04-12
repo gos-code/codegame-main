@@ -9,6 +9,43 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import AdminPanel from '../AdminPanel';
 
+// ── 라이선스 엑셀 다운로드 (SheetJS CDN 없이 CSV로 대체) ──────────
+function downloadLicenseCSV(purchases: any[]) {
+  const now = new Date();
+  const rows = [
+    ['상품명', '라이선스 키', '구매일', '유효기간', '상태', '남은 일수'],
+    ...purchases
+      .filter(p => p.licenseKey)
+      .map(p => {
+        const purchased = p.purchasedAt?.toDate?.() || new Date();
+        const expires = p.expiresAt ? new Date(p.expiresAt) : new Date(purchased.getTime() + 365*24*60*60*1000);
+        const daysLeft = Math.ceil((expires.getTime() - now.getTime()) / (1000*60*60*24));
+        return [
+          p.title || '—',
+          p.licenseKey,
+          purchased.toLocaleDateString('ko-KR'),
+          expires.toLocaleDateString('ko-KR'),
+          daysLeft > 0 ? '활성' : '만료',
+          daysLeft > 0 ? `${daysLeft}일` : '만료됨',
+        ];
+      })
+      .sort((a, b) => {
+        // 유효기간 남은 일수 오름차순 (임박한 것이 위로)
+        const da = parseInt(String(a[5])) || 9999;
+        const db2 = parseInt(String(b[5])) || 9999;
+        return da - db2;
+      })
+  ];
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('
+');
+  const blob = new Blob(['﻿' + csv], { type:'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `codegame_licenses_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
 type Tab = 'purchases' | 'sales' | 'revenue' | 'licenses' | 'settings' | 'admin';
 
 export default function MyPage() {
