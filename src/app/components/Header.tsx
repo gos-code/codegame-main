@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import MyPageModal from './MyPageModal';
+import NotificationBell from './NotificationBell';
 
 export default function Header() {
   const { theme, toggleTheme, accentColor } = useTheme();
@@ -92,6 +93,9 @@ export default function Header() {
                 placeholder="검색" className="bg-transparent border-none outline-none text-sm w-32"
                 style={{ color: 'var(--foreground)', fontFamily: 'Sora, sans-serif' }} />
             </form>
+
+            {/* 알림 벨 */}
+            {user && <NotificationBell />}
 
             {/* 테마 토글 */}
             <button onClick={toggleTheme}

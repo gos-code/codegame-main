@@ -2,10 +2,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Download, Copy, Check, Shield, Package, Code2, ChevronLeft, ChevronRight } from 'lucide-react';
-import { db, doc, getDoc, addDoc, collection, query, where, getDocs,
+import { ArrowLeft, Download, Copy, Check, Shield, Package, Code2, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { db, doc, getDoc, addDoc, collection, query, where, getDocs, orderBy,
   updateDoc, increment, serverTimestamp } from '../../../lib/firebase';
 import { useTheme } from '../../contexts/ThemeContext';
+import { createNotification } from '../../components/NotificationBell';
 import { useAuth } from '../../contexts/AuthContext';
 
 // ── SHA256 기반 라이선스 키 생성 ──────────────────────────────────────
@@ -34,6 +35,12 @@ export default function ProductDetail() {
   const [licenseKey, setLicenseKey] = useState('');
   const [alreadyBought, setAlreadyBought] = useState(false);
   const [existingPurchase, setExistingPurchase] = useState<any>(null);
+  const [reviews, setReviews]       = useState<any[]>([]);
+  const [myReview, setMyReview]     = useState<any>(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [rating, setRating]         = useState(5);
+  const [reviewText, setReviewText] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -42,6 +49,16 @@ export default function ProductDetail() {
       setLoading(false);
     });
   }, [id]);
+
+  // 리뷰 로드
+  useEffect(() => {
+    if (!id) return;
+    getDocs(query(collection(db,'uploads',id,'reviews'), orderBy('createdAt','desc'))).then(snap => {
+      const list = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      setReviews(list);
+      if (user) setMyReview(list.find(r => r.uid === user.uid) || null);
+    }).catch(()=>{});
+  }, [id, user]);
 
   // 이미 구매했는지 확인
   useEffect(() => {
@@ -84,6 +101,15 @@ export default function ProductDetail() {
         salesCount: increment(1),
         revenue: increment(Math.round((product.price||0) * 0.8)),
       });
+      // 판매자에게 구매 알림
+      if (product.uid) {
+        await createNotification(
+          product.uid, 'purchase',
+          '상품이 판매됐어요! 🎉',
+          `"${product.title}"이 구매됐습니다. ₩${(product.price||0).toLocaleString()} 수익 발생`,
+          `/mypage?tab=revenue`
+        );
+      }
       setLicenseKey(key);
       setShowSuccess(true);
       setAlreadyBought(true);
@@ -133,6 +159,35 @@ export default function ProductDetail() {
       setCopied(true); setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  const submitReview = async () => {
+    if (!user || !alreadyBought) return;
+    if (!reviewText.trim()) { alert('리뷰 내용을 입력해주세요'); return; }
+    setSubmittingReview(true);
+    try {
+      if (myReview) {
+        await updateDoc(doc(db,'uploads',id,'reviews',myReview.id), {
+          rating, text: reviewText, updatedAt: serverTimestamp(),
+        });
+      } else {
+        await addDoc(collection(db,'uploads',id,'reviews'), {
+          uid: user.uid, nickname: user.displayName || user.email,
+          rating, text: reviewText, createdAt: serverTimestamp(),
+        });
+      }
+      setShowReviewForm(false);
+      // 리뷰 다시 로드
+      const snap = await getDocs(query(collection(db,'uploads',id,'reviews'), orderBy('createdAt','desc')));
+      const list = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+      setReviews(list);
+      setMyReview(list.find(r => r.uid === user.uid) || null);
+    } catch(e:any) { alert('리뷰 등록 실패: '+e.message); }
+    setSubmittingReview(false);
+  };
+
+  const avgRating = reviews.length
+    ? (reviews.reduce((a,r) => a+(r.rating||5), 0) / reviews.length).toFixed(1)
+    : null;
 
   const screens = product?.screenshots || [];
 
@@ -290,6 +345,106 @@ export default function ProductDetail() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* ── 리뷰 섹션 ── */}
+            <div className="rounded-xl p-5 mt-4"
+              style={{ background:'var(--card)', border:'1px solid var(--border)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <h3 className="text-sm font-semibold"
+                    style={{ color:'var(--foreground)', fontFamily:'Sora,sans-serif' }}>
+                    리뷰 ({reviews.length})
+                  </h3>
+                  {avgRating && (
+                    <span className="flex items-center gap-1 text-sm font-bold"
+                      style={{ color:'#f59e0b', fontFamily:'Orbitron,monospace' }}>
+                      <Star className="w-4 h-4 fill-current" />
+                      {avgRating}
+                    </span>
+                  )}
+                </div>
+                {alreadyBought && !showReviewForm && (
+                  <button onClick={() => { setShowReviewForm(true); if(myReview){ setRating(myReview.rating); setReviewText(myReview.text); }}}
+                    className="text-xs px-3 py-1.5 rounded-lg"
+                    style={{ background:`${accentColor}15`, color:accentColor,
+                      border:`1px solid ${accentColor}25`, fontFamily:'Sora,sans-serif', cursor:'pointer' }}>
+                    {myReview ? '리뷰 수정' : '리뷰 작성'}
+                  </button>
+                )}
+              </div>
+
+              {/* 리뷰 작성 폼 */}
+              {showReviewForm && (
+                <div className="mb-4 p-4 rounded-xl"
+                  style={{ background:'var(--background)', border:`1px solid ${accentColor}25` }}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xs" style={{ color:'var(--muted-foreground)', fontFamily:'Sora,sans-serif' }}>별점</span>
+                    {[1,2,3,4,5].map(n => (
+                      <button key={n} onClick={() => setRating(n)}
+                        style={{ background:'none', border:'none', cursor:'pointer', padding:2 }}>
+                        <Star className="w-5 h-5"
+                          style={{ color: n<=rating ? '#f59e0b' : 'var(--border)',
+                            fill: n<=rating ? '#f59e0b' : 'none' }} />
+                      </button>
+                    ))}
+                  </div>
+                  <textarea value={reviewText} onChange={e => setReviewText(e.target.value)}
+                    rows={3} placeholder="이 코드를 사용해보셨나요? 솔직한 리뷰를 남겨주세요."
+                    className="w-full px-3 py-2 rounded-lg text-sm outline-none resize-none mb-3"
+                    style={{ background:'var(--card)', border:'1px solid var(--border)',
+                      color:'var(--foreground)', fontFamily:'Sora,sans-serif' }} />
+                  <div className="flex gap-2">
+                    <button onClick={submitReview} disabled={submittingReview}
+                      className="px-4 py-2 rounded-lg text-xs font-semibold"
+                      style={{ background:`linear-gradient(135deg,${accentColor},#00d4ff)`,
+                        color:'#000', border:'none', cursor:'pointer', fontFamily:'Sora,sans-serif' }}>
+                      {submittingReview ? '등록 중...' : '리뷰 등록'}
+                    </button>
+                    <button onClick={() => setShowReviewForm(false)}
+                      className="px-4 py-2 rounded-lg text-xs"
+                      style={{ background:'var(--secondary)', color:'var(--foreground)',
+                        border:'none', cursor:'pointer', fontFamily:'Sora,sans-serif' }}>
+                      취소
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* 리뷰 목록 */}
+              {reviews.length === 0 ? (
+                <p className="text-xs text-center py-4"
+                  style={{ color:'var(--muted-foreground)', fontFamily:'Sora,sans-serif' }}>
+                  첫 번째 리뷰를 남겨보세요
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {reviews.map(r => (
+                    <div key={r.id} className="pb-3"
+                      style={{ borderBottom:'1px solid var(--border)' }}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-medium"
+                          style={{ color:'var(--foreground)', fontFamily:'Sora,sans-serif' }}>
+                          {r.nickname || '익명'}
+                          {r.uid === user?.uid && (
+                            <span className="ml-1.5 text-xs" style={{ color:accentColor }}>내 리뷰</span>
+                          )}
+                        </span>
+                        <div className="flex items-center gap-0.5">
+                          {[1,2,3,4,5].map(n => (
+                            <Star key={n} className="w-3 h-3"
+                              style={{ color:'#f59e0b', fill: n<=(r.rating||5) ? '#f59e0b' : 'none' }} />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-xs leading-relaxed"
+                        style={{ color:'var(--muted-foreground)', fontFamily:'Sora,sans-serif' }}>
+                        {r.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* 이미 구매한 경우 다운로드 버튼 */}

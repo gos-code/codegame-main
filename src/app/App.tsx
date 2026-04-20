@@ -15,6 +15,7 @@ import Contact from './components/pages/Contact';
 import Sell from './components/pages/Sell';
 import ProductDetail from './components/pages/ProductDetail';
 import NotFound from './components/pages/NotFound';
+import SellerProfile from './components/pages/SellerProfile';
 import DevGardenTitle from './components/pages/DevGardenTitle';
 import { CharacterCustomization } from './components/pages/CharacterCustomization';
 import { CityPage } from './components/pages/CityPage';
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
         { path: 'guide', Component: Guide },
         { path: 'requests', Component: Requests },
         { path: 'contact', Component: Contact },
+      { path: 'seller/:uid', Component: SellerProfile },
         { path: '*', Component: NotFound },
       ],
     },

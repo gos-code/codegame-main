@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { db, storage, collection, query, where, getDocs, doc,
   updateDoc, deleteDoc, serverTimestamp,
-  ref, uploadBytesResumable, getDownloadURL, deleteObject } from '../../lib/firebase';
+  ref, uploadBytesResumable, getDownloadURL, deleteObject, addDoc } from '../../lib/firebase';
 
 const BUDGET_KO = {
   'under5m':'500만원 미만','5m-10m':'500~1,000만원',
@@ -55,7 +55,23 @@ export default function AdminPanel({ accentColor }) {
 
   // 상태 변경 (승인/반려/대기/숨김 모두 자유롭게)
   const changeStatus = async (id, newStatus) => {
+    // 해당 아이템 찾기
+    const item = items.find(i => i.id === id);
     await updateDoc(doc(db,'uploads',id), { status:newStatus, reviewedAt:serverTimestamp() });
+    // 판매자에게 알림
+    if (item?.uid && (newStatus === 'approved' || newStatus === 'rejected')) {
+      await addDoc(collection(db,'notifications'), {
+        uid: item.uid,
+        type: newStatus === 'approved' ? 'approved' : 'rejected',
+        title: newStatus === 'approved' ? '상품이 승인됐어요! ✅' : '상품 검토 결과 안내',
+        body: newStatus === 'approved'
+          ? `"${item.title}"이 마켓플레이스에 등록됐습니다.`
+          : `"${item.title}"이 반려됐습니다. 내용을 수정 후 다시 제출해주세요.`,
+        link: newStatus === 'approved' ? '/marketplace' : '/mypage?tab=sales',
+        read: false,
+        createdAt: serverTimestamp(),
+      }).catch(()=>{});
+    }
     setItems(p => p.filter(i => i.id !== id));
     setEditingId(null);
   };
