@@ -89,7 +89,7 @@ export default function MyPageModal({ isOpen, onClose }: Props) {
                     {currentTrack?.title || 'No Track'}
                   </div>
                   <div className="text-xs truncate" style={{ color:'rgba(255,255,255,0.35)', fontFamily:'JetBrains Mono,monospace' }}>
-                    {currentTrack?.genre || 'CodeGame Music'}
+                    {currentTrack?.genre || 'CodeDuck Music'}
                   </div>
                 </div>
                 <div className="flex items-center gap-1">

@@ -71,10 +71,43 @@ export default function Login() {
         {/* 로고 */}
         <motion.div initial={{ opacity:0, y:-20 }} animate={{ opacity:1, y:0 }}
           style={{ textAlign:'center', marginBottom:32 }}>
-          <div style={{ fontSize:40, fontWeight:900, letterSpacing:'0.08em', marginBottom:6,
-            fontFamily:'Orbitron, monospace', color: accentColor,
-            textShadow:`0 0 40px ${accentColor}60` }}>
-            CodeGame
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center',
+            gap:12, marginBottom:6 }}>
+            {/* 오리 픽셀 로고 */}
+            <div style={{ width:44, height:44,
+              background:`linear-gradient(135deg,${accentColor},#00d4ff)`,
+              borderRadius:12, display:'flex', alignItems:'center', justifyContent:'center',
+              boxShadow:`0 0 20px ${accentColor}55` }}>
+              <svg width="28" height="28" viewBox="0 0 16 20" style={{ imageRendering:'pixelated' }}>
+                <rect x="4" y="11" width="8" height="5" fill="#f5f0dc"/>
+                <rect x="3" y="12" width="10" height="3" fill="#f5f0dc"/>
+                <rect x="2" y="12" width="2" height="3" fill="#e8e0c8"/>
+                <rect x="12" y="12" width="2" height="3" fill="#e8e0c8"/>
+                <rect x="5" y="9" width="6" height="4" fill="#000"/>
+                <rect x="7" y="7" width="3" height="3" fill="#f5f0dc"/>
+                <rect x="5" y="3" width="6" height="5" fill="#f5f0dc"/>
+                <rect x="4" y="4" width="1" height="3" fill="#f5f0dc"/>
+                <rect x="11" y="4" width="1" height="3" fill="#f5f0dc"/>
+                <rect x="5" y="2" width="7" height="1" fill="#cc2222"/>
+                <rect x="6" y="0" width="5" height="3" fill="#cc2222"/>
+                <rect x="9" y="4" width="1" height="2" fill="#1a1a2e"/>
+                <rect x="11" y="5" width="2" height="2" fill="#ff8c00"/>
+                <rect x="4" y="17" width="3" height="1" fill="#ff6600"/>
+                <rect x="9" y="17" width="3" height="1" fill="#ff6600"/>
+              </svg>
+            </div>
+            <div style={{ textAlign:'left' }}>
+              <div style={{ fontSize:28, fontWeight:900, letterSpacing:'-0.01em',
+                fontFamily:'Sora, sans-serif', lineHeight:1,
+                color: isDarkBg ? '#fff' : '#0f172a' }}>
+                Code<span style={{ color:accentColor }}>Duck</span>
+              </div>
+              <div style={{ fontSize:10, fontFamily:'JetBrains Mono, monospace',
+                color: isDarkBg ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)',
+                letterSpacing:'0.08em', marginTop:2 }}>
+                코드 자산 거래소
+              </div>
+            </div>
           </div>
           <p style={{ fontSize:13, fontFamily:'Sora, sans-serif', fontWeight:300,
             color: isDarkBg ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)' }}>

@@ -136,10 +136,10 @@ export default function Home() {
           <div className="mb-12">
             <h2 className="text-2xl font-bold mb-2"
               style={{ color: 'var(--foreground)', fontFamily:'Sora,sans-serif' }}>
-              왜 CodeGame인가
+              왜 CodeDuck인가
             </h2>
             <p className="text-sm" style={{ color: 'var(--muted)', fontFamily:'Sora,sans-serif' }}>
-              신뢰할 수 있는 코드 거래를 위한 핵심 시스템
+              개발자를 위한 코드 자산 거래 플랫폼
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">

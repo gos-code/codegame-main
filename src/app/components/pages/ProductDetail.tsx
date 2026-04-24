@@ -11,7 +11,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 // ── SHA256 기반 라이선스 키 생성 ──────────────────────────────────────
 async function generateLicenseKey(productId: string, buyerUid: string): Promise<string> {
-  const SECRET = 'codegame_license_v1_secret';
+  const SECRET = 'codeduck_license_v1_secret';
   const raw = `${productId}::${buyerUid}::${SECRET}`;
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw));
   const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();

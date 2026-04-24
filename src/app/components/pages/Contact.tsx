@@ -87,7 +87,7 @@ export default function Contact() {
                       <label className="block text-xs font-medium mb-1.5 uppercase tracking-wide"
                         style={{ color:'var(--muted)', fontFamily:'JetBrains Mono,monospace' }}>회사명 *</label>
                       <input value={form.company} onChange={set('company')} required
-                        placeholder="주식회사 CodeGame" style={inputStyle} />
+                        placeholder="주식회사 CodeDuck" style={inputStyle} />
                     </div>
                     <div>
                       <label className="block text-xs font-medium mb-1.5 uppercase tracking-wide"

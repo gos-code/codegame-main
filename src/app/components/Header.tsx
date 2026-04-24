@@ -44,14 +44,47 @@ export default function Header() {
           {/* 로고 */}
           <div className="flex items-center gap-10">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{ backgroundColor: accent }}>
-                <Gamepad2 className="w-4 h-4" style={{ color: isDark ? '#000' : '#fff' }} />
+              {/* 오리 픽셀 로고 */}
+              <div style={{ width:32, height:32, background:`linear-gradient(135deg,${accent},#00d4ff)`,
+                borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center',
+                boxShadow:`0 0 12px ${accent}44`, flexShrink:0 }}>
+                <svg width="20" height="20" viewBox="0 0 16 20" style={{ imageRendering:'pixelated' }}>
+                  {/* 몸통 */}
+                  <rect x="4" y="11" width="8" height="5" fill="#f5f0dc"/>
+                  <rect x="3" y="12" width="10" height="3" fill="#f5f0dc"/>
+                  {/* 날개 */}
+                  <rect x="2" y="12" width="2" height="3" fill="#e8e0c8"/>
+                  <rect x="12" y="12" width="2" height="3" fill="#e8e0c8"/>
+                  {/* 상의 */}
+                  <rect x="5" y="9" width="6" height="4" fill="#000"/>
+                  {/* 목 */}
+                  <rect x="7" y="7" width="3" height="3" fill="#f5f0dc"/>
+                  {/* 머리 */}
+                  <rect x="5" y="3" width="6" height="5" fill="#f5f0dc"/>
+                  <rect x="4" y="4" width="1" height="3" fill="#f5f0dc"/>
+                  <rect x="11" y="4" width="1" height="3" fill="#f5f0dc"/>
+                  {/* 모자 */}
+                  <rect x="5" y="2" width="7" height="1" fill="#cc2222"/>
+                  <rect x="6" y="0" width="5" height="3" fill="#cc2222"/>
+                  {/* 눈 */}
+                  <rect x="9" y="4" width="1" height="2" fill="#1a1a2e"/>
+                  {/* 부리 */}
+                  <rect x="11" y="5" width="2" height="2" fill="#ff8c00"/>
+                  {/* 발 */}
+                  <rect x="4" y="17" width="3" height="1" fill="#ff6600"/>
+                  <rect x="9" y="17" width="3" height="1" fill="#ff6600"/>
+                </svg>
               </div>
-              <span className="text-lg font-bold tracking-tight"
-                style={{ fontFamily: 'Sora, sans-serif', color: 'var(--foreground)' }}>
-                CodeGame
-              </span>
+              <div style={{ display:'flex', flexDirection:'column', lineHeight:1 }}>
+                <span style={{ fontSize:16, fontWeight:900, letterSpacing:'-0.02em',
+                  fontFamily:'Sora, sans-serif', color:'var(--foreground)' }}>
+                  Code<span style={{ color:accent }}>Duck</span>
+                </span>
+                <span style={{ fontSize:9, color:'var(--muted-foreground)',
+                  fontFamily:'JetBrains Mono, monospace', letterSpacing:'0.05em' }}>
+                  코드 자산 거래소
+                </span>
+              </div>
             </Link>
 
             {/* 데스크탑 메뉴 */}
